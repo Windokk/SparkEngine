@@ -131,9 +131,9 @@ int WinMain()
 	VAO1.Bind();
 
 	// Generates Vertex Buffer Object and links it to vertices
-	VBO VBO1(cube_vertices, sizeof(cube_vertices));
+	VBO VBO1(pyramid_vertices, sizeof(pyramid_vertices));
 	// Generates Element Buffer Object and links it to indices
-	EBO EBO1(cube_indices, sizeof(cube_indices));
+	EBO EBO1(pyramid_indices, sizeof(pyramid_indices));
 
 	// Links VBO attributes such as coordinates and colors to VAO
 	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 8 * sizeof(float), (void*)0);
@@ -177,7 +177,7 @@ int WinMain()
 		// Bind the VAO so OpenGL knows to use it
 		VAO1.Bind();
 		// Draw primitives, number of indices, datatype of indices, index of indices
-		glDrawElements(GL_TRIANGLES,sizeof(cube_indices)/sizeof(int), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES,sizeof(pyramid_indices)/sizeof(int), GL_UNSIGNED_INT, 0);
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);
 		// Take care of all GLFW events
