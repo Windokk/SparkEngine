@@ -2,10 +2,9 @@
 #include<filesystem>
 namespace fs = std::filesystem;
 //------------------------------
-
+#include<math.h>
 #include"Model.h"
-
-
+//------------------------------
 //Variables
 unsigned int width_ = 800;
 unsigned int height_ = 800;
@@ -45,6 +44,10 @@ unsigned int skyboxIndices[] =
 	6, 2, 3
 };
 
+float randf()
+{
+	return -1.0f + (rand() / (RAND_MAX / 2.0f));
+}
 
 //Functions
 void window_size_callback(GLFWwindow* window, int width, int height)
@@ -100,7 +103,7 @@ int WinMain()
 	// Generates Shader object using shaders default.vert and default.frag
 	Shader shaderProgram("default.vert", "default.frag","default.geom");
 	Shader skyboxShader("skybox.vert", "skybox.frag", "");
-	Shader normalsShader("default.vert", "normals.frag", "normals.geom");
+	Shader asteroidShader("asteroid.vert", "default.frag","default.geom");
 	
 
 	// Take care of all the light related things
@@ -112,6 +115,9 @@ int WinMain()
 	glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 	skyboxShader.Activate();
 	glUniform1i(glGetUniformLocation(skyboxShader.ID, "skybox"), 0);
+	asteroidShader.Activate();
+	glUniform4f(glGetUniformLocation(asteroidShader.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+	glUniform3f(glGetUniformLocation(asteroidShader.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
 
 	// Enables the Depth Buffer
@@ -211,6 +217,62 @@ int WinMain()
 	}
 
 
+	// The number of asteroids to be created
+	const unsigned int number = 5;
+	// Radius of circle around which asteroids orbit
+	float radius = 100.0f;
+	// How much ateroids deviate from the radius
+	float radiusDeviation = 25.0f;
+
+	// Holds all transformations for the asteroids
+	std::vector <glm::mat4> instanceMatrix;
+
+	for (unsigned int i = 0; i < number; i++)
+	{
+		// Generates x and y for the function x^2 + y^2 = radius^2 which is a circle
+		float x = randf();
+		float finalRadius = radius + randf() * radiusDeviation;
+		float y = ((rand() % 2) * 2 - 1) * sqrt(1.0f - x * x);
+
+		// Holds transformations before multiplying them
+		glm::vec3 tempTranslation;
+		glm::quat tempRotation;
+		glm::vec3 tempScale;
+
+		// Makes the random distribution more even
+		if (randf() > 0.5f)
+		{
+			// Generates a translation near a circle of radius "radius"
+			tempTranslation = glm::vec3(y * finalRadius, randf(), x * finalRadius);
+		}
+		else
+		{
+			// Generates a translation near a circle of radius "radius"
+			tempTranslation = glm::vec3(x * finalRadius, randf(), y * finalRadius);
+		}
+		// Generates random rotations
+		tempRotation = glm::quat(1.0f, randf(), randf(), randf());
+		// Generates random scales
+		tempScale = 0.1f * glm::vec3(randf(), randf(), randf());
+
+
+		// Initialize matrices
+		glm::mat4 trans = glm::mat4(1.0f);
+		glm::mat4 rot = glm::mat4(1.0f);
+		glm::mat4 sca = glm::mat4(1.0f);
+
+		// Transform the matrices to their correct form
+		trans = glm::translate(trans, tempTranslation);
+		rot = glm::mat4_cast(tempRotation);
+		sca = glm::scale(sca, tempScale);
+
+		// Push matrix transformation
+		instanceMatrix.push_back(trans * rot * sca);
+	}
+	// Create the asteroid model with instancing enabled
+	Model asteroid("assets/defaults/models/asteroid/scene.gltf", number, instanceMatrix);
+
+
 	// Main while loop
 	while (!glfwWindowShouldClose(window))
 	{
@@ -247,10 +309,23 @@ int WinMain()
 		camera.updateMatrix(45.0f, 0.1f, 300.0f);
 
 
-		// Draw the normal model
-		plane.Draw(shaderProgram, camera);
-		plane.Draw(normalsShader, camera);
+		/// Specify the color of the background
+		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
+		// Clean the back buffer and depth buffer
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		// Handles camera inputs (delete this if you have disabled VSync)
+		camera.Inputs(window);
+		// Updates and exports the camera matrix to the Vertex Shader
+		camera.updateMatrix(45.0f, 0.1f, 1000.0f);
+
+
+		// Draw jupiter
+		plane.Draw(shaderProgram, camera);
+		// Draw the asteroids
+		asteroid.Draw(asteroidShader, camera);
+
+		// Since the cubemap will always have a depth of 1.0, we need that equal sign so it doesn't get discarded
 		glDepthFunc(GL_LEQUAL);
 
 		skyboxShader.Activate();
@@ -283,9 +358,8 @@ int WinMain()
 
 	// Delete all the objects we've created
 	shaderProgram.Delete();
-	normalsShader.Delete();
 	skyboxShader.Delete();
-	
+	asteroidShader.Delete();
 	// Delete window before ending the program
 	glfwDestroyWindow(window);
 	// Terminate GLFW before ending the program

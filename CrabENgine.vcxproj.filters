@@ -40,6 +40,9 @@
     <Filter Include="Resource Files\Shaders\Windows_Flowers">
       <UniqueIdentifier>{667725d3-3870-463e-b39e-41eae9f98f63}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shaders\Asteroid">
+      <UniqueIdentifier>{0596b293-0d6a-4eb5-8106-0e1b36b82c30}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -121,6 +124,9 @@
     </None>
     <None Include="windows.frag">
       <Filter>Resource Files\Shaders\Windows_Flowers</Filter>
+    </None>
+    <None Include="asteroid.vert">
+      <Filter>Resource Files\Shaders\Asteroid</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,6 @@
 #include"Model.h"
 
-Model::Model(const char* file)
+Model::Model(const char* file, unsigned int instancing, std::vector<glm::mat4> instanceMatrix)
 {
 	// Make a JSON object
 	std::string text = get_file_contents(file);
@@ -10,16 +10,19 @@ Model::Model(const char* file)
 	Model::file = file;
 	data = getData();
 
+	Model::instancing = instancing;
+	Model::instanceMatrix = instanceMatrix;
+
 	// Traverse all nodes
 	traverseNode(0);
 }
 
-void Model::Draw(Shader& shader, Camera& camera)
+void Model::Draw(Shader& shader, Camera& camera, glm::vec3 translation, glm::quat rotation, glm::vec3 scale)
 {
 	// Go over all meshes and draw each one
 	for (unsigned int i = 0; i < meshes.size(); i++)
 	{
-		meshes[i].Mesh::Draw(shader, camera, matricesMeshes[i]);
+		meshes[i].Mesh::Draw(shader, camera, matricesMeshes[i], translation, rotation, scale);
 	}
 }
 
@@ -45,7 +48,7 @@ void Model::loadMesh(unsigned int indMesh)
 	std::vector<Texture> textures = getTextures();
 
 	// Combine the vertices, indices, and textures into a mesh
-	meshes.push_back(Mesh(vertices, indices, textures));
+	meshes.push_back(Mesh(vertices, indices, textures, instancing, instanceMatrix));
 }
 
 void Model::traverseNode(unsigned int nextNode, glm::mat4 matrix)

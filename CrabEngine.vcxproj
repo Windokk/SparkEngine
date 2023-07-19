@@ -166,6 +166,7 @@
     <ClCompile Include="VBO.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="asteroid.vert" />
     <None Include="default.frag" />
     <None Include="default.geom" />
     <None Include="default.vert" />

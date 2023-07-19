@@ -11,15 +11,24 @@ class Model
 {
 public:
 	// Loads in a model from a file and stores tha information in 'data', 'JSON', and 'file'
-	Model(const char* file);
+	Model(const char* file, unsigned int instancing = 1, std::vector<glm::mat4> instanceMatrix = {});
 
-	void Draw(Shader& shader, Camera& camera);
+	void Draw
+	(
+		Shader& shader,
+		Camera& camera,
+		glm::vec3 translation = glm::vec3(0.0f, 0.0f, 0.0f),
+		glm::quat rotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f),
+		glm::vec3 scale = glm::vec3(1.0f, 1.0f, 1.0f)
+	);
 
 private:
 	// Variables for easy access
 	const char* file;
 	std::vector<unsigned char> data;
 	json JSON;
+	// Holds number of instances (if 1 the mesh will be rendered normally)
+	unsigned int instancing;
 
 	// All the meshes and transformations
 	std::vector<Mesh> meshes;
@@ -27,6 +36,7 @@ private:
 	std::vector<glm::quat> rotationsMeshes;
 	std::vector<glm::vec3> scalesMeshes;
 	std::vector<glm::mat4> matricesMeshes;
+	std::vector<glm::mat4> instanceMatrix;
 
 	// Prevents textures from being loaded twice
 	std::vector<std::string> loadedTexName;
@@ -48,8 +58,8 @@ private:
 	// Assembles all the floats into vertices
 	std::vector<Vertex> assembleVertices
 	(
-		std::vector<glm::vec3> positions, 
-		std::vector<glm::vec3> normals, 
+		std::vector<glm::vec3> positions,
+		std::vector<glm::vec3> normals,
 		std::vector<glm::vec2> texUVs
 	);
 
