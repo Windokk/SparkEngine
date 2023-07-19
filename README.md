@@ -44,6 +44,8 @@ The engine is in it's pre-alpha state of developpement so there might be a lot o
 
 - ~Transparency and blending~
 
+- ~Skyboxes~
+
 - Anti-Aliasing
 
 - Shadow maps
