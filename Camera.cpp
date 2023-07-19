@@ -2,11 +2,12 @@
 
 
 
-Camera::Camera(int width, int height, glm::vec3 position)
+Camera::Camera(int width, int height, glm::vec3 position, glm::vec3 rotation)
 {
 	Camera::width = width;
 	Camera::height = height;
 	Position = position;
+	Orientation = rotation;
 }
 
 void Camera::updateSize(int new_width, int new_height)
@@ -40,6 +41,7 @@ void Camera::Matrix(Shader& shader, const char* uniform)
 
 void Camera::Inputs(GLFWwindow* window)
 {
+
 	// Handles key inputs
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 	{
@@ -73,8 +75,6 @@ void Camera::Inputs(GLFWwindow* window)
 	{
 		speed = 0.1f;
 	}
-
-
 	// Handles mouse inputs
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
 	{
