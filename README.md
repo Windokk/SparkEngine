@@ -30,17 +30,17 @@ The engine is in it's pre-alpha state of developpement so there might be a lot o
 
 - ~Camera movement~
 
-- Light management
+- ~Light management~
 
-- Specular maps implementation
+- ~Specular maps implementation~
 
-- Different types of lights management
+- ~Different types of lights management~
 
-- Mesh classes
+- ~Mesh classes~
 
-- External model importation
+- ~External model importation~
 
-- Transparency and blening
+- ~Transparency and blending~
 
 - Anti-Aliasing
 
