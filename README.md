@@ -14,10 +14,12 @@ The engine is in it's pre-alpha state of developpement so there might be a lot o
 
 ## Features
 
-- Light/dark mode toggle
-- Live previews
-- Fullscreen mode
-- Cross platform
+- Model support : importing; transform : location, rotation, scale; texture mappings/UV; specular maps
+- Light support : 3 types : point, spot, directionnal; light color
+- Skyboxes support : cubemaps
+- Post processing with a FrameBuffer
+- Camera : Control with Z, Q, S & D
+- FPS Counter
 
 
 ## Roadmap
