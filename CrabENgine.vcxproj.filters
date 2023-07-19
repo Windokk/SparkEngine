@@ -19,6 +19,27 @@
     <Filter Include="Resource Files\Textures">
       <UniqueIdentifier>{d00be403-ec07-4ab6-8ff9-2a7366a66e23}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shaders\Normals">
+      <UniqueIdentifier>{b3401b1e-39a7-4d2d-8018-8ba548f2104a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\FrameBuffer">
+      <UniqueIdentifier>{b6fa29b9-c981-4508-98cd-ee2e83938622}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Grass">
+      <UniqueIdentifier>{51b77caf-d824-4ff7-b291-e7f026fb050a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Light">
+      <UniqueIdentifier>{63684a16-af19-4f2d-824b-95be5172f6b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\outlining">
+      <UniqueIdentifier>{821e3c69-0e36-4d07-b98f-cbbcf3ce6e53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\skyboxes">
+      <UniqueIdentifier>{4e30f1de-1266-4a52-a572-c8e07997b007}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Windows_Flowers">
+      <UniqueIdentifier>{667725d3-3870-463e-b39e-41eae9f98f63}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -62,35 +83,44 @@
     <None Include="default.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="light.frag">
+    <None Include="default.geom">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="light.vert">
-      <Filter>Resource Files\Shaders</Filter>
+    <None Include="normals.frag">
+      <Filter>Resource Files\Shaders\Normals</Filter>
     </None>
-    <None Include="outlining.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="outlining.vert">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="grass.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="windows.frag">
-      <Filter>Resource Files\Shaders</Filter>
+    <None Include="normals.geom">
+      <Filter>Resource Files\Shaders\Normals</Filter>
     </None>
     <None Include="framebuffer.frag">
-      <Filter>Resource Files\Shaders</Filter>
+      <Filter>Resource Files\Shaders\FrameBuffer</Filter>
     </None>
     <None Include="framebuffer.vert">
-      <Filter>Resource Files\Shaders</Filter>
+      <Filter>Resource Files\Shaders\FrameBuffer</Filter>
+    </None>
+    <None Include="grass.frag">
+      <Filter>Resource Files\Shaders\Grass</Filter>
+    </None>
+    <None Include="light.frag">
+      <Filter>Resource Files\Shaders\Light</Filter>
+    </None>
+    <None Include="light.vert">
+      <Filter>Resource Files\Shaders\Light</Filter>
+    </None>
+    <None Include="outlining.frag">
+      <Filter>Resource Files\Shaders\outlining</Filter>
+    </None>
+    <None Include="outlining.vert">
+      <Filter>Resource Files\Shaders\outlining</Filter>
     </None>
     <None Include="skybox.frag">
-      <Filter>Resource Files\Shaders</Filter>
+      <Filter>Resource Files\Shaders\skyboxes</Filter>
     </None>
     <None Include="skybox.vert">
-      <Filter>Resource Files\Shaders</Filter>
+      <Filter>Resource Files\Shaders\skyboxes</Filter>
+    </None>
+    <None Include="windows.frag">
+      <Filter>Resource Files\Shaders\Windows_Flowers</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

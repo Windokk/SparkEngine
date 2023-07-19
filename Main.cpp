@@ -4,7 +4,7 @@ namespace fs = std::filesystem;
 //------------------------------
 
 #include"Model.h"
-#include"Texture.h"
+
 
 //Variables
 unsigned int width_ = 800;
@@ -54,7 +54,7 @@ void window_size_callback(GLFWwindow* window, int width, int height)
 	glViewport(0, 0, width_, height_);
 }
 
-int main()
+int WinMain()
 {
 	// Initialize GLFW
 	glfwInit();
@@ -98,8 +98,10 @@ int main()
 	glViewport(0, 0, width_, height_);
 
 	// Generates Shader object using shaders default.vert and default.frag
-	Shader shaderProgram("default.vert", "default.frag");
-	Shader skyboxShader("skybox.vert", "skybox.frag");
+	Shader shaderProgram("default.vert", "default.frag","default.geom");
+	Shader skyboxShader("skybox.vert", "skybox.frag", "");
+	Shader normalsShader("default.vert", "normals.frag", "normals.geom");
+	
 
 	// Take care of all the light related things
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -110,9 +112,6 @@ int main()
 	glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 	skyboxShader.Activate();
 	glUniform1i(glGetUniformLocation(skyboxShader.ID, "skybox"), 0);
-
-
-
 
 
 	// Enables the Depth Buffer
@@ -127,7 +126,6 @@ int main()
 	// Configures the blending function
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-
 	// Creates camera object
 	Camera camera(width_, height_, glm::vec3(-23.4471f, 18.9736f, 60.1968f), glm::vec3(0.391016, -0.169349, -0.904668));
 
@@ -141,7 +139,7 @@ int main()
 	// Keeps track of the amount of frames in timeDiff
 	unsigned int counter = 0;
 
-	
+
 	// Create VAO, VBO, and EBO for the skybox
 	unsigned int skyboxVAO, skyboxVBO, skyboxEBO;
 	glGenVertexArrays(1, &skyboxVAO);
@@ -213,8 +211,6 @@ int main()
 	}
 
 
-
-
 	// Main while loop
 	while (!glfwWindowShouldClose(window))
 	{
@@ -253,8 +249,8 @@ int main()
 
 		// Draw the normal model
 		plane.Draw(shaderProgram, camera);
+		plane.Draw(normalsShader, camera);
 
-		// Since the cubemap will always have a depth of 1.0, we need that equal sign so it doesn't get discarded
 		glDepthFunc(GL_LEQUAL);
 
 		skyboxShader.Activate();
@@ -278,17 +274,18 @@ int main()
 		// Switch back to the normal depth function
 		glDepthFunc(GL_LESS);
 
+
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);
 		// Take care of all GLFW events
 		glfwPollEvents();
 	}
 
-
-
 	// Delete all the objects we've created
 	shaderProgram.Delete();
+	normalsShader.Delete();
 	skyboxShader.Delete();
+	
 	// Delete window before ending the program
 	glfwDestroyWindow(window);
 	// Terminate GLFW before ending the program
