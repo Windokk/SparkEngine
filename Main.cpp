@@ -103,7 +103,7 @@ int WinMain()
 	// Generates Shader object using shaders default.vert and default.frag
 	Shader shaderProgram("default.vert", "default.frag","default.geom");
 	Shader skyboxShader("skybox.vert", "skybox.frag", "");
-	Shader asteroidShader("asteroid.vert", "default.frag","default.geom");
+	Shader asteroidShader("asteroid.vert", "default.frag","");
 	
 
 	// Take care of all the light related things
@@ -218,7 +218,7 @@ int WinMain()
 
 
 	// The number of asteroids to be created
-	const unsigned int number = 5;
+	const unsigned int number = 5000;
 	// Radius of circle around which asteroids orbit
 	float radius = 100.0f;
 	// How much ateroids deviate from the radius
