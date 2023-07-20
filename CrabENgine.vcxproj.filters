@@ -48,9 +48,6 @@
     <ClCompile Include="glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="shaderClass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -78,15 +75,15 @@
     <ClCompile Include="Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Main_LightScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="default.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="default.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="default.geom">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="normals.frag">
@@ -103,12 +100,6 @@
     </None>
     <None Include="grass.frag">
       <Filter>Resource Files\Shaders\Grass</Filter>
-    </None>
-    <None Include="light.frag">
-      <Filter>Resource Files\Shaders\Light</Filter>
-    </None>
-    <None Include="light.vert">
-      <Filter>Resource Files\Shaders\Light</Filter>
     </None>
     <None Include="outlining.frag">
       <Filter>Resource Files\Shaders\outlining</Filter>
@@ -127,6 +118,12 @@
     </None>
     <None Include="asteroid.vert">
       <Filter>Resource Files\Shaders\Asteroid</Filter>
+    </None>
+    <None Include="light.frag">
+      <Filter>Resource Files\Shaders\Light</Filter>
+    </None>
+    <None Include="light.vert">
+      <Filter>Resource Files\Shaders\Light</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

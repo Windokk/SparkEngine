@@ -10,16 +10,18 @@ using json = nlohmann::json;
 class Model
 {
 public:
-	// Loads in a model from a file and stores tha information in 'data', 'JSON', and 'file'
+	// Loads in a model from a file and stores the information in 'data', 'JSON', and 'file'
 	Model(const char* file, unsigned int instancing = 1, std::vector<glm::mat4> instanceMatrix = {});
 
 	void Draw
 	(
 		Shader& shader,
 		Camera& camera,
+		const char* modeltype,
 		glm::vec3 translation = glm::vec3(0.0f, 0.0f, 0.0f),
 		glm::quat rotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f),
 		glm::vec3 scale = glm::vec3(1.0f, 1.0f, 1.0f)
+		
 	);
 
 private:
