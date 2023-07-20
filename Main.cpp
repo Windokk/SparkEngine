@@ -9,6 +9,8 @@ namespace fs = std::filesystem;
 unsigned int width_ = 800;
 unsigned int height_ = 800;
 
+unsigned int samples = 8;
+
 float skyboxVertices[] =
 {
 	//   Coordinates
@@ -44,12 +46,25 @@ unsigned int skyboxIndices[] =
 	6, 2, 3
 };
 
+
+float rectangleVertices[] =
+{
+	//  Coords   // texCoords
+	 1.0f, -1.0f,  1.0f, 0.0f,
+	-1.0f, -1.0f,  0.0f, 0.0f,
+	-1.0f,  1.0f,  0.0f, 1.0f,
+
+	 1.0f,  1.0f,  1.0f, 1.0f,
+	 1.0f, -1.0f,  1.0f, 0.0f,
+	-1.0f,  1.0f,  0.0f, 1.0f
+};
+
 float randf()
 {
 	return -1.0f + (rand() / (RAND_MAX / 2.0f));
 }
 
-//Functions
+//Functions----------------------
 void window_size_callback(GLFWwindow* window, int width, int height)
 {
 	width_ = width;
@@ -103,7 +118,7 @@ int WinMain()
 	// Generates Shader object using shaders default.vert and default.frag
 	Shader shaderProgram("default.vert", "default.frag","default.geom");
 	Shader skyboxShader("skybox.vert", "skybox.frag", "");
-	Shader asteroidShader("asteroid.vert", "default.frag","");
+	Shader framebufferProgram("framebuffer.vert", "framebuffer.frag","");
 	
 
 	// Take care of all the light related things
@@ -115,13 +130,15 @@ int WinMain()
 	glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 	skyboxShader.Activate();
 	glUniform1i(glGetUniformLocation(skyboxShader.ID, "skybox"), 0);
-	asteroidShader.Activate();
-	glUniform4f(glGetUniformLocation(asteroidShader.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
-	glUniform3f(glGetUniformLocation(asteroidShader.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+	framebufferProgram.Activate();
+	glUniform1i(glGetUniformLocation(framebufferProgram.ID, "screenTexture"), 0);
 
 
 	// Enables the Depth Buffer
 	glEnable(GL_DEPTH_TEST);
+
+	// Enables Multisampling
+	glEnable(GL_MULTISAMPLE);
 
 	// Enables Cull Facing
 	glEnable(GL_CULL_FACE);
@@ -129,14 +146,76 @@ int WinMain()
 	glCullFace(GL_FRONT);
 	// Uses counter clock-wise standard
 	glFrontFace(GL_CCW);
-	// Configures the blending function
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// Creates camera object
 	Camera camera(width_, height_, glm::vec3(-23.4471f, 18.9736f, 60.1968f), glm::vec3(0.391016, -0.169349, -0.904668));
 
 	// Load in models
 	Model plane("assets/defaults/models/spitfire/scene.gltf");
+
+	// Prepare framebuffer rectangle VBO and VAO
+	unsigned int rectVAO, rectVBO;
+	glGenVertexArrays(1, &rectVAO);
+	glGenBuffers(1, &rectVBO);
+	glBindVertexArray(rectVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, rectVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(rectangleVertices), &rectangleVertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+
+	// Create Frame Buffer Object
+	unsigned int FBO;
+	glGenFramebuffers(1, &FBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+
+	// Create Framebuffer Texture
+	unsigned int framebufferTexture;
+	glGenTextures(1, &framebufferTexture);
+	glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, framebufferTexture);
+	glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, samples, GL_RGB, width_, height_, GL_TRUE);
+	glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // Prevents edge bleeding
+	glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // Prevents edge bleeding
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, framebufferTexture, 0);
+
+	// Create Render Buffer Object
+	unsigned int RBO;
+	glGenRenderbuffers(1, &RBO);
+	glBindRenderbuffer(GL_RENDERBUFFER, RBO);
+	glRenderbufferStorageMultisample(GL_RENDERBUFFER, samples, GL_DEPTH24_STENCIL8, width_, height_);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO);
+
+
+	// Error checking framebuffer
+	auto fboStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	if (fboStatus != GL_FRAMEBUFFER_COMPLETE)
+		std::cout << "Framebuffer error: " << fboStatus << std::endl;
+
+	// Create Frame Buffer Object
+	unsigned int postProcessingFBO;
+	glGenFramebuffers(1, &postProcessingFBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, postProcessingFBO);
+
+	// Create Framebuffer Texture
+	unsigned int postProcessingTexture;
+	glGenTextures(1, &postProcessingTexture);
+	glBindTexture(GL_TEXTURE_2D, postProcessingTexture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width_, height_, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, postProcessingTexture, 0);
+
+	// Error checking framebuffer
+	fboStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	if (fboStatus != GL_FRAMEBUFFER_COMPLETE)
+		std::cout << "Post-Processing Framebuffer error: " << fboStatus << std::endl;
+
+
 
 	// Variables to create periodic event for FPS displaying
 	double prevTime = 0.0;
@@ -301,6 +380,13 @@ int WinMain()
 		// Clean the back buffer and depth buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		// Enable depth testing since it's disabled when drawing the framebuffer rectangle
+		// Bind the custom framebuffer
+		glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+		// Specify the color of the background
+		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
+		// Clean the back buffer and depth buffer
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		// Enable depth testing since it's disabled when drawing the framebuffer rectangle
 		glEnable(GL_DEPTH_TEST);
 
 		// Handles camera inputs (delete this if you have disabled VSync)
@@ -320,10 +406,8 @@ int WinMain()
 		camera.updateMatrix(45.0f, 0.1f, 1000.0f);
 
 
-		// Draw jupiter
+		// Draw the plane
 		plane.Draw(shaderProgram, camera);
-		// Draw the asteroids
-		asteroid.Draw(asteroidShader, camera);
 
 		// Since the cubemap will always have a depth of 1.0, we need that equal sign so it doesn't get discarded
 		glDepthFunc(GL_LEQUAL);
@@ -349,6 +433,22 @@ int WinMain()
 		// Switch back to the normal depth function
 		glDepthFunc(GL_LESS);
 
+		// Make it so the multisampling FBO is read while the post-processing FBO is drawn
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, FBO);
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, postProcessingFBO);
+		// Conclude the multisampling and copy it to the post-processing FBO
+		glBlitFramebuffer(0, 0, width_, height_, 0, 0, width_, height_, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+
+
+		// Bind the default framebuffer
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		// Draw the framebuffer rectangle
+		framebufferProgram.Activate();
+		glBindVertexArray(rectVAO);
+		glDisable(GL_DEPTH_TEST); // prevents framebuffer rectangle from being discarded
+		glBindTexture(GL_TEXTURE_2D, postProcessingTexture);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+
 
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);
@@ -359,7 +459,6 @@ int WinMain()
 	// Delete all the objects we've created
 	shaderProgram.Delete();
 	skyboxShader.Delete();
-	asteroidShader.Delete();
 	// Delete window before ending the program
 	glfwDestroyWindow(window);
 	// Terminate GLFW before ending the program
