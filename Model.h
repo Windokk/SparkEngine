@@ -18,9 +18,9 @@ public:
 		Shader& shader,
 		Camera& camera,
 		const char* modeltype,
-		glm::vec3 translation = glm::vec3(0.0f, 0.0f, 0.0f),
-		glm::quat rotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f),
-		glm::vec3 scale = glm::vec3(1.0f, 1.0f, 1.0f)
+		glm::vec3 translation,
+		glm::quat rotation,
+		glm::vec3 scale
 		
 	);
 

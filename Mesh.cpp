@@ -1,6 +1,6 @@
 #include "Mesh.h"
 
-Mesh::Mesh(std::vector <Vertex>& vertices,std::vector <GLuint>& indices,std::vector <Texture>& textures, unsigned int instancing, std::vector <glm::mat4> instanceMatrix)
+Mesh::Mesh(std::vector <Vertex>& vertices, std::vector <GLuint>& indices, std::vector <Texture>& textures, unsigned int instancing, std::vector <glm::mat4> instanceMatrix)
 {
 	Mesh::vertices = vertices;
 	Mesh::indices = indices;
@@ -37,12 +37,12 @@ Mesh::Mesh(std::vector <Vertex>& vertices,std::vector <GLuint>& indices,std::vec
 	instanceVBO.Unbind();
 	VBO.Unbind();
 	EBO.Unbind();
-	
-	
+
+
 }
 
-void Mesh::Draw (Shader& shader,Camera& camera,const char* modeltype,glm::mat4 matrix,glm::vec3 translation,glm::quat rotation,glm::vec3 scale)	
-{	
+void Mesh::Draw(Shader& shader, Camera& camera, const char* modeltype, glm::mat4 matrix, glm::vec3 translation, glm::quat rotation, glm::vec3 scale)
+{
 	if (modeltype == "base") {
 		// Bind shader to be able to access uniforms
 
@@ -98,7 +98,7 @@ void Mesh::Draw (Shader& shader,Camera& camera,const char* modeltype,glm::mat4 m
 			glDrawElementsInstanced(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0, instancing);
 		}
 	}
-	
+
 	else if (modeltype == "light") {
 		// Bind shader to be able to access uniforms
 
@@ -131,5 +131,5 @@ void Mesh::Draw (Shader& shader,Camera& camera,const char* modeltype,glm::mat4 m
 		// Draw the actual mesh
 		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 	}
-	
+
 }

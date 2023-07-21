@@ -17,7 +17,7 @@ Model::Model(const char* file, unsigned int instancing, std::vector<glm::mat4> i
 	// Traverse all nodes
 	traverseNode(0);
 }
-void Model::Draw(Shader& shader, Camera& camera,const char* modeltype, glm::vec3 translation, glm::quat rotation, glm::vec3 scale)
+void Model::Draw(Shader& shader, Camera& camera, const char* modeltype, glm::vec3 translation, glm::quat rotation, glm::vec3 scale)
 {
 	// Go over all meshes and draw each one
 	for (unsigned int i = 0; i < meshes.size(); i++)
@@ -281,7 +281,7 @@ std::vector<Texture> Model::getTextures()
 	return textures;
 }
 
-std::vector<Vertex> Model::assembleVertices(std::vector<glm::vec3> positions,std::vector<glm::vec3> normals,	std::vector<glm::vec2> texUVs)
+std::vector<Vertex> Model::assembleVertices(std::vector<glm::vec3> positions, std::vector<glm::vec3> normals, std::vector<glm::vec2> texUVs)
 {
 	std::vector<Vertex> vertices;
 	for (int i = 0; i < positions.size(); i++)
