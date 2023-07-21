@@ -11,7 +11,8 @@ layout (location = 3) in vec2 aTex;
 
 
 // Outputs the current position for the Fragment Shader
-out vec3 crntPos;
+out vec3 crntPos_transform;
+out vec3 crntPos_light;
 // Outputs the normal for the Fragment Shader
 out vec3 Normal;
 // Outputs the color for the Fragment Shader
@@ -33,7 +34,8 @@ uniform mat4 scale;
 void main()
 {
 	// calculates current position
-	crntPos = vec3(model * translation * rotation * scale * vec4(aPos, 1.0f));
+	crntPos_transform = vec3(model * translation * rotation * scale * vec4(aPos, 1.0f));
+	crntPos_light = vec3(model * vec4(aPos, 1.0f));
 	// Assigns the normal from the Vertex Data to "Normal"
 	Normal = aNormal;
 	// Assigns the colors from the Vertex Data to "color"
@@ -42,5 +44,5 @@ void main()
 	texCoord = mat2(0.0, -1.0, 1.0, 0.0) * aTex;
 	
 	// Outputs the positions/coordinates of all vertices
-	gl_Position = camMatrix * vec4(crntPos, 1.0);
+	gl_Position = camMatrix * vec4(crntPos_transform, 1.0);
 }

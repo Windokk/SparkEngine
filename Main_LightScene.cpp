@@ -374,10 +374,10 @@ int main()
 
 
 		// Draws different meshes
-		light.Draw(lightShader, camera,"light");
+		light.Draw(lightShader, camera,"light",glm::mat4(1.0), glm::vec3(0, 3, 0), glm::quat(1.0f, 0.0f, 0.0f, 0.0f), glm::vec3(1, 1, 1));
 		floor.Draw(shaderProgram, camera,"base", glm::vec3(0, 3, 0), glm::quat(1.0f, 0.0f, 0.0f, 0.0f), glm::vec3(1,1,1));
 		asteroid.Draw(asteroidShader, camera, "base", glm::vec3(0, 0, 0), glm::quat(1.0f, 0.0f, 0.0f, 0.0f), glm::vec3(1, 1, 1));
-		airplane.Draw(shaderProgram, camera, "base",glm::vec3(0,0,0),glm::quat(1.0f, 0.0f, 0.0f, 0.0f), glm::vec3(1,1,1));
+		airplane.Draw(shaderProgram, camera, "base",glm::vec3(-20,0,0),glm::quat(1.0f, 0.0f, 0.0f, 0.0f), glm::vec3(1,1,1));
 		
 		
 		glDepthFunc(GL_LEQUAL);
