@@ -46,7 +46,7 @@ The engine is in it's pre-alpha state of developpement so there might be a lot o
 
 - ~Skyboxes~
 
-- Anti-Aliasing
+- ~Anti-Aliasing~
 
 - Shadow maps
 
