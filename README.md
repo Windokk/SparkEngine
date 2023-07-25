@@ -61,8 +61,8 @@ The engine is in it's pre-alpha state of developpement so there might be a lot o
 - Bloom
 ## License
 
-[GNU GPL](https://www.gnu.org/licenses/gpl-3.0.html)
 [![Alt Text](https://www.gnu.org/graphics/gplv3-88x31.png)](https://www.gnu.org/licenses/gpl-3.0.html)
+[GNU GPL](https://www.gnu.org/licenses/gpl-3.0.html)
 
 ## Badges
 [![GNU GPL License](https://img.shields.io/badge/GNU-GPL_V3-blue)](https://www.gnu.org/licenses/gpl-3.0.html)
