@@ -1,5 +1,6 @@
 # CrabEngine 🦀
-[![GNU GPL License](https://img.shields.io/badge/GNU-GPL_V3-blue)](https://www.gnu.org/licenses/gpl-3.0.html)[![GNU GPL License](https://img.shields.io/badge/Status-In_Progress-orange)]
+[![GNU GPL License](https://img.shields.io/badge/GNU-GPL_V3-blue)](https://www.gnu.org/licenses/gpl-3.0.html)![GNU GPL License](https://img.shields.io/badge/Status-In_Progress-orange)
+
 A 3D Game Engine In C++ created as a test engine for my own portolio.
 
 ## Description
