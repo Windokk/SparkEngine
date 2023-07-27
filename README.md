@@ -13,7 +13,6 @@ The engine is in it's pre-alpha state of developpement so there might be a lot o
 
 {Working on it}
 
-
 ## Features
 
 - Model support : importing; transform : location, rotation, scale; texture mappings/UV; specular maps
@@ -49,6 +48,8 @@ The engine is in it's pre-alpha state of developpement so there might be a lot o
 - ~Skyboxes~
 
 - ~Anti-Aliasing~
+
+- Scene file (in json)
 
 - Scene Parser Class
 
