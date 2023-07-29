@@ -4,7 +4,7 @@
 A 3D Game Engine In C++ created as a test engine for my own portolio.
 
 ## Description
-The crab engine is a 3D Game Engine that allows gam devs to create an environnement for a player to play in. It was initially made for the FPS Game called "Vortex". It is created in vs code, but as it is open source, you can edit it on any IDE that you want.
+The crab engine is a 3D Game Engine that allows gam devs to create an environnement for a player to play in. It was initially made for the FPS Game called "Crabux". It is created in vs code, but as it is open source, you can edit it on any IDE that you want.
 
 It uses the Open GL [GLFW](https://www.glfw.org/) Lib for global window management, the [GLM](https://glm.g-truc.net/0.9.9/index.html) lib for all of the mathematics and the [STB](https://github.com/nothings/stb) lib for the images and textures management.
 
