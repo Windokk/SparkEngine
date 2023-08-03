@@ -1,8 +1,10 @@
-# CrabEngine
-A 3D Game Engine In C++ created as a test engine for the game : "Vortex"
+# Welcome to the CrabEngine 🦀
+![Status](https://img.shields.io/badge/Status-V1.0_In_Progress-orange)   [![GNU GPL License](https://img.shields.io/badge/License-GNU_GPL_V3-blue)](https://www.gnu.org/licenses/gpl-3.0.html)
+
+A 3D Game Engine In C++ created as a test engine for my own portolio.
 
 ## Description
-The crab engine is a 3D Game Engine that allows gam devs to create an environnement for a player to play in. It was initially made for the FPS Game called "Vortex". It is created in vs code, but as it is open source, you can edit it on any IDE that you want.
+The crab engine is a 3D Game Engine that allows gam devs to create an environnement for a player to play in. It was initially made for the FPS Game called "Crabux". It is created in vs code, but as it is open source, you can edit it on any IDE that you want.
 
 It uses the Open GL [GLFW](https://www.glfw.org/) Lib for global window management, the [GLM](https://glm.g-truc.net/0.9.9/index.html) lib for all of the mathematics and the [STB](https://github.com/nothings/stb) lib for the images and textures management.
 
@@ -10,7 +12,6 @@ The engine is in it's pre-alpha state of developpement so there might be a lot o
 ## Documentation
 
 {Working on it}
-
 
 ## Features
 
@@ -46,7 +47,13 @@ The engine is in it's pre-alpha state of developpement so there might be a lot o
 
 - ~Skyboxes~
 
-- Anti-Aliasing
+- ~Anti-Aliasing~
+
+- Scene file (in json)
+
+- Scene Parser Class
+
+- Basic GUI
 
 - Shadow maps
 
@@ -55,12 +62,8 @@ The engine is in it's pre-alpha state of developpement so there might be a lot o
 - Bloom
 ## License
 
+[![Alt Text](https://www.gnu.org/graphics/gplv3-88x31.png)](https://www.gnu.org/licenses/gpl-3.0.html)
 [GNU GPL](https://www.gnu.org/licenses/gpl-3.0.html)
-![Alt Text](https://www.gnu.org/graphics/gplv3-88x31.png)
-
-## Badges
-[![GNU GPL License](https://img.shields.io/badge/GNU-GPL_V3-blue)](https://www.gnu.org/licenses/gpl-3.0.html)
-
 
 ## Authors
 
