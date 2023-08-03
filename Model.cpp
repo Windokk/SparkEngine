@@ -1,5 +1,4 @@
 #include"Model.h"
-#include"Mesh.h"
 
 Model::Model(const char* file, unsigned int instancing, std::vector<glm::mat4> instanceMatrix)
 {
@@ -17,7 +16,7 @@ Model::Model(const char* file, unsigned int instancing, std::vector<glm::mat4> i
 	// Traverse all nodes
 	traverseNode(0);
 }
-void Model::Draw(Shader& shader, Camera& camera, const char* modeltype, glm::vec3 translation, glm::quat rotation, glm::vec3 scale)
+void Model::Draw(Shader& shader, Camera& camera, int modeltype, glm::vec3 translation, glm::quat rotation, glm::vec3 scale)
 {
 	// Go over all meshes and draw each one
 	for (unsigned int i = 0; i < meshes.size(); i++)

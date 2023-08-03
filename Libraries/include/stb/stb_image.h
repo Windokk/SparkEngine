@@ -339,8 +339,11 @@ RECENT REVISION HISTORY:
 #ifndef STBI_NO_STDIO
 #include <stdio.h>
 #endif // STBI_NO_STDIO
+#include <glad/glad.h>
 
 #define STBI_VERSION 1
+// Simple helper function to load an image into a OpenGL texture with common settings
+
 
 enum
 {

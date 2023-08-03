@@ -13,16 +13,7 @@ public:
 	// Loads in a model from a file and stores the information in 'data', 'JSON', and 'file'
 	Model(const char* file, unsigned int instancing = 1, std::vector<glm::mat4> instanceMatrix = {});
 
-	void Draw
-	(
-		Shader& shader,
-		Camera& camera,
-		const char* modeltype,
-		glm::vec3 translation,
-		glm::quat rotation,
-		glm::vec3 scale
-		
-	);
+	void Draw(Shader& shader,Camera& camera,int modeltype,glm::vec3 translation,glm::quat rotation,glm::vec3 scale);
 
 private:
 	// Variables for easy access
@@ -58,12 +49,7 @@ private:
 	std::vector<Texture> getTextures();
 
 	// Assembles all the floats into vertices
-	std::vector<Vertex> assembleVertices
-	(
-		std::vector<glm::vec3> positions,
-		std::vector<glm::vec3> normals,
-		std::vector<glm::vec2> texUVs
-	);
+	std::vector<Vertex> assembleVertices(std::vector<glm::vec3>positions,std::vector<glm::vec3>normals,std::vector<glm::vec2>texUVs);
 
 	// Helps with the assembly from above by grouping floats
 	std::vector<glm::vec2> groupFloatsVec2(std::vector<float> floatVec);

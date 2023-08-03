@@ -1,0 +1,86 @@
+{
+	"shaders": [
+		{
+			"defaultShader": [{ "vert": "default.vert" },{ "frag": "default.frag" },{ "geom": "" }]
+		},
+		{
+			"skyboxShader": [{ "vert": "skybox.vert" },{ "frag": "skybox.frag" },{ "geom": "" }] 
+		},
+		{
+			"framebufferShader": [{ "vert": "framebuffer.vert" },{ "frag": "framebuffer.frag" },{ "geom": "" }]
+		},
+		{
+			"lightShader": [{ "vert": "light.vert" },{ "frag": "light.frag" },{ "geom": "" }]
+		},
+		{
+			"particle_asteroidShader": [{ "vert": "asteroid.vert" },{ "frag": "default.frag" },{ "geom": "" }]
+		}
+
+	],
+	"lights": [
+		{
+			"light1": [
+				{ "matrix": "1.0" },
+				{ "location": [ "0.0", "3.0", "0.0" ] },
+				{ "rotation": [ "1.0", "0.0", "0.0", "0.0" ] },
+				{ "scale": [ "1.0", "1.0", "1.0" ] },
+				{ "intensity": "2" },
+				{ "color": ["1.0","1.0","1.0","1.0"]}
+			]
+
+		}
+	],
+	"models": [
+		{
+			"airplane": [
+				{ "model": "assets/defaults/models/spitfire/scene.gltf" },
+				{ "shader": "defaultShader" },
+				{ "instancing": "1" },
+				{ "type": "0" },
+				{ "location": [ "0.0", "0.0", "0.0" ] },
+				{ "rotation": [ "1.0", "0.0", "0.0", "0.0" ] },
+				{ "scale": [ "1.0", "1.0", "1.0" ] }
+
+			]
+		},
+		{
+			"floor": [
+				{ "model": "assets/defaults/models/plane/scene.gltf" },
+				{ "shader": "defaultShader" },
+				{ "instancing": "1" },
+				{ "type": "0" },
+				{ "location": [ "0.0", "3.0", "0.0" ] },
+				{ "rotation": [ "1.0", "0.0", "0.0", "0.0" ] },
+				{ "scale": [ "1.0", "1.0", "1.0" ] }
+			]
+		},
+		{
+			"particle_asteroid": [
+				{ "model": "assets/defaults/models/asteroid/scene.gltf" },
+				{ "shader": "particle_asteroidShader" },
+				{ "instancing": "200" },
+				{ "type": "0" },
+				{ "location": [ "0.0", "0.0", "0.0" ] },
+				{ "rotation": [ "1.0", "0.0", "0.0", "0.0" ] },
+				{ "scale": [ "1.0", "1.0", "1.0" ] }
+
+			]
+		}
+
+	],
+	"meshes": [],
+	"skybox": [
+		{
+			"skybox1": [
+				{"shader": "skyboxShader"},
+				{ "right": "assets/defaults/textures/skyboxes/bluesky/right.jpg" },
+				{ "left": "assets/defaults/textures/skyboxes/bluesky/left.jpg" },
+				{ "top": "assets/defaults/textures/skyboxes/bluesky/top.jpg" },
+				{ "bottom": "assets/defaults/textures/skyboxes/bluesky/bottom.jpg" },
+				{ "front": "assets/defaults/textures/skyboxes/bluesky/front.jpg" },
+				{ "back": "assets/defaults/textures/skyboxes/bluesky/back.jpg" }
+			]
+		}
+	]
+
+}

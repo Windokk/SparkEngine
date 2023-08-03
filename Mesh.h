@@ -31,7 +31,7 @@ public:
 	(
 		Shader& shader,
 		Camera& camera,
-		const char* modeltype,
+		int modeltype,
 		glm::mat4 matrix,
 		glm::vec3 translation,
 		glm::quat rotation,

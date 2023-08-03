@@ -41,9 +41,9 @@ Mesh::Mesh(std::vector <Vertex>& vertices, std::vector <GLuint>& indices, std::v
 
 }
 
-void Mesh::Draw(Shader& shader, Camera& camera, const char* modeltype, glm::mat4 matrix, glm::vec3 translation, glm::quat rotation, glm::vec3 scale)
+void Mesh::Draw(Shader& shader, Camera& camera, int modeltype, glm::mat4 matrix, glm::vec3 translation, glm::quat rotation, glm::vec3 scale)
 {
-	if (modeltype == "base") {
+	if (modeltype == 0) {
 		// Bind shader to be able to access uniforms
 
 		shader.Activate();
@@ -99,7 +99,7 @@ void Mesh::Draw(Shader& shader, Camera& camera, const char* modeltype, glm::mat4
 		}
 	}
 
-	else if (modeltype == "light") {
+	else if (modeltype == 1) {
 		// Bind shader to be able to access uniforms
 
 		shader.Activate();
@@ -131,5 +131,4 @@ void Mesh::Draw(Shader& shader, Camera& camera, const char* modeltype, glm::mat4
 		// Draw the actual mesh
 		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 	}
-
 }
