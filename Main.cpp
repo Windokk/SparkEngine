@@ -308,13 +308,13 @@ int main() {
 				ImGui::SameLine(); // Move to the same line as the image
 				if (ImGui::MenuItem("Engine Documentation"))
 				{
-						// Handle the menu item action here
+						
 				}
 					
 				ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/menus/help/list.png"), ImVec2(16, 16));
-				ImGui::SameLine(); // Move to the same line as the image
+				ImGui::SameLine();
 				if (ImGui::MenuItem("Credits")) {
-
+					ImGui::Begin("Credits", nullptr, (ImGuiWindowFlags_Popup));
 				}
 				ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/menus/help/certificate.png"), ImVec2(16, 16));
 				ImGui::SameLine();
