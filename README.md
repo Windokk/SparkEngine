@@ -49,11 +49,11 @@ The engine is in it's pre-alpha state of developpement so there might be a lot o
 
 - ~Anti-Aliasing~
 
-- Scene file (in json)
+- ~Scene file (in json)~
 
-- Scene Parser Class
+- ~Scene Parser Class~
 
-- Basic GUI
+- Basic GUI : 3D Guizmos, Docking, Menu, Basic Windows
 
 - Shadow maps
 
