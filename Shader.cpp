@@ -21,8 +21,8 @@ std::string get_file_contents(const char* filename)
 Shader::Shader(const char* vertexFile, const char* fragmentFile, const char* geometryFile)
 {
 	if (vertexFile != "") {
-		if(geometryFile == "")
-		{	
+		if (geometryFile == "")
+		{
 			// Read vertexFile and fragmentFile and store the strings
 			std::string vertexCode = get_file_contents(vertexFile);
 			std::string fragmentCode = get_file_contents(fragmentFile);
@@ -120,8 +120,8 @@ Shader::Shader(const char* vertexFile, const char* fragmentFile, const char* geo
 			glDeleteShader(geometryShader);
 		}
 	}
-	
-	
+
+
 
 }
 

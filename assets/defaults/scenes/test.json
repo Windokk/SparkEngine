@@ -13,7 +13,18 @@
 			"lightShader": [{ "vert": "light.vert" },{ "frag": "light.frag" },{ "geom": "" }]
 		},
 		{
-			"particle_asteroidShader": [{ "vert": "asteroid.vert" },{ "frag": "default.frag" },{ "geom": "" }]
+			"particle_asteroidShader": [
+				{ "vert": "asteroid.vert" },
+				{ "frag": "default.frag" },
+				{ "geom": "" }
+			]
+		},
+		{
+			"outlineShader": [
+				{ "vert": "outlining.vert" },
+				{ "frag": "outlining.frag" },
+				{ "geom": "" }
+			]
 		}
 
 	],

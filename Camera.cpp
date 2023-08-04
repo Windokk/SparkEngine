@@ -109,7 +109,6 @@ void Camera::Inputs(GLFWwindow* window)
 	else if (io.MouseReleased[GLFW_MOUSE_BUTTON_LEFT])
 	{
 		// Unhides cursor since camera is not looking around anymore
-		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		// Makes sure the next time the camera looks around it doesn't jump
 		firstClick = true;
 	}

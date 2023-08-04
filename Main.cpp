@@ -8,8 +8,6 @@
 #include<glm/gtc/matrix_transform.hpp>
 #include<glm/gtc/type_ptr.hpp>
 
-
-
 #include"imgui.h"
 #include"imgui_impl_glfw.h"
 #include"imgui_impl_opengl3.h"
@@ -99,6 +97,52 @@ GLuint LoadImageTexture(const char* path) {
 	return my_image_texture;
 }
 
+float cubeVertices[] = {
+	// positions          // texture Coords
+	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+	 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+	-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+};
+
+
 int main() {
 
 	// Initialize GLFW
@@ -163,8 +207,8 @@ int main() {
 	ImGui::StyleColorsDark();
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
-	ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse;
-	io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
+	ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoBringToFrontOnFocus;
+	io.ConfigFlags |= (ImGuiConfigFlags_NoMouseCursorChange, ImGuiConfigFlags_DockingEnable);
 
 	bool isHoverViewport;
 	
@@ -200,9 +244,51 @@ int main() {
 		// Specify the color of the background
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
 		// Clean the back buffer and depth buffer
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 		// Enable depth testing since it's disabled when drawing the framebuffer rectangle
 		glEnable(GL_DEPTH_TEST);
+
+		
+		glStencilFunc(GL_ALWAYS, 1, 0xFF);
+		glStencilMask(0xFF);
+
+		// cube VAO
+		unsigned int cubeVAO, cubeVBO;
+		glGenVertexArrays(1, &cubeVAO);
+		glGenBuffers(1, &cubeVBO);
+		glBindVertexArray(cubeVAO);
+		glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), &cubeVertices, GL_STATIC_DRAW);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+		glBindVertexArray(0);
+
+		glm::mat4 model = glm::mat4(1.0f);
+		glm::mat4 view = glm::mat4(glm::mat3(glm::lookAt(cam.Position, cam.Position + cam.Orientation, cam.Up)));
+		glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)width_ / height_, 0.1f, 100.0f);
+
+		loader.outlineShader.Activate();
+		glUniformMatrix4fv(glGetUniformLocation(loader.outlineShader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+		glUniformMatrix4fv(glGetUniformLocation(loader.outlineShader.ID, "view"), 1, GL_FALSE, glm::value_ptr(view));
+
+		glBindVertexArray(cubeVAO);
+		model = glm::translate(model, glm::vec3(-1.0f, 0.0f, -1.0f));
+		glUniformMatrix4fv(glGetUniformLocation(loader.outlineShader.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(glGetUniformLocation(loader.outlineShader.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		loader.models[0].Draw(loader.outlineShader, cam, loader.parser.models[0].type, glm::vec3(loader.parser.models[0].location.x, loader.parser.models[0].location.y+100, loader.parser.models[0].location.z), loader.parser.models[0].rotation, loader.parser.models[0].scale);
+		
+		
+		glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+		glStencilMask(0x00);
+
+
 
 		if (!isLoadingScene) {
 			for (int i = 0; i < loader.models.size(); i++) {
@@ -217,19 +303,24 @@ int main() {
 				}
 
 				loader.models[i].Draw(loader.shaders[shader_id].shader, cam, loader.parser.models[i].type, loader.parser.models[i].location, loader.parser.models[i].rotation, loader.parser.models[i].scale);
-
+				
 			}
 		}
+
+		// Enable the depth buffer
+		glEnable(GL_DEPTH_TEST);
+		
 		glDepthFunc(GL_LEQUAL);
 
 		loader.skyboxShader.Activate();
-		glm::mat4 view = glm::mat4(1.0f);
-		glm::mat4 projection = glm::mat4(1.0f);
 		
 		view = glm::mat4(glm::mat3(glm::lookAt(cam.Position, cam.Position + cam.Orientation, cam.Up)));
 		projection = glm::perspective(glm::radians(45.0f), (float)width_ / height_, 0.1f, 100.0f);
 		glUniformMatrix4fv(glGetUniformLocation(loader.skyboxShader.ID, "view"), 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(glGetUniformLocation(loader.skyboxShader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+		loader.outlineShader.Activate();
+		glUniformMatrix4fv(glGetUniformLocation(loader.outlineShader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+		glUniformMatrix4fv(glGetUniformLocation(loader.outlineShader.ID, "view"), 1, GL_FALSE, glm::value_ptr(view));
 
 		// Draws the cubemap as the last object so we can save a bit of performance by discarding all fragments
 		// where an object is present (a depth of 1.0f will always fail against any object's depth value)
@@ -262,7 +353,6 @@ int main() {
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
-
 
 		   
 		if (ImGui::BeginMainMenuBar()) {
@@ -308,13 +398,14 @@ int main() {
 				ImGui::SameLine(); // Move to the same line as the image
 				if (ImGui::MenuItem("Engine Documentation"))
 				{
-						
+					system("start https://github.com/Windokk/CrabEngine/blob/master/docs/README.md");
 				}
 					
 				ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/menus/help/list.png"), ImVec2(16, 16));
 				ImGui::SameLine();
 				if (ImGui::MenuItem("Credits")) {
-					ImGui::Begin("Credits", nullptr, (ImGuiWindowFlags_Popup));
+					ImGui::Begin("Credits", nullptr, ImGuiWindowFlags_Popup);
+					ImGui::End();
 				}
 				ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/menus/help/certificate.png"), ImVec2(16, 16));
 				ImGui::SameLine();
@@ -329,9 +420,18 @@ int main() {
 		//Im Gui Viewport
 		ImGui::SetNextWindowPos(ImVec2(320, 18));
 		ImGui::SetNextWindowSize(ImVec2(640, 395));
-		ImGui::Begin("Viewport", nullptr, windowFlags);
+		ImGui::Begin("Viewport", nullptr,windowFlags);
 		ImGui::Image(myTextureID, ImVec2(640, 360), {0,1}, {1,0});
 		isHoverViewport = (ImGui::IsItemHovered() || ImGui::IsWindowHovered()) && (io.MouseDown[GLFW_MOUSE_BUTTON_LEFT]);
+		ImGui::End();
+
+		ImGui::Begin("Outliner", nullptr);
+		ImGui::End();
+
+		ImGui::Begin("Details", nullptr);
+		ImGui::End();
+
+		ImGui::Begin("Content Browser",nullptr);
 		ImGui::End();
 
 
@@ -345,12 +445,14 @@ int main() {
 
 		if (isHoverViewport) {
 			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+			io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
 			// Fetches the coordinates of the cursor
 			cam.Inputs(window);
 
 		}
 		if (!isHoverViewport) {
 			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+			io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange, ImGuiConfigFlags_DockingEnable;
 		}
 
 

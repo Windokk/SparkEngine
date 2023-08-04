@@ -52,3 +52,4 @@ std::string replaceCharacters(const std::string& input, char targetChar, char re
     }
     return result;
 }
+

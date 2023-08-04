@@ -150,7 +150,7 @@ void SceneLoader::Load1(const char* loaded_file) {
 	//We set the shaders's values
 	for (int i = 0; i < parser.shaders.size(); i++)
 	{
-		if (parser.shaders[i].name == "defaultShader") {
+		if (shaders[i].name == "defaultShader") {
 			
 			if (light_object_infos.size()>0) {
 				shaders[i].shader.Activate();
@@ -161,13 +161,13 @@ void SceneLoader::Load1(const char* loaded_file) {
 			}
 			
 		}
-		else if(parser.shaders[i].name == "skyboxShader")
+		else if(shaders[i].name == "skyboxShader")
 		{
 			skyboxShader = shaders[i].shader;
 			shaders[i].shader.Activate();
 			glUniform1i(glGetUniformLocation(shaders[i].shader.ID, "skybox"), 0);
 		}
-		else if(parser.shaders[i].name == "lightShader")
+		else if(shaders[i].name == "lightShader")
 		{
 			if (light_object_infos.size() > 0) {
 				shaders[i].shader.Activate();
@@ -175,17 +175,25 @@ void SceneLoader::Load1(const char* loaded_file) {
 				glUniform4f(glGetUniformLocation(shaders[i].shader.ID, "lightColor"), light_object_infos[0].lightColor.x, light_object_infos[0].lightColor.y, light_object_infos[0].lightColor.z, light_object_infos[0].lightColor.w);
 			}
 		}
-		else if (parser.shaders[i].name == "framebufferShader") {
+		else if (shaders[i].name == "framebufferShader") {
 			framebufferProgram = shaders[i].shader;
 			shaders[i].shader.Activate();
 			glUniform1i(glGetUniformLocation(shaders[i].shader.ID, "screenTexture"), 0);
 		}
-		else if(parser.shaders[i].name.substr(0,8) == "particle") {
+		else if(shaders[i].name.substr(0,8) == "particle") {
 			if (light_object_infos.size() > 0) {
 				shaders[i].shader.Activate();
 				glUniform4f(glGetUniformLocation(shaders[i].shader.ID, "lightColor"), light_object_infos[0].lightColor.x, light_object_infos[0].lightColor.y, light_object_infos[0].lightColor.z, light_object_infos[0].lightColor.w);
 				glUniform3f(glGetUniformLocation(shaders[i].shader.ID, "lightPos"), light_object_infos[0].lightPos.x, light_object_infos[0].lightPos.y, light_object_infos[0].lightPos.z);
 			}
+		}
+		else if (shaders[i].name == "outlineShader") {
+			shaders[i].shader.Activate();
+			outlineShader = shaders[i].shader;
+			GLuint outlineModelLoc = glGetUniformLocation(shaders[i].shader.ID, "model");
+			GLuint outlineScaleLoc = glGetUniformLocation(shaders[i].shader.ID, "outlineScale");
+			glUniformMatrix4fv(outlineModelLoc, 1, GL_FALSE, glm::value_ptr(objectModel));
+			glUniform1f(outlineScaleLoc, 0.04);
 		}
 	}
 

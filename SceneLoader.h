@@ -5,6 +5,7 @@
 #include"SceneParser.h"
 #include "Utils.h"
 
+
 #include <json/json.h>
 
 
@@ -52,6 +53,7 @@ public:
 	unsigned int postProcessingFBO;
 	unsigned int framebufferTexture;
 	Shader skyboxShader;
+	Shader outlineShader;
 	Shader framebufferProgram;
 
 
