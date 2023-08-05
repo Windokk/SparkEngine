@@ -16,4 +16,4 @@ bool to_bool(std::string str);
 float randf();
 std::string OpenWindowsFileDialog(LPCWSTR filters);
 std::string replaceCharacters(const std::string& input, char targetChar, char replacementChar);
-
+void SetTextureAlphaToOne(GLuint texture);

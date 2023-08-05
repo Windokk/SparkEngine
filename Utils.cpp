@@ -53,3 +53,15 @@ std::string replaceCharacters(const std::string& input, char targetChar, char re
     return result;
 }
 
+void SetTextureAlphaToOne(GLuint texture)
+{
+	// Bind the texture to modify its parameters
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	// Set swizzle mask for all channels to red, except for alpha
+	GLint swizzleMask[] = { GL_ONE };
+	glTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_A, swizzleMask);
+
+	// Unbind the texture
+	glBindTexture(GL_TEXTURE_2D, 0);
+}

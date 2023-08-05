@@ -248,64 +248,44 @@ int main() {
 		// Enable depth testing since it's disabled when drawing the framebuffer rectangle
 		glEnable(GL_DEPTH_TEST);
 
-		
-		glStencilFunc(GL_ALWAYS, 1, 0xFF);
-		glStencilMask(0xFF);
-
-		// cube VAO
-		unsigned int cubeVAO, cubeVBO;
-		glGenVertexArrays(1, &cubeVAO);
-		glGenBuffers(1, &cubeVBO);
-		glBindVertexArray(cubeVAO);
-		glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), &cubeVertices, GL_STATIC_DRAW);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-		glBindVertexArray(0);
-
-		glm::mat4 model = glm::mat4(1.0f);
-		glm::mat4 view = glm::mat4(glm::mat3(glm::lookAt(cam.Position, cam.Position + cam.Orientation, cam.Up)));
-		glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)width_ / height_, 0.1f, 100.0f);
-
-		loader.outlineShader.Activate();
-		glUniformMatrix4fv(glGetUniformLocation(loader.outlineShader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-		glUniformMatrix4fv(glGetUniformLocation(loader.outlineShader.ID, "view"), 1, GL_FALSE, glm::value_ptr(view));
-
-		glBindVertexArray(cubeVAO);
-		model = glm::translate(model, glm::vec3(-1.0f, 0.0f, -1.0f));
-		glUniformMatrix4fv(glGetUniformLocation(loader.outlineShader.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
-		glUniformMatrix4fv(glGetUniformLocation(loader.outlineShader.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		loader.models[0].Draw(loader.outlineShader, cam, loader.parser.models[0].type, glm::vec3(loader.parser.models[0].location.x, loader.parser.models[0].location.y+100, loader.parser.models[0].location.z), loader.parser.models[0].rotation, loader.parser.models[0].scale);
-		
-		
 		glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+		// Disable modifying of the stencil buffer
 		glStencilMask(0x00);
+		// Disable the depth buffer
+		glDisable(GL_DEPTH_TEST);
 
+		loader.models[0].Draw(loader.outlineShader, cam, loader.parser.models[0].type, loader.parser.models[0].location, loader.parser.models[0].rotation, glm::vec3(loader.parser.models[0].scale.x*1.01, loader.parser.models[0].scale.y * 1.01, loader.parser.models[0].scale.z * 1.01));
 
-
+		glEnable(GL_DEPTH_TEST);
+		glStencilFunc(GL_ALWAYS, 1, 0xFF);
+		// Enable modifying of the stencil buffer
+		glStencilMask(0xFF); 
+		
 		if (!isLoadingScene) {
-			for (int i = 0; i < loader.models.size(); i++) {
-				std::string shader_name;
-				shader_name = loader.parser.models[i].shader;
-				int shader_id = 0;
-				for (int a = 0; a < loader.shaders.size(); a++) {
-					if (loader.shaders[a].name == shader_name) {
-						shader_id = a;
-					}
+					for (int i = 0; i < loader.models.size(); i++) {
+						std::string shader_name;
+						shader_name = loader.parser.models[i].shader;
+						int shader_id = 0;
+						for (int a = 0; a < loader.shaders.size(); a++) {
+							if (loader.shaders[a].name == shader_name) {
+								shader_id = a;
+							}
 
+						}
+
+						loader.models[i].Draw(loader.shaders[shader_id].shader, cam, loader.parser.models[i].type, loader.parser.models[i].location, loader.parser.models[i].rotation, loader.parser.models[i].scale);
+				
+					}
 				}
 
-				loader.models[i].Draw(loader.shaders[shader_id].shader, cam, loader.parser.models[i].type, loader.parser.models[i].location, loader.parser.models[i].rotation, loader.parser.models[i].scale);
-				
-			}
-		}
+		
+		
+
+		// Enable modifying of the stencil buffer
+		glStencilMask(0xFF);
+		// Clear stencil buffer
+		glStencilFunc(GL_ALWAYS, 0, 0xFF);
+		// Enable the depth buffer
 
 		// Enable the depth buffer
 		glEnable(GL_DEPTH_TEST);
@@ -313,14 +293,14 @@ int main() {
 		glDepthFunc(GL_LEQUAL);
 
 		loader.skyboxShader.Activate();
-		
-		view = glm::mat4(glm::mat3(glm::lookAt(cam.Position, cam.Position + cam.Orientation, cam.Up)));
-		projection = glm::perspective(glm::radians(45.0f), (float)width_ / height_, 0.1f, 100.0f);
+		glm::mat4 view = glm::mat4(glm::mat3(glm::lookAt(cam.Position, cam.Position + cam.Orientation, cam.Up)));
+		glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)width_ / height_, 0.1f, 100.0f);
 		glUniformMatrix4fv(glGetUniformLocation(loader.skyboxShader.ID, "view"), 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(glGetUniformLocation(loader.skyboxShader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-		loader.outlineShader.Activate();
-		glUniformMatrix4fv(glGetUniformLocation(loader.outlineShader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-		glUniformMatrix4fv(glGetUniformLocation(loader.outlineShader.ID, "view"), 1, GL_FALSE, glm::value_ptr(view));
+		
+		
+
+		
 
 		// Draws the cubemap as the last object so we can save a bit of performance by discarding all fragments
 		// where an object is present (a depth of 1.0f will always fail against any object's depth value)
@@ -339,13 +319,17 @@ int main() {
 		// Conclude the multisampling and copy it to the post-processing FBO
 		glBlitFramebuffer(0, 0, width_, height_, 0, 0, width_, height_, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
+
 		// Bind the default framebuffer
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		// Draw the framebuffer rectangle
 		loader.framebufferProgram.Activate();
+		glBindVertexArray(loader.rectVAO);
 		glDisable(GL_DEPTH_TEST); // prevents framebuffer rectangle from being discarded
 		glBindTexture(GL_TEXTURE_2D, loader.postProcessingTexture);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+
+
 
 		ImTextureID myTextureID = (ImTextureID)(intptr_t)loader.postProcessingTexture;
 
