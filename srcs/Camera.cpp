@@ -1,7 +1,8 @@
 #include"Camera.h"
-#include"imgui.h"
-#include"imgui_impl_glfw.h"
-#include"imgui_impl_opengl3.h"
+#include"imgui/imgui.h"
+#include"imgui/imgui_impl_glfw.h"
+#include "imgui/imgui_impl_opengl3.h"
+
 
 Camera::Camera(int width, int height, glm::vec3 position, glm::vec3 rotation)
 {
@@ -27,7 +28,6 @@ void Camera::updateMatrix(float FOVdeg, float nearPlane, float farPlane)
 	view = glm::lookAt(Position, Position + Orientation, Up);
 	// Adds perspective to the scene
 	projection = glm::perspective(glm::radians(FOVdeg), (float)width / height, nearPlane, farPlane);
-
 	// Sets new camera matrix
 	cameraMatrix = projection * view;
 }

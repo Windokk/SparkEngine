@@ -1,21 +1,17 @@
-#include <Windows.h>
-#include <commdlg.h>
-#include<iostream>
-#include<glad/glad.h>
+#include <windows.h>
+#include <glad/glad.h>
 #include<GLFW/glfw3.h>
 #include<stb/stb_image.h>
-#include<glm/glm.hpp>
 #include<glm/gtc/matrix_transform.hpp>
 #include<glm/gtc/type_ptr.hpp>
+#include <glm/gtx/string_cast.hpp>
 
-#include"imgui.h"
-#include"imgui_impl_glfw.h"
-#include"imgui_impl_opengl3.h"
+#include"srcs/imgui/imgui.h"
+#include"srcs/imgui/imgui_impl_glfw.h"
+#include "srcs/imgui/imgui_impl_opengl3.h"
 
-#include "SceneLoader.h"
-#include "Utils.h"
-
-
+#include "srcs/SceneLoader.h"
+#include "srcs/Utils.h"
 
 unsigned int width_ = 1280;
 unsigned int height_ = 720;
@@ -27,15 +23,6 @@ const char* current_scene = "assets/defaults/scenes/test.json";
 
 Camera cam = Camera(0, 0, glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
 
-void window_size_callback(GLFWwindow* window, int width, int height)
-{
-	width_ = width;
-	height_ = height;
-	glViewport(0, 0, width_, height_);
-	cam.width = width_;
-	cam.height = height_;
-
-}
 
 void LoadNewScene(const char* scene) {
 	isLoadingScene = true;
@@ -97,54 +84,10 @@ GLuint LoadImageTexture(const char* path) {
 	return my_image_texture;
 }
 
-float cubeVertices[] = {
-	// positions          // texture Coords
-	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-	 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-
-	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-	 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-	 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-	-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-
-	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-
-	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
-};
 
 
-int main() {
-
+int APIENTRY wWinMain(_In_ HINSTANCE hInstance,_In_opt_ HINSTANCE hPrevInstance,_In_ LPWSTR lpCmdLine,_In_ int nCmdShow)
+{
 	// Initialize GLFW
 	glfwInit();
 
@@ -167,7 +110,6 @@ int main() {
 	stbi_image_free(images[0].pixels);
 	stbi_image_free(images[1].pixels);
 
-	glfwSetWindowSizeCallback(window, window_size_callback);
 
 	if (window == NULL)
 	{
@@ -190,7 +132,7 @@ int main() {
 
 	// Creates camera object
 	cam = Camera(width_, height_, glm::vec3(-2.75603, 4.46763, -2.21178), glm::vec3(0, 0, 1));
-	
+
 
 
 	// Variables to create periodic event for FPS displaying
@@ -211,7 +153,7 @@ int main() {
 	io.ConfigFlags |= (ImGuiConfigFlags_NoMouseCursorChange, ImGuiConfigFlags_DockingEnable);
 
 	bool isHoverViewport;
-	
+
 
 
 	LoadNewScene(current_scene);
@@ -224,7 +166,7 @@ int main() {
 		if (timeDiff >= 1.0 / 30.0)
 		{
 			// Creates new title
-			std::string NEW_FPS = std::to_string((1.0 / timeDiff) * counter); 
+			std::string NEW_FPS = std::to_string((1.0 / timeDiff) * counter);
 			if (stof(NEW_FPS) >= stof(FPS)) {
 				FPS = NEW_FPS;
 			}
@@ -248,48 +190,24 @@ int main() {
 		// Enable depth testing since it's disabled when drawing the framebuffer rectangle
 		glEnable(GL_DEPTH_TEST);
 
-		glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-		// Disable modifying of the stencil buffer
-		glStencilMask(0x00);
-		// Disable the depth buffer
-		glDisable(GL_DEPTH_TEST);
-
-		loader.models[0].Draw(loader.outlineShader, cam, loader.parser.models[0].type, loader.parser.models[0].location, loader.parser.models[0].rotation, glm::vec3(loader.parser.models[0].scale.x*1.01, loader.parser.models[0].scale.y * 1.01, loader.parser.models[0].scale.z * 1.01));
-
-		glEnable(GL_DEPTH_TEST);
-		glStencilFunc(GL_ALWAYS, 1, 0xFF);
-		// Enable modifying of the stencil buffer
-		glStencilMask(0xFF); 
-		
 		if (!isLoadingScene) {
-					for (int i = 0; i < loader.models.size(); i++) {
-						std::string shader_name;
-						shader_name = loader.parser.models[i].shader;
-						int shader_id = 0;
-						for (int a = 0; a < loader.shaders.size(); a++) {
-							if (loader.shaders[a].name == shader_name) {
-								shader_id = a;
-							}
-
-						}
-
-						loader.models[i].Draw(loader.shaders[shader_id].shader, cam, loader.parser.models[i].type, loader.parser.models[i].location, loader.parser.models[i].rotation, loader.parser.models[i].scale);
-				
+			for (int i = 0; i < loader.models.size(); i++) {
+				std::string shader_name;
+				shader_name = loader.parser.models[i].shader;
+				int shader_id = 0;
+				for (int a = 0; a < loader.shaders.size(); a++) {
+					if (loader.shaders[a].name == shader_name) {
+						shader_id = a;
 					}
+
 				}
 
-		
-		
+				loader.models[i].Draw(loader.shaders[shader_id].shader, cam, loader.parser.models[i].type, loader.parser.models[i].location, loader.parser.models[i].rotation, loader.parser.models[i].scale);
 
-		// Enable modifying of the stencil buffer
-		glStencilMask(0xFF);
-		// Clear stencil buffer
-		glStencilFunc(GL_ALWAYS, 0, 0xFF);
-		// Enable the depth buffer
+			}
+		}
 
-		// Enable the depth buffer
-		glEnable(GL_DEPTH_TEST);
-		
+
 		glDepthFunc(GL_LEQUAL);
 
 		loader.skyboxShader.Activate();
@@ -297,10 +215,8 @@ int main() {
 		glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)width_ / height_, 0.1f, 100.0f);
 		glUniformMatrix4fv(glGetUniformLocation(loader.skyboxShader.ID, "view"), 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(glGetUniformLocation(loader.skyboxShader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-		
-		
 
-		
+
 
 		// Draws the cubemap as the last object so we can save a bit of performance by discarding all fragments
 		// where an object is present (a depth of 1.0f will always fail against any object's depth value)
@@ -325,20 +241,23 @@ int main() {
 		// Draw the framebuffer rectangle
 		loader.framebufferProgram.Activate();
 		glBindVertexArray(loader.rectVAO);
+		GLuint framebufferWidth = width_;  // Replace with your desired width
+		GLuint framebufferHeight = height_;
+		glUniform2f(glGetUniformLocation(loader.framebufferProgram.ID, "resolution"), (float)framebufferWidth, (float)framebufferHeight);
 		glDisable(GL_DEPTH_TEST); // prevents framebuffer rectangle from being discarded
 		glBindTexture(GL_TEXTURE_2D, loader.postProcessingTexture);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 
 
 
-		ImTextureID myTextureID = (ImTextureID)(intptr_t)loader.postProcessingTexture;
+		ImTextureID myTextureID = (ImTextureID)(intptr_t)loader.framebufferTexture;
 
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		   
+
 		if (ImGui::BeginMainMenuBar()) {
 			if (ImGui::BeginMenu("File")) {
 				if (ImGui::MenuItem("Load Scene")) {
@@ -384,7 +303,7 @@ int main() {
 				{
 					system("start https://github.com/Windokk/CrabEngine/blob/master/docs/README.md");
 				}
-					
+
 				ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/menus/help/list.png"), ImVec2(16, 16));
 				ImGui::SameLine();
 				if (ImGui::MenuItem("Credits")) {
@@ -400,12 +319,12 @@ int main() {
 			// Add more menus here
 			ImGui::EndMainMenuBar();
 		}
-		
+
 		//Im Gui Viewport
 		ImGui::SetNextWindowPos(ImVec2(320, 18));
 		ImGui::SetNextWindowSize(ImVec2(640, 395));
-		ImGui::Begin("Viewport", nullptr,windowFlags);
-		ImGui::Image(myTextureID, ImVec2(640, 360), {0,1}, {1,0});
+		ImGui::Begin("Viewport", nullptr, windowFlags);
+		ImGui::Image(myTextureID, ImVec2(640, 360), { 0,1 }, { 1,0 });
 		isHoverViewport = (ImGui::IsItemHovered() || ImGui::IsWindowHovered()) && (io.MouseDown[GLFW_MOUSE_BUTTON_LEFT]);
 		ImGui::End();
 
@@ -415,7 +334,7 @@ int main() {
 		ImGui::Begin("Details", nullptr);
 		ImGui::End();
 
-		ImGui::Begin("Content Browser",nullptr);
+		ImGui::Begin("Content Browser", nullptr);
 		ImGui::End();
 
 
@@ -461,4 +380,3 @@ int main() {
 	glfwTerminate();
 	return 0;
 }
-	

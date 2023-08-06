@@ -82,6 +82,7 @@
 #endif
 
 // GLFW
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 #ifdef _WIN32

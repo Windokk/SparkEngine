@@ -9,8 +9,7 @@
 #include <commdlg.h>
 #include <glad/glad.h>
 #include <stb/stb_image.h>
-#include <imgui.h>
-#include <imgui_internal.h>
+#include"imgui/imgui.h"
 
 bool to_bool(std::string str);
 float randf();
