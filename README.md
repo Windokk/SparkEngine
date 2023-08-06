@@ -9,9 +9,12 @@ The crab engine is a 3D Game Engine that allows gam devs to create an environnem
 It uses the Open GL [GLFW](https://www.glfw.org/) Lib for global window management, the [GLM](https://glm.g-truc.net/0.9.9/index.html) lib for all of the mathematics and the [STB](https://github.com/nothings/stb) lib for the images and textures management.
 
 The engine is in it's pre-alpha state of developpement so there might be a lot of bugs and incomplete features.
-## Documentation
 
-{Working on it}
+## API/Engine Documentation
+
+*Working on it*
+
+*Will be in the "docs" folder*
 
 ## Features
 
