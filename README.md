@@ -23,7 +23,7 @@ The engine is in it's pre-alpha state of developpement so there might be a lot o
 - FPS Counter
 
 
-## Roadmap
+## To Do list
 
 - ~2D Shapes with Open GL~
 
@@ -53,13 +53,24 @@ The engine is in it's pre-alpha state of developpement so there might be a lot o
 
 - ~Scene Parser Class~
 
-- Basic GUI : 3D Guizmos, Docking, Menu, Basic Windows
+- ~Basic GUI implementation~
+
+- Main Menu
+
+- Base windows :
+                  * Viewport (Selection, Outline and Gizmos)
+                  * Details
+                  * Content Browser (Automatical creation of a project directory)
+                  * Outliner 
+
+ - Project launcher
 
 - Shadow maps
 
 - Normal maps
 
 - Bloom
+
 ## License
 
 [![Alt Text](https://www.gnu.org/graphics/gplv3-88x31.png)](https://www.gnu.org/licenses/gpl-3.0.html)
