@@ -58,10 +58,10 @@ The engine is in it's pre-alpha state of developpement so there might be a lot o
 - Main Menu
 
 - Base windows :
-* Viewport (Selection, Outline and Gizmos)
-* Details
-* Content Browser (Automatical creation of a project directory)
-* Outliner 
+** Viewport (Selection, Outline and Gizmos)
+** Details
+** Content Browser (Automatical creation of a project directory)
+** Outliner 
 
  - Project launcher
 
