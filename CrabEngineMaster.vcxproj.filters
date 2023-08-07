@@ -28,9 +28,6 @@
     <Filter Include="Resource Files\shaders\skybox">
       <UniqueIdentifier>{2cc9fbb7-47dc-44a1-aaaa-82d693cbfb95}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\shaders\outlining">
-      <UniqueIdentifier>{367dfb30-9933-4b5b-b57f-8a2b6c8ef0ab}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\shaders\light">
       <UniqueIdentifier>{84822075-ca01-4544-bae8-36dede0b0145}</UniqueIdentifier>
     </Filter>
@@ -252,12 +249,6 @@
     </None>
     <None Include="shaders\light.vert">
       <Filter>Resource Files\shaders\light</Filter>
-    </None>
-    <None Include="shaders\outlining.vert">
-      <Filter>Resource Files\shaders\outlining</Filter>
-    </None>
-    <None Include="shaders\outlining.frag">
-      <Filter>Resource Files\shaders\outlining</Filter>
     </None>
     <None Include="shaders\skybox.vert">
       <Filter>Resource Files\shaders\skybox</Filter>

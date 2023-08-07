@@ -17,7 +17,7 @@
 		{
 			"framebufferShader": [
 				{ "vert": "./shaders/framebuffer.vert" },
-				{ "frag": "shaders/framebuffer.frag" },
+				{ "frag": "./shaders/framebuffer.frag" },
 				{ "geom": "" }
 			]
 		},

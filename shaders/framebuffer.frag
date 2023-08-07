@@ -4,36 +4,41 @@ out vec4 FragColor;
 in vec2 TexCoords;
 
 uniform sampler2D screenTexture;
-
-mat3 sx = mat3( 
-    1.0, 2.0, 1.0, 
-    0.0, 0.0, 0.0, 
-   -1.0, -2.0, -1.0 
-);
-
-mat3 sy = mat3( 
-    1.0, 0.0, -1.0, 
-    2.0, 0.0, -2.0, 
-    1.0, 0.0, -1.0 
-);
+uniform float outlineSize = 1.6;
+uniform int excludedObjectID = -1;
 
 void main()
 {
+    vec4 centerColor = texture(screenTexture, TexCoords);
     
-    // Calculate the luminance (brightness) of the pixel
-    vec3 diffuse = texture(screenTexture, TexCoords).rgb;
-    mat3 I;
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++) {
-            vec3 samp = texelFetch(screenTexture, ivec2(TexCoords.xy * vec2(textureSize(screenTexture, 0))) + ivec2(i - 1, j - 1), 0).rgb;
-            I[i][j] = length(samp); 
+    // Check if the current pixel belongs to an excluded object
+    if (excludedObjectID >= 0) {
+        // Adjust this condition based on how you identify excluded objects
+        if (centerColor.r == float(excludedObjectID)) {
+            FragColor = centerColor; // Skip outline for excluded object pixels
+            return;
         }
     }
-    float gx = dot(sx[0], I[0]) + dot(sx[1], I[1]) + dot(sx[2], I[2]); 
-    float gy = dot(sy[0], I[0]) + dot(sy[1], I[1]) + dot(sy[2], I[2]);
 
-    float g = sqrt(pow(gx, 8.0) + pow(gy, 8.0));
-    FragColor = vec4(diffuse +vec3(g), 1.0);
+
+    // Calculate the outline threshold and smoothness
+    float threshold = 0.8;  // Adjust this threshold based on your scene
+    float smoothness = 0.1; // Adjust this smoothness for a softer/harder edge
+
+    // Calculate the outline factor
+    float totalDifference = 0.0;
+    for (float x = -outlineSize; x <= outlineSize; x += 1.0) {
+        for (float y = -outlineSize; y <= outlineSize; y += 1.0) {
+            vec2 offset = vec2(x, y) / textureSize(screenTexture, 0);
+            vec4 sampleColor = texture(screenTexture, TexCoords + offset);
+            totalDifference += length(centerColor.rgb - sampleColor.rgb);
+        }
+    }
+    float outlineFactor = smoothstep(threshold, threshold + smoothness, totalDifference);
+
+    // Mix the center color and outline color
+    vec3 outlineColor = vec3(0.949, 0.737, 0.051); // Red outline
+    FragColor = mix(centerColor, vec4(outlineColor, 1.0), outlineFactor);
     
     
 }

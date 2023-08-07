@@ -3,6 +3,7 @@
 #include <glad/glad.h>
 #include<GLFW/glfw3.h>
 #include<stb/stb_image.h>
+#include<stb/stb_image_write.h>
 #include<glm/gtc/matrix_transform.hpp>
 #include<glm/gtc/type_ptr.hpp>
 #include <glm/gtx/string_cast.hpp>
@@ -84,6 +85,24 @@ GLuint LoadImageTexture(const char* path) {
 	return my_image_texture;
 }
 
+void SaveTextureToFile(GLuint textureId, int width, int height, const char* filename) {
+	glBindTexture(GL_TEXTURE_2D, textureId);
+
+	unsigned char* imageData = new unsigned char[width * height * 4];
+	glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
+
+	// Save the image using stb_image_write
+	stbi_flip_vertically_on_write(1);  // Flip image vertically (OpenGL's origin is bottom-left)
+	stbi_write_png(filename, width, height, 4, imageData, width * 4);
+
+	delete[] imageData;
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void windowclosecallback(GLFWwindow* window) {
+	SaveTextureToFile(loader.postProcessingTexture, width_, height_, "./assets/generated/screenshots/texture.png");
+	glfwSetWindowShouldClose(window, GLFW_TRUE);
+}
 
 int main() {
 
@@ -109,6 +128,7 @@ int main() {
 	stbi_image_free(images[0].pixels);
 	stbi_image_free(images[1].pixels);
 
+	glfwSetWindowCloseCallback(window, windowclosecallback);
 
 	if (window == NULL)
 	{
@@ -224,10 +244,9 @@ int main() {
 		glBindTexture(GL_TEXTURE_CUBE_MAP, loader.cubemapTexture);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
-
-
 		// Switch back to the normal depth function
 		glDepthFunc(GL_LESS);
+
 
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, loader.FBO);
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, loader.postProcessingFBO);
@@ -240,17 +259,19 @@ int main() {
 		// Draw the framebuffer rectangle
 		loader.framebufferProgram.Activate();
 		glBindVertexArray(loader.rectVAO);
-		GLuint framebufferWidth = width_;  // Replace with your desired width
-		GLuint framebufferHeight = height_;
-		glUniform2f(glGetUniformLocation(loader.framebufferProgram.ID, "resolution"), (float)framebufferWidth, (float)framebufferHeight);
+		float framebufferWidth = width_;  // Replace with your desired width
+		float framebufferHeight = height_;
+		glUniform2f(glGetUniformLocation(loader.framebufferProgram.ID, "resolution"), framebufferWidth, framebufferHeight);
 		glDisable(GL_DEPTH_TEST); // prevents framebuffer rectangle from being discarded
 		glBindTexture(GL_TEXTURE_2D, loader.postProcessingTexture);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 
 
+		unsigned char* pixels = new unsigned char[width_ * height_ * 3]; // Assuming RGB format
+		glReadPixels(0, 0, width_, height_, GL_RGB, GL_UNSIGNED_BYTE, pixels);
 
-		ImTextureID myTextureID = (ImTextureID)(intptr_t)loader.framebufferTexture;
-
+		glBindTexture(GL_TEXTURE_2D, loader.postProcessingTexture);
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width_, height_, GL_RGB, GL_UNSIGNED_BYTE, pixels);
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -323,7 +344,7 @@ int main() {
 		ImGui::SetNextWindowPos(ImVec2(320, 18));
 		ImGui::SetNextWindowSize(ImVec2(640, 395));
 		ImGui::Begin("Viewport", nullptr, windowFlags);
-		ImGui::Image(myTextureID, ImVec2(640, 360), { 0,1 }, { 1,0 });
+		ImGui::Image((void*)(intptr_t)loader.postProcessingTexture, ImVec2(640, 360), { 0,1 }, { 1,0 });
 		isHoverViewport = (ImGui::IsItemHovered() || ImGui::IsWindowHovered()) && (io.MouseDown[GLFW_MOUSE_BUTTON_LEFT]);
 		ImGui::End();
 
@@ -342,6 +363,9 @@ int main() {
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
+		glUseProgram(0);
+		glBindTexture(GL_TEXTURE_2D, 0);
+
 		int display_w, display_h;
 		glfwGetFramebufferSize(window, &display_w, &display_h);
 
@@ -358,6 +382,8 @@ int main() {
 		}
 
 
+
+
 		// Updates and exports the camera matrix to the Vertex Shader
 		cam.updateMatrix(45.0f, 0.1f, 100.0f);
 
@@ -366,8 +392,11 @@ int main() {
 		// Take care of all GLFW events
 		glfwPollEvents();
 
-	}
+		
+		
 
+	}
+	
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();

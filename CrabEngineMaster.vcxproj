@@ -109,6 +109,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\elipt\Downloads\CrabEngineMaster\Libraries\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -203,8 +204,6 @@
     <None Include="shaders\light.vert" />
     <None Include="shaders\normals.frag" />
     <None Include="shaders\normals.geom" />
-    <None Include="shaders\outlining.frag" />
-    <None Include="shaders\outlining.vert" />
     <None Include="shaders\skybox.frag" />
     <None Include="shaders\skybox.vert" />
     <None Include="shaders\windows.frag" />
