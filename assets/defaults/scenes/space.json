@@ -2,36 +2,36 @@
   "shaders": [
     {
       "defaultShader": [
-        { "vert": "default.vert" },
-        { "frag": "default.frag" },
+        { "vert": "shaders/default.vert" },
+        { "frag": "shaders/default.frag" },
         { "geom": "" }
       ]
     },
     {
       "skyboxShader": [
-        { "vert": "skybox.vert" },
-        { "frag": "skybox.frag" },
+        { "vert": "shaders/skybox.vert" },
+        { "frag": "shaders/skybox.frag" },
         { "geom": "" }
       ]
     },
     {
       "framebufferShader": [
-        { "vert": "framebuffer.vert" },
-        { "frag": "framebuffer.frag" },
+        { "vert": "shaders/framebuffer.vert" },
+        { "frag": "shaders/framebuffer.frag" },
         { "geom": "" }
       ]
     },
     {
       "lightShader": [
-        { "vert": "light.vert" },
-        { "frag": "light.frag" },
+        { "vert": "shaders/light.vert" },
+        { "frag": "shaders/light.frag" },
         { "geom": "" }
       ]
     },
     {
       "particle_asteroidShader": [
-        { "vert": "asteroid.vert" },
-        { "frag": "default.frag" },
+        { "vert": "shaders/asteroid.vert" },
+        { "frag": "shaders/default.frag" },
         { "geom": "" }
       ]
     }

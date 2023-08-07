@@ -4,10 +4,11 @@
 SceneParser::SceneParser(const char* file)
 {
 	if(file!=""){
+		
 		// Make a JSON object
 		std::string text = get_file_contents(file);
 		JSON = json::parse(text);
-
+		
 		SceneParser::loaded_file = file;
 
 		//We load every element
@@ -21,7 +22,7 @@ SceneParser::SceneParser(const char* file)
 					std::string vert;
 					std::string frag;
 					std::string geom;
-
+					
 					for (auto& y : JSON["shaders"][i][x.key()][0].items()) {
 						vert = (std::string)(y.value());
 					}
@@ -244,4 +245,4 @@ SceneParser::SceneParser(const char* file)
 		}
 		
 	}
-}  
+}

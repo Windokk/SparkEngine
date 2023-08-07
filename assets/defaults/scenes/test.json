@@ -1,28 +1,44 @@
 {
 	"shaders": [
 		{
-			"defaultShader": [{ "vert": "default.vert" },{ "frag": "default.frag" },{ "geom": "" }]
+			"defaultShader": [
+				{ "vert": "./shaders/default.vert" },
+				{ "frag": "./shaders/default.frag" },
+				{ "geom": "" }
+			]
 		},
 		{
-			"skyboxShader": [{ "vert": "skybox.vert" },{ "frag": "skybox.frag" },{ "geom": "" }] 
+			"skyboxShader": [
+				{ "vert": "./shaders/skybox.vert" },
+				{ "frag": "./shaders/skybox.frag" },
+				{ "geom": "" }
+			] 
 		},
 		{
-			"framebufferShader": [{ "vert": "framebuffer.vert" },{ "frag": "framebuffer.frag" },{ "geom": "" }]
+			"framebufferShader": [
+				{ "vert": "./shaders/framebuffer.vert" },
+				{ "frag": "shaders/framebuffer.frag" },
+				{ "geom": "" }
+			]
 		},
 		{
-			"lightShader": [{ "vert": "light.vert" },{ "frag": "light.frag" },{ "geom": "" }]
+			"lightShader": [
+				{ "vert": "./shaders/light.vert" },
+				{ "frag": "./shaders/light.frag" },
+				{ "geom": "" }
+			]
 		},
 		{
 			"particle_asteroidShader": [
-				{ "vert": "asteroid.vert" },
-				{ "frag": "default.frag" },
+				{ "vert": "./shaders/asteroid.vert" },
+				{ "frag": "./shaders/default.frag" },
 				{ "geom": "" }
 			]
 		},
 		{
 			"outlineShader": [
-				{ "vert": "outlining.vert" },
-				{ "frag": "outlining.frag" },
+				{ "vert": "./shaders/outlining.vert" },
+				{ "frag": "./shaders/outlining.frag" },
 				{ "geom": "" }
 			]
 		}
@@ -44,7 +60,7 @@
 	"models": [
 		{
 			"airplane": [
-				{ "model": "assets/defaults/models/spitfire/scene.gltf" },
+				{ "model": "./assets/defaults/models/spitfire/scene.gltf" },
 				{ "shader": "defaultShader" },
 				{ "instancing": "1" },
 				{ "type": "0" },
@@ -56,7 +72,7 @@
 		},
 		{
 			"floor": [
-				{ "model": "assets/defaults/models/plane/scene.gltf" },
+				{ "model": "./assets/defaults/models/plane/scene.gltf" },
 				{ "shader": "defaultShader" },
 				{ "instancing": "1" },
 				{ "type": "0" },
@@ -67,7 +83,7 @@
 		},
 		{
 			"particle_asteroid": [
-				{ "model": "assets/defaults/models/asteroid/scene.gltf" },
+				{ "model": "./assets/defaults/models/asteroid/scene.gltf" },
 				{ "shader": "particle_asteroidShader" },
 				{ "instancing": "200" },
 				{ "type": "0" },
@@ -84,12 +100,12 @@
 		{
 			"skybox1": [
 				{"shader": "skyboxShader"},
-				{ "right": "assets/defaults/textures/skyboxes/bluesky/right.jpg" },
-				{ "left": "assets/defaults/textures/skyboxes/bluesky/left.jpg" },
-				{ "top": "assets/defaults/textures/skyboxes/bluesky/top.jpg" },
-				{ "bottom": "assets/defaults/textures/skyboxes/bluesky/bottom.jpg" },
-				{ "front": "assets/defaults/textures/skyboxes/bluesky/front.jpg" },
-				{ "back": "assets/defaults/textures/skyboxes/bluesky/back.jpg" }
+				{ "right": "./assets/defaults/textures/skyboxes/bluesky/right.jpg" },
+				{ "left": "./assets/defaults/textures/skyboxes/bluesky/left.jpg" },
+				{ "top": "./assets/defaults/textures/skyboxes/bluesky/top.jpg" },
+				{ "bottom": "./assets/defaults/textures/skyboxes/bluesky/bottom.jpg" },
+				{ "front": "./assets/defaults/textures/skyboxes/bluesky/front.jpg" },
+				{ "back": "./assets/defaults/textures/skyboxes/bluesky/back.jpg" }
 			]
 		}
 	]

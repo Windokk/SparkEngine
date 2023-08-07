@@ -1,3 +1,4 @@
+#include <iostream>
 #include <windows.h>
 #include <glad/glad.h>
 #include<GLFW/glfw3.h>
@@ -6,8 +7,8 @@
 #include<glm/gtc/type_ptr.hpp>
 #include <glm/gtx/string_cast.hpp>
 
-#include"srcs/imgui/imgui.h"
-#include"srcs/imgui/imgui_impl_glfw.h"
+#include "srcs/imgui/imgui.h"
+#include "srcs/imgui/imgui_impl_glfw.h"
 #include "srcs/imgui/imgui_impl_opengl3.h"
 
 #include "srcs/SceneLoader.h"
@@ -19,10 +20,9 @@ unsigned int samples = 8;
 SceneLoader loader;
 bool isLoadingScene = false;
 
-const char* current_scene = "assets/defaults/scenes/test.json";
+const char* current_scene = "./assets/defaults/scenes/test.json";
 
 Camera cam = Camera(0, 0, glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
-
 
 void LoadNewScene(const char* scene) {
 	isLoadingScene = true;
@@ -85,9 +85,8 @@ GLuint LoadImageTexture(const char* path) {
 }
 
 
+int main() {
 
-int APIENTRY wWinMain(_In_ HINSTANCE hInstance,_In_opt_ HINSTANCE hPrevInstance,_In_ LPWSTR lpCmdLine,_In_ int nCmdShow)
-{
 	// Initialize GLFW
 	glfwInit();
 

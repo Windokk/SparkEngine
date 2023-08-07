@@ -3,7 +3,6 @@
 #include"imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 
-
 Camera::Camera(int width, int height, glm::vec3 position, glm::vec3 rotation)
 {
 	Camera::width = width;
@@ -72,7 +71,7 @@ void Camera::Inputs(GLFWwindow* window)
 	// Handles mouse inputs
 	if (io.MouseDown[GLFW_MOUSE_BUTTON_LEFT])
 	{
-		
+
 		// Prevents camera from jumping on the first click
 		if (firstClick)
 		{

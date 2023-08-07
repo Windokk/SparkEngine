@@ -1,0 +1,450 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\imgui">
+      <UniqueIdentifier>{c40c9ded-b512-4846-bdfc-b7bd09a8485e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\shaders">
+      <UniqueIdentifier>{4d788f57-c727-45b4-a399-707bd9ca4e60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\shaders\normals">
+      <UniqueIdentifier>{172304e3-bbf2-453d-9983-f2fef10b0c47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\shaders\others">
+      <UniqueIdentifier>{4672a1a3-92b4-40a9-8b42-a2592d1e46fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\shaders\skybox">
+      <UniqueIdentifier>{2cc9fbb7-47dc-44a1-aaaa-82d693cbfb95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\shaders\outlining">
+      <UniqueIdentifier>{367dfb30-9933-4b5b-b57f-8a2b6c8ef0ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\shaders\light">
+      <UniqueIdentifier>{84822075-ca01-4544-bae8-36dede0b0145}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\shaders\framebuffer">
+      <UniqueIdentifier>{aa3b7cda-73c9-4979-bcbe-1fea51fca600}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets">
+      <UniqueIdentifier>{d3d418b7-7ff6-4f88-bb5a-085a8dbec553}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\defaults">
+      <UniqueIdentifier>{2c3a5ed4-ab2e-4317-b6d9-e35a49ad75b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\defaults\scenes">
+      <UniqueIdentifier>{4a31ebdf-c735-4669-8afb-dd8499374a77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\defaults\logos">
+      <UniqueIdentifier>{220a97d7-a9ea-491c-a8fd-c7acb6cca3c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\defaults\gui">
+      <UniqueIdentifier>{a6247012-4b58-4d60-9afc-e563d020a421}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\defaults\models">
+      <UniqueIdentifier>{37ee02ae-d364-4610-a69a-5fc046f9c0d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\defaults\texts">
+      <UniqueIdentifier>{7c3ff1a1-36c6-48f9-a5f3-e4da33a73254}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\defaults\textures">
+      <UniqueIdentifier>{8c206a56-1583-4b9b-b348-d4c50108645c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\defaults\textures\skyboxes">
+      <UniqueIdentifier>{a3f15ddb-b012-4b2d-a571-95d8213825dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\defaults\textures\skyboxes\space">
+      <UniqueIdentifier>{660c311a-ad76-460b-a613-e6c7ab47253b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\defaults\textures\skyboxes\bluesky">
+      <UniqueIdentifier>{aa1a972b-ca79-438e-a889-33dfa2db70c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\defaults\texts\credits&amp;licence">
+      <UniqueIdentifier>{7e15fbdb-57df-4884-92a3-3eea9cc4e1aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\defaults\models\jupiter">
+      <UniqueIdentifier>{ac1cf5cc-6ffc-4c24-a754-edd5538855f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\defaults\models\asteroid">
+      <UniqueIdentifier>{50dc3702-9568-4046-98b3-450035f7fe3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\defaults\models\sword">
+      <UniqueIdentifier>{d17a4423-fd23-4cde-a623-3c8966d03c81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\defaults\models\sword\textures">
+      <UniqueIdentifier>{3336b203-8018-4d66-9f0b-0fe9a94482c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\defaults\models\spitfire">
+      <UniqueIdentifier>{21506afd-cc5c-439d-aa12-fdb080a9c8dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\defaults\models\plane">
+      <UniqueIdentifier>{d17110b4-c3e0-4ebe-87dc-1a1309abbd58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\defaults\models\cube">
+      <UniqueIdentifier>{8047c694-e0ba-4d36-8c5b-78badd23a7da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\defaults\gui\engine">
+      <UniqueIdentifier>{e453e98e-6558-4e1d-a5a2-cfc47d035b95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\defaults\gui\engine\menus">
+      <UniqueIdentifier>{8c4f519a-f19c-48c0-b364-a728ce9e6585}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\defaults\gui\engine\menus\help">
+      <UniqueIdentifier>{aa3e9b97-8147-4b32-a64b-b1480b37651c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\defaults\gui\engine\menus\file">
+      <UniqueIdentifier>{f3b12d90-55e0-4fb8-bba9-bbed631b191c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\defaults\gui\engine\menus\edit">
+      <UniqueIdentifier>{abd7b241-ab16-4cef-a9e5-71ec480f3503}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\imgui">
+      <UniqueIdentifier>{2ff672fd-93c0-47ad-b351-6dff257b011a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CrabEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\glad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\stb.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\SceneLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\SceneParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\EBO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\VBO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\VAO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\Utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\Model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\Mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\imgui\imgui_impl_glfw.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\imgui\imgui_widgets.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\imgui\imgui_impl_opengl3.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\imgui\imgui_tables.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\imgui\imgui_draw.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\imgui\imgui_demo.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\imgui\imgui.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="srcs\VBO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\VAO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\Utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\SceneParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\SceneLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\Model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\EBO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\imgui\imconfig.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\imgui\imgui.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\imgui\imgui_impl_glfw.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\imgui\imgui_impl_opengl3.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\imgui\imgui_impl_opengl3_loader.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\imgui\imgui_internal.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\imgui\imstb_rectpack.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\imgui\imstb_textedit.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\imgui\imstb_truetype.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\framebuffer.frag">
+      <Filter>Resource Files\shaders\framebuffer</Filter>
+    </None>
+    <None Include="shaders\framebuffer.vert">
+      <Filter>Resource Files\shaders\framebuffer</Filter>
+    </None>
+    <None Include="shaders\light.frag">
+      <Filter>Resource Files\shaders\light</Filter>
+    </None>
+    <None Include="shaders\light.vert">
+      <Filter>Resource Files\shaders\light</Filter>
+    </None>
+    <None Include="shaders\outlining.vert">
+      <Filter>Resource Files\shaders\outlining</Filter>
+    </None>
+    <None Include="shaders\outlining.frag">
+      <Filter>Resource Files\shaders\outlining</Filter>
+    </None>
+    <None Include="shaders\skybox.vert">
+      <Filter>Resource Files\shaders\skybox</Filter>
+    </None>
+    <None Include="shaders\skybox.frag">
+      <Filter>Resource Files\shaders\skybox</Filter>
+    </None>
+    <None Include="shaders\windows.frag">
+      <Filter>Resource Files\shaders\others</Filter>
+    </None>
+    <None Include="shaders\asteroid.vert">
+      <Filter>Resource Files\shaders\others</Filter>
+    </None>
+    <None Include="shaders\grass.frag">
+      <Filter>Resource Files\shaders\others</Filter>
+    </None>
+    <None Include="shaders\normals.geom">
+      <Filter>Resource Files\shaders\normals</Filter>
+    </None>
+    <None Include="shaders\normals.frag">
+      <Filter>Resource Files\shaders\normals</Filter>
+    </None>
+    <None Include="shaders\default.frag">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="shaders\default.vert">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="assets\defaults\scenes\test.json">
+      <Filter>Resource Files\assets\defaults\scenes</Filter>
+    </None>
+    <None Include="assets\defaults\scenes\space.json">
+      <Filter>Resource Files\assets\defaults\scenes</Filter>
+    </None>
+    <None Include="assets\defaults\models\sword\scene.bin">
+      <Filter>Resource Files\assets\defaults\models\sword</Filter>
+    </None>
+    <None Include="assets\defaults\models\sword\scene.gltf">
+      <Filter>Resource Files\assets\defaults\models\sword</Filter>
+    </None>
+    <None Include="assets\defaults\models\spitfire\scene.bin">
+      <Filter>Resource Files\assets\defaults\models\spitfire</Filter>
+    </None>
+    <None Include="assets\defaults\models\spitfire\scene.gltf">
+      <Filter>Resource Files\assets\defaults\models\spitfire</Filter>
+    </None>
+    <None Include="assets\defaults\models\asteroid\scene.bin">
+      <Filter>Resource Files\assets\defaults\models\asteroid</Filter>
+    </None>
+    <None Include="assets\defaults\models\asteroid\scene.gltf">
+      <Filter>Resource Files\assets\defaults\models\asteroid</Filter>
+    </None>
+    <None Include="assets\defaults\models\plane\scene.bin">
+      <Filter>Resource Files\assets\defaults\models\plane</Filter>
+    </None>
+    <None Include="assets\defaults\models\plane\scene.gltf">
+      <Filter>Resource Files\assets\defaults\models\plane</Filter>
+    </None>
+    <None Include="assets\defaults\models\jupiter\scene.bin">
+      <Filter>Resource Files\assets\defaults\models\jupiter</Filter>
+    </None>
+    <None Include="assets\defaults\models\jupiter\scene.gltf">
+      <Filter>Resource Files\assets\defaults\models\jupiter</Filter>
+    </None>
+    <None Include="assets\defaults\models\cube\scene.bin">
+      <Filter>Resource Files\assets\defaults\models\cube</Filter>
+    </None>
+    <None Include="assets\defaults\models\cube\scene.gltf">
+      <Filter>Resource Files\assets\defaults\models\cube</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\defaults\textures\brick.png">
+      <Filter>Resource Files\assets\defaults\textures</Filter>
+    </Image>
+    <Image Include="assets\defaults\textures\planks.png">
+      <Filter>Resource Files\assets\defaults\textures</Filter>
+    </Image>
+    <Image Include="assets\defaults\textures\planksSpec.png">
+      <Filter>Resource Files\assets\defaults\textures</Filter>
+    </Image>
+    <Image Include="assets\defaults\textures\skyboxes\space\top.png">
+      <Filter>Resource Files\assets\defaults\textures\skyboxes\space</Filter>
+    </Image>
+    <Image Include="assets\defaults\textures\skyboxes\space\right.png">
+      <Filter>Resource Files\assets\defaults\textures\skyboxes\space</Filter>
+    </Image>
+    <Image Include="assets\defaults\textures\skyboxes\space\left.png">
+      <Filter>Resource Files\assets\defaults\textures\skyboxes\space</Filter>
+    </Image>
+    <Image Include="assets\defaults\textures\skyboxes\space\front.png">
+      <Filter>Resource Files\assets\defaults\textures\skyboxes\space</Filter>
+    </Image>
+    <Image Include="assets\defaults\textures\skyboxes\space\bottom.png">
+      <Filter>Resource Files\assets\defaults\textures\skyboxes\space</Filter>
+    </Image>
+    <Image Include="assets\defaults\textures\skyboxes\space\back.png">
+      <Filter>Resource Files\assets\defaults\textures\skyboxes\space</Filter>
+    </Image>
+    <Image Include="assets\defaults\textures\skyboxes\bluesky\back.jpg">
+      <Filter>Resource Files\assets\defaults\textures\skyboxes\bluesky</Filter>
+    </Image>
+    <Image Include="assets\defaults\textures\skyboxes\bluesky\bottom.jpg">
+      <Filter>Resource Files\assets\defaults\textures\skyboxes\bluesky</Filter>
+    </Image>
+    <Image Include="assets\defaults\textures\skyboxes\bluesky\front.jpg">
+      <Filter>Resource Files\assets\defaults\textures\skyboxes\bluesky</Filter>
+    </Image>
+    <Image Include="assets\defaults\textures\skyboxes\bluesky\left.jpg">
+      <Filter>Resource Files\assets\defaults\textures\skyboxes\bluesky</Filter>
+    </Image>
+    <Image Include="assets\defaults\textures\skyboxes\bluesky\right.jpg">
+      <Filter>Resource Files\assets\defaults\textures\skyboxes\bluesky</Filter>
+    </Image>
+    <Image Include="assets\defaults\textures\skyboxes\bluesky\top.jpg">
+      <Filter>Resource Files\assets\defaults\textures\skyboxes\bluesky</Filter>
+    </Image>
+    <Image Include="assets\defaults\models\sword\textures\Object001_mtl_baseColor.jpeg">
+      <Filter>Resource Files\assets\defaults\models\sword\textures</Filter>
+    </Image>
+    <Image Include="assets\defaults\models\spitfire\diffuse.png">
+      <Filter>Resource Files\assets\defaults\models\spitfire</Filter>
+    </Image>
+    <Image Include="assets\defaults\models\spitfire\Image.png">
+      <Filter>Resource Files\assets\defaults\models\spitfire</Filter>
+    </Image>
+    <Image Include="assets\defaults\models\spitfire\specular.png">
+      <Filter>Resource Files\assets\defaults\models\spitfire</Filter>
+    </Image>
+    <Image Include="assets\defaults\models\asteroid\Default_baseColor.png">
+      <Filter>Resource Files\assets\defaults\models\asteroid</Filter>
+    </Image>
+    <Image Include="assets\defaults\models\asteroid\Default_normal.png">
+      <Filter>Resource Files\assets\defaults\models\asteroid</Filter>
+    </Image>
+    <Image Include="assets\defaults\models\plane\diffuse.png">
+      <Filter>Resource Files\assets\defaults\models\plane</Filter>
+    </Image>
+    <Image Include="assets\defaults\models\plane\Image.png">
+      <Filter>Resource Files\assets\defaults\models\plane</Filter>
+    </Image>
+    <Image Include="assets\defaults\models\plane\specular.png">
+      <Filter>Resource Files\assets\defaults\models\plane</Filter>
+    </Image>
+    <Image Include="assets\defaults\models\jupiter\diffuse.png">
+      <Filter>Resource Files\assets\defaults\models\jupiter</Filter>
+    </Image>
+    <Image Include="assets\defaults\models\cube\diffuse.png">
+      <Filter>Resource Files\assets\defaults\models\cube</Filter>
+    </Image>
+    <Image Include="assets\defaults\models\cube\Image.png">
+      <Filter>Resource Files\assets\defaults\models\cube</Filter>
+    </Image>
+    <Image Include="assets\defaults\gui\engine\menus\help\code.png">
+      <Filter>Resource Files\assets\defaults\gui\engine\menus\help</Filter>
+    </Image>
+    <Image Include="assets\defaults\gui\engine\menus\help\certificate.png">
+      <Filter>Resource Files\assets\defaults\gui\engine\menus\help</Filter>
+    </Image>
+    <Image Include="assets\defaults\gui\engine\menus\help\question.png">
+      <Filter>Resource Files\assets\defaults\gui\engine\menus\help</Filter>
+    </Image>
+    <Image Include="assets\defaults\gui\engine\menus\help\list.png">
+      <Filter>Resource Files\assets\defaults\gui\engine\menus\help</Filter>
+    </Image>
+    <Image Include="assets\defaults\gui\engine\menus\help\book.png">
+      <Filter>Resource Files\assets\defaults\gui\engine\menus\help</Filter>
+    </Image>
+    <Image Include="assets\defaults\logos\icon - white.png">
+      <Filter>Resource Files\assets\defaults\logos</Filter>
+    </Image>
+    <Image Include="assets\defaults\logos\scene_file_icon.ico">
+      <Filter>Resource Files\assets\defaults\logos</Filter>
+    </Image>
+    <Image Include="assets\defaults\logos\.scene_file_icon.png">
+      <Filter>Resource Files\assets\defaults\logos</Filter>
+    </Image>
+    <Image Include="assets\defaults\logos\icon.ico">
+      <Filter>Resource Files\assets\defaults\logos</Filter>
+    </Image>
+    <Image Include="assets\defaults\logos\icon.png">
+      <Filter>Resource Files\assets\defaults\logos</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="assets\defaults\texts\credits&amp;licence\credits.txt">
+      <Filter>Resource Files\assets\defaults\texts\credits&amp;licence</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{3e9a82e1-9241-4b05-8eba-828231269360}</ProjectGuid>
-    <RootNamespace>CrabEngine</RootNamespace>
+    <ProjectGuid>{6661966c-8fa0-4819-9762-4bce618c93f2}</ProjectGuid>
+    <RootNamespace>CrabEngineMaster</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -71,18 +71,18 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\elipt\Downloads\CrabEngine\Libraries\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\elipt\Downloads\CrabEngine\Libraries\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\elipt\Downloads\CrabEngineMaster\Libraries\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\elipt\Downloads\CrabEngineMaster\Libraries\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -92,11 +92,11 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -106,14 +106,14 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\elipt\Downloads\CrabEngine\Libraries\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\elipt\Downloads\CrabEngineMaster\Libraries\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\elipt\Downloads\CrabEngine\Libraries\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\elipt\Downloads\CrabEngineMaster\Libraries\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -123,11 +123,11 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -179,21 +179,77 @@
     <ClInclude Include="srcs\VBO.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="asteroid.vert" />
-    <None Include="default.frag" />
-    <None Include="default.vert" />
-    <None Include="framebuffer.frag" />
-    <None Include="framebuffer.vert" />
-    <None Include="grass.frag" />
-    <None Include="light.frag" />
-    <None Include="light.vert" />
-    <None Include="normals.frag" />
-    <None Include="normals.geom" />
-    <None Include="outlining.frag" />
-    <None Include="outlining.vert" />
-    <None Include="skybox.frag" />
-    <None Include="skybox.vert" />
-    <None Include="windows.frag" />
+    <None Include="assets\defaults\models\asteroid\scene.bin" />
+    <None Include="assets\defaults\models\asteroid\scene.gltf" />
+    <None Include="assets\defaults\models\cube\scene.bin" />
+    <None Include="assets\defaults\models\cube\scene.gltf" />
+    <None Include="assets\defaults\models\jupiter\scene.bin" />
+    <None Include="assets\defaults\models\jupiter\scene.gltf" />
+    <None Include="assets\defaults\models\plane\scene.bin" />
+    <None Include="assets\defaults\models\plane\scene.gltf" />
+    <None Include="assets\defaults\models\spitfire\scene.bin" />
+    <None Include="assets\defaults\models\spitfire\scene.gltf" />
+    <None Include="assets\defaults\models\sword\scene.bin" />
+    <None Include="assets\defaults\models\sword\scene.gltf" />
+    <None Include="assets\defaults\scenes\space.json" />
+    <None Include="assets\defaults\scenes\test.json" />
+    <None Include="shaders\asteroid.vert" />
+    <None Include="shaders\default.frag" />
+    <None Include="shaders\default.vert" />
+    <None Include="shaders\framebuffer.frag" />
+    <None Include="shaders\framebuffer.vert" />
+    <None Include="shaders\grass.frag" />
+    <None Include="shaders\light.frag" />
+    <None Include="shaders\light.vert" />
+    <None Include="shaders\normals.frag" />
+    <None Include="shaders\normals.geom" />
+    <None Include="shaders\outlining.frag" />
+    <None Include="shaders\outlining.vert" />
+    <None Include="shaders\skybox.frag" />
+    <None Include="shaders\skybox.vert" />
+    <None Include="shaders\windows.frag" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\defaults\gui\engine\menus\help\book.png" />
+    <Image Include="assets\defaults\gui\engine\menus\help\certificate.png" />
+    <Image Include="assets\defaults\gui\engine\menus\help\code.png" />
+    <Image Include="assets\defaults\gui\engine\menus\help\list.png" />
+    <Image Include="assets\defaults\gui\engine\menus\help\question.png" />
+    <Image Include="assets\defaults\logos\.scene_file_icon.png" />
+    <Image Include="assets\defaults\logos\icon - white.png" />
+    <Image Include="assets\defaults\logos\icon.ico" />
+    <Image Include="assets\defaults\logos\icon.png" />
+    <Image Include="assets\defaults\logos\scene_file_icon.ico" />
+    <Image Include="assets\defaults\models\asteroid\Default_baseColor.png" />
+    <Image Include="assets\defaults\models\asteroid\Default_normal.png" />
+    <Image Include="assets\defaults\models\cube\diffuse.png" />
+    <Image Include="assets\defaults\models\cube\Image.png" />
+    <Image Include="assets\defaults\models\jupiter\diffuse.png" />
+    <Image Include="assets\defaults\models\plane\diffuse.png" />
+    <Image Include="assets\defaults\models\plane\Image.png" />
+    <Image Include="assets\defaults\models\plane\specular.png" />
+    <Image Include="assets\defaults\models\spitfire\diffuse.png" />
+    <Image Include="assets\defaults\models\spitfire\Image.png" />
+    <Image Include="assets\defaults\models\spitfire\specular.png" />
+    <Image Include="assets\defaults\models\sword\textures\Object001_mtl_baseColor.jpeg" />
+    <Image Include="assets\defaults\textures\brick.png" />
+    <Image Include="assets\defaults\textures\planks.png" />
+    <Image Include="assets\defaults\textures\planksSpec.png" />
+    <Image Include="assets\defaults\textures\skyboxes\bluesky\back.jpg" />
+    <Image Include="assets\defaults\textures\skyboxes\bluesky\bottom.jpg" />
+    <Image Include="assets\defaults\textures\skyboxes\bluesky\front.jpg" />
+    <Image Include="assets\defaults\textures\skyboxes\bluesky\left.jpg" />
+    <Image Include="assets\defaults\textures\skyboxes\bluesky\right.jpg" />
+    <Image Include="assets\defaults\textures\skyboxes\bluesky\top.jpg" />
+    <Image Include="assets\defaults\textures\skyboxes\space\back.png" />
+    <Image Include="assets\defaults\textures\skyboxes\space\bottom.png" />
+    <Image Include="assets\defaults\textures\skyboxes\space\front.png" />
+    <Image Include="assets\defaults\textures\skyboxes\space\left.png" />
+    <Image Include="assets\defaults\textures\skyboxes\space\right.png" />
+    <Image Include="assets\defaults\textures\skyboxes\space\top.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="assets\defaults\texts\credits&amp;licence\credits.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

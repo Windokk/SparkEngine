@@ -198,9 +198,6 @@ void SceneLoader::Load1(const char* loaded_file) {
 			glUniform1f(outlineScaleLoc, 1);
 		}
 	}
-
-	
-	
 }
 
 void SceneLoader::Load2() {
