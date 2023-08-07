@@ -9,21 +9,14 @@ The crab engine is a 3D Game Engine that allows gam devs to create an environnem
 It uses the Open GL [GLFW](https://www.glfw.org/) Lib for global window management, the [GLM](https://glm.g-truc.net/0.9.9/index.html) lib for all of the mathematics and the [STB](https://github.com/nothings/stb) lib for the images and textures management.
 
 The engine is in it's pre-alpha state of developpement so there might be a lot of bugs and incomplete features.
-## Documentation
 
-{Working on it}
+## API/Engine Documentation
 
-## Features
+*Working on it*
 
-- Model support : importing; transform : location, rotation, scale; texture mappings/UV; specular maps
-- Light support : 3 types : point, spot, directionnal; light color
-- Skyboxes support : cubemaps
-- Post processing with a FrameBuffer
-- Camera : Control with Z, Q, S & D
-- FPS Counter
+*Will be in the "docs" folder*
 
-
-## Roadmap
+## To Do list
 
 - ~2D Shapes with Open GL~
 
@@ -53,13 +46,24 @@ The engine is in it's pre-alpha state of developpement so there might be a lot o
 
 - ~Scene Parser Class~
 
-- Basic GUI : 3D Guizmos, Docking, Menu, Basic Windows
+- ~Basic GUI implementation~
+
+- Main Menu
+
+- Base windows :
+** Viewport (Selection, Outline and Gizmos)
+** Details
+** Content Browser (Automatical creation of a project directory)
+** Outliner 
+
+ - Project launcher
 
 - Shadow maps
 
 - Normal maps
 
 - Bloom
+
 ## License
 
 [![Alt Text](https://www.gnu.org/graphics/gplv3-88x31.png)](https://www.gnu.org/licenses/gpl-3.0.html)
