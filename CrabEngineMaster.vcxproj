@@ -169,6 +169,7 @@
     <ClInclude Include="srcs\imgui\imstb_rectpack.h" />
     <ClInclude Include="srcs\imgui\imstb_textedit.h" />
     <ClInclude Include="srcs\imgui\imstb_truetype.h" />
+    <ClInclude Include="srcs\Line.h" />
     <ClInclude Include="srcs\Mesh.h" />
     <ClInclude Include="srcs\Model.h" />
     <ClInclude Include="srcs\SceneLoader.h" />
@@ -204,6 +205,8 @@
     <None Include="shaders\light.vert" />
     <None Include="shaders\normals.frag" />
     <None Include="shaders\normals.geom" />
+    <None Include="shaders\outlining.frag" />
+    <None Include="shaders\outlining.vert" />
     <None Include="shaders\skybox.frag" />
     <None Include="shaders\skybox.vert" />
     <None Include="shaders\windows.frag" />

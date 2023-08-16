@@ -34,13 +34,6 @@
 				{ "frag": "./shaders/default.frag" },
 				{ "geom": "" }
 			]
-		},
-		{
-			"outlineShader": [
-				{ "vert": "./shaders/outlining.vert" },
-				{ "frag": "./shaders/outlining.frag" },
-				{ "geom": "" }
-			]
 		}
 
 	],

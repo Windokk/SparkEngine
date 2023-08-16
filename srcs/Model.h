@@ -14,6 +14,7 @@ public:
 	Model(const char* file, unsigned int instancing = 1, std::vector<glm::mat4> instanceMatrix = {});
 
 	void Draw(Shader& shader,Camera& camera,int modeltype,glm::vec3 translation,glm::quat rotation,glm::vec3 scale);
+	std::vector<Mesh> meshes;
 
 private:
 	// Variables for easy access
@@ -24,7 +25,7 @@ private:
 	unsigned int instancing;
 
 	// All the meshes and transformations
-	std::vector<Mesh> meshes;
+	
 	std::vector<glm::vec3> translationsMeshes;
 	std::vector<glm::quat> rotationsMeshes;
 	std::vector<glm::vec3> scalesMeshes;

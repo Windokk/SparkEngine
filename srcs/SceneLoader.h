@@ -29,7 +29,6 @@ public:
 	struct Shader_Infos {
 		std::string name;
 		Shader shader;
-
 	};
 	std::vector<Shader_Infos> shaders;
 
@@ -45,17 +44,20 @@ public:
 	//Models
 	std::vector<Model> models;
 
+	//Objects
+	std::vector<std::string> objects;
+
+	//Default Shaders and Framebuffers
 	unsigned int skyboxVAO, skyboxVBO, skyboxEBO;
 	unsigned int cubemapTexture;
 	unsigned int rectVAO, rectVBO;
 	unsigned int FBO;
+	unsigned int framebufferTexture;
 	unsigned int postProcessingTexture;
 	unsigned int postProcessingFBO;
-	unsigned int framebufferTexture;
 	Shader skyboxShader;
-	Shader outlineShader;
 	Shader framebufferProgram;
-
+	Shader outlineShader;
 
 private:
 	const char* file ="";

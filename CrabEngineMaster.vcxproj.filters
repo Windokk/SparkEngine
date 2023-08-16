@@ -109,6 +109,9 @@
     <Filter Include="Source Files\imgui">
       <UniqueIdentifier>{2ff672fd-93c0-47ad-b351-6dff257b011a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\shaders\outlining">
+      <UniqueIdentifier>{86e5d985-f604-41f3-b71d-7de2035f303e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CrabEngine.cpp">
@@ -153,10 +156,16 @@
     <ClCompile Include="srcs\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="srcs\imgui\imgui_impl_glfw.cpp">
+    <ClCompile Include="srcs\imgui\imgui.cpp">
       <Filter>Source Files\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="srcs\imgui\imgui_widgets.cpp">
+    <ClCompile Include="srcs\imgui\imgui_demo.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\imgui\imgui_draw.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\imgui\imgui_impl_glfw.cpp">
       <Filter>Source Files\imgui</Filter>
     </ClCompile>
     <ClCompile Include="srcs\imgui\imgui_impl_opengl3.cpp">
@@ -165,13 +174,7 @@
     <ClCompile Include="srcs\imgui\imgui_tables.cpp">
       <Filter>Source Files\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="srcs\imgui\imgui_draw.cpp">
-      <Filter>Source Files\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="srcs\imgui\imgui_demo.cpp">
-      <Filter>Source Files\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="srcs\imgui\imgui.cpp">
+    <ClCompile Include="srcs\imgui\imgui_widgets.cpp">
       <Filter>Source Files\imgui</Filter>
     </ClCompile>
   </ItemGroup>
@@ -235,6 +238,9 @@
     </ClInclude>
     <ClInclude Include="srcs\imgui\imstb_truetype.h">
       <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\Line.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -318,6 +324,12 @@
     </None>
     <None Include="assets\defaults\models\cube\scene.gltf">
       <Filter>Resource Files\assets\defaults\models\cube</Filter>
+    </None>
+    <None Include="shaders\outlining.vert">
+      <Filter>Resource Files\shaders\outlining</Filter>
+    </None>
+    <None Include="shaders\outlining.frag">
+      <Filter>Resource Files\shaders\outlining</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

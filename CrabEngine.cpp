@@ -14,11 +14,19 @@
 
 #include "srcs/SceneLoader.h"
 #include "srcs/Utils.h"
+#include "srcs/imgui/imgui_internal.h"
+#include "srcs/Line.h"
 
 unsigned int width_ = 1280;
+
 unsigned int height_ = 720;
+
 unsigned int samples = 8;
+
+int selectedObjectID;
+
 SceneLoader loader;
+
 bool isLoadingScene = false;
 
 const char* current_scene = "./assets/defaults/scenes/test.json";
@@ -42,66 +50,50 @@ void LoadNewScene(const char* scene) {
 	isLoadingScene = false;
 }
 
-bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_width, int* out_height)
-{
-	// Load from file
-	int image_width = 0;
-	int image_height = 0;
-	unsigned char* image_data = stbi_load(filename, &image_width, &image_height, NULL, 4);
-	if (image_data == NULL)
-		return false;
-
-	// Create a OpenGL texture identifier
-	GLuint image_texture;
-	glGenTextures(1, &image_texture);
-	glBindTexture(GL_TEXTURE_2D, image_texture);
-
-	// Setup filtering parameters for display
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // This is required on WebGL for non power-of-two textures
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // Same
-
-	// Upload pixels into texture
-#if defined(GL_UNPACK_ROW_LENGTH) && !defined(__EMSCRIPTEN__)
-	glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-#endif
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image_width, image_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
-	stbi_image_free(image_data);
-
-	*out_texture = image_texture;
-	*out_width = image_width;
-	*out_height = image_height;
-
-	return true;
-}
-
-GLuint LoadImageTexture(const char* path) {
-	int my_image_width = 0;
-	int my_image_height = 0;
-	GLuint my_image_texture = 0;
-	bool ret = LoadTextureFromFile(path, &my_image_texture, &my_image_width, &my_image_height);
-	IM_ASSERT(ret);
-	return my_image_texture;
-}
-
-void SaveTextureToFile(GLuint textureId, int width, int height, const char* filename) {
-	glBindTexture(GL_TEXTURE_2D, textureId);
-
-	unsigned char* imageData = new unsigned char[width * height * 4];
-	glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
-
-	// Save the image using stb_image_write
-	stbi_flip_vertically_on_write(1);  // Flip image vertically (OpenGL's origin is bottom-left)
-	stbi_write_png(filename, width, height, 4, imageData, width * 4);
-
-	delete[] imageData;
-	glBindTexture(GL_TEXTURE_2D, 0);
-}
-
 void windowclosecallback(GLFWwindow* window) {
 	SaveTextureToFile(loader.postProcessingTexture, width_, height_, "./assets/generated/screenshots/texture.png");
 	glfwSetWindowShouldClose(window, GLFW_TRUE);
+}
+
+struct Ray {
+	glm::vec3 origin;
+	glm::vec3 direction;
+};
+bool RayIntersectsMesh(const Ray& ray, const Mesh& mesh) {
+	for (size_t i = 0; i < mesh.indices.size(); i += 3) {
+		const Vertex& v0 = mesh.vertices[mesh.indices[i]];
+		const Vertex& v1 = mesh.vertices[mesh.indices[i + 1]];
+		const Vertex& v2 = mesh.vertices[mesh.indices[i + 2]];
+
+		glm::vec3 e1 = v1.position - v0.position;
+		glm::vec3 e2 = v2.position - v0.position;
+		glm::vec3 h = glm::cross(ray.direction, e2);
+		float a = glm::dot(e1, h);
+
+		if (a > -0.00001f && a < 0.00001f)
+			continue;
+
+		float f = 1.0f / a;
+		glm::vec3 s = ray.origin - v0.position;
+		float u = f * glm::dot(s, h);
+
+		if (u < 0.0f || u > 1.0f)
+			continue;
+
+		glm::vec3 q = glm::cross(s, e1);
+		float v = f * glm::dot(ray.direction, q);
+
+		if (v < 0.0f || u + v > 1.0f)
+			continue;
+
+		float t = f * glm::dot(e2, q);
+
+		if (t > 0.0001f) {
+			std::cout << "Intersection occurred at triangle " << i << std::endl;
+			return true; // Intersection occurred
+		}
+	}
+	return false; // No intersection
 }
 
 int main() {
@@ -172,10 +164,13 @@ int main() {
 	io.ConfigFlags |= (ImGuiConfigFlags_NoMouseCursorChange, ImGuiConfigFlags_DockingEnable);
 
 	bool isHoverViewport;
-
-
+	bool showCloseButton = true;
 
 	LoadNewScene(current_scene);
+
+
+	Line debugLine = Line(glm::vec3(0,0,0),glm::vec3(0,-4,10));
+	debugLine.setColor(glm::vec3(1, 0, 0));
 
 	while (!glfwWindowShouldClose(window)) {
 		// Updates counter and times
@@ -226,7 +221,6 @@ int main() {
 			}
 		}
 
-
 		glDepthFunc(GL_LEQUAL);
 
 		loader.skyboxShader.Activate();
@@ -246,6 +240,13 @@ int main() {
 		glBindVertexArray(0);
 		// Switch back to the normal depth function
 		glDepthFunc(GL_LESS);
+
+		view = glm::mat4(glm::mat3(glm::lookAt(cam.Position, cam.Position + cam.Orientation, cam.Up)));
+		projection = glm::perspective(glm::radians(45.0f), (float)width_ / height_, 0.1f, 100.0f);
+
+		
+		debugLine.setMVP(projection * view);
+		debugLine.draw();
 
 
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, loader.FBO);
@@ -267,11 +268,6 @@ int main() {
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 
 
-		unsigned char* pixels = new unsigned char[width_ * height_ * 3]; // Assuming RGB format
-		glReadPixels(0, 0, width_, height_, GL_RGB, GL_UNSIGNED_BYTE, pixels);
-
-		glBindTexture(GL_TEXTURE_2D, loader.postProcessingTexture);
-		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width_, height_, GL_RGB, GL_UNSIGNED_BYTE, pixels);
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -280,18 +276,86 @@ int main() {
 
 		if (ImGui::BeginMainMenuBar()) {
 			if (ImGui::BeginMenu("File")) {
-				if (ImGui::MenuItem("Load Scene")) {
-					std::string file = OpenWindowsFileDialog(L"Scene file (.json)\0*.json\0");
-					if (file != "") {
-						file = replaceCharacters(file, '\\', '/');
-						file = file.substr(51, file.size() - 51);
-						LoadNewScene(file.c_str());
-					}
 
+				if (ImGui::BeginMenu("New")) {
+					ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/icons/objects/scene.png"), ImVec2(16, 16));
+					ImGui::SameLine();
+					if (ImGui::MenuItem("Scene")) {}
+					ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/icons/objects/cube.png"), ImVec2(16, 16));
+					ImGui::SameLine();
+					if (ImGui::BeginMenu("Object")) {
+						ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/icons/objects/light.png"), ImVec2(16, 16));
+						ImGui::SameLine();
+						if (ImGui::MenuItem("Light")) {}
+						ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/icons/objects/cube.png"), ImVec2(16, 16));
+						ImGui::SameLine();
+						if (ImGui::MenuItem("Model")) {}
+						ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/icons/objects/material.png"), ImVec2(16, 16));
+						ImGui::SameLine();
+						if (ImGui::MenuItem("Shader")) {}
+						ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/icons/objects/script.png"), ImVec2(16, 16));
+						ImGui::SameLine();
+						if (ImGui::MenuItem("Script")) {}
+						ImGui::EndMenu();
+					}
+					ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/icons/objects/folder.png"), ImVec2(16, 16));
+					ImGui::SameLine();
+					if (ImGui::MenuItem("Project")) {}
+					ImGui::EndMenu();
 				}
+				ImGui::Separator();
+				if (ImGui::BeginMenu("Import to project")) {
+					if (ImGui::MenuItem("Scene")) {
+						std::string file = OpenWindowsFileDialog(L"Scene file (.json)\0*.json\0");
+						if (file != "") {
+							file = replaceCharacters(file, '\\', '/');
+							file = file.substr(51, file.size() - 51);
+							LoadNewScene(file.c_str());
+						}
+
+					}
+					if (ImGui::MenuItem("Model")) {
+
+					}
+					if (ImGui::MenuItem("Texture")) {
+					}
+					ImGui::EndMenu();
+				}
+				ImGui::Spacing();
+				ImGui::Spacing();
+				if (ImGui::BeginMenu("Save")) {
+					if (ImGui::MenuItem("Scene")) {
+					}
+					if (ImGui::MenuItem("Object")) {
+
+					}
+					ImGui::EndMenu();
+				}
+				ImGui::Spacing();
+				ImGui::Spacing();
+				if (ImGui::BeginMenu("Open")) {
+					if (ImGui::MenuItem("Project")) {}
+					ImGui::EndMenu();
+				}
+				ImGui::Spacing();
+				ImGui::Spacing();
+				if (ImGui::MenuItem("Quit")) {}
 				ImGui::EndMenu();
 			}
 			if (ImGui::BeginMenu("Edit")) {
+				if (ImGui::MenuItem("Select all")) {}
+				if (ImGui::MenuItem("Redo")) {}
+				if (ImGui::MenuItem("Undo")) {}
+				ImGui::Separator();
+				if (ImGui::MenuItem("Cut")) {}
+				if (ImGui::MenuItem("Copy")) {}
+				if (ImGui::MenuItem("Paste")) {}
+				if (ImGui::MenuItem("Duplicate")) {}
+				if (ImGui::MenuItem("Delete")) {}
+				ImGui::Separator();
+				if (ImGui::MenuItem("Editor Preferences")) {}
+				if (ImGui::MenuItem("Project Settings")) {}
+
 				ImGui::EndMenu();
 			}
 			if (ImGui::BeginMenu("Window")) {
@@ -348,23 +412,85 @@ int main() {
 		isHoverViewport = (ImGui::IsItemHovered() || ImGui::IsWindowHovered()) && (io.MouseDown[GLFW_MOUSE_BUTTON_LEFT]);
 		ImGui::End();
 
-		ImGui::Begin("Outliner", nullptr);
+		ImGui::Begin("Outliner", &showCloseButton);
+		ImGui::BeginListBox("Models", ImVec2(200, 80));
+		for (int i = 0; i < loader.models.size(); i++) {
+			if (ImGui::Selectable((loader.parser.models[i].name).c_str())) {
+				for (int j = 0; j < loader.objects.size(); j++) {
+					if (loader.objects[j] == loader.parser.models[i].name) {
+						selectedObjectID = j;
+					}
+				}
+			}
+			ImGui::Separator();
+		}
+		ImGui::EndListBox();
+		ImGui::BeginListBox("Lights", ImVec2(200, 80));
+		for (int i = 0; i < loader.parser.lights.size(); i++) {
+			if (ImGui::Selectable((loader.parser.lights[i].name).c_str())) {
+				for (int j = 0; j < loader.objects.size(); j++) {
+					if (loader.objects[j] == loader.parser.lights[i].name) {
+						selectedObjectID = j;
+					}
+				}
+			}
+			ImGui::Separator();
+		}
+		ImGui::EndListBox();
+
 		ImGui::End();
 
-		ImGui::Begin("Details", nullptr);
-		ImGui::End();
+		if (ImGui::Begin("Details", &showCloseButton))
+			ImGui::End();
 
-		ImGui::Begin("Content Browser", nullptr);
-		ImGui::End();
+		ImGui::Begin("Content Browser", &showCloseButton, (ImGuiWindowFlags_MenuBar));
+		if (ImGui::BeginMenuBar()) {
+			if (ImGui::BeginMenu("Filters")) {
+				ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/menus/contentbrowser/filter.png"), ImVec2(16, 16));
+				ImGui::SameLine();
+				ImGui::MenuItem(("Select filter(s) :"), NULL, false, false);
+				ImGui::Separator();
+				ImGui::EndMenu();
+			}
+			ImGui::Separator();
+			if (ImGui::MenuItem("Save All")) {
 
+			}
+			ImGui::Separator();
+			ImGui::PushStyleColor(ImGuiCol_MenuBarBg, ImVec4(0.8f, 0.2f, 0.2f, 1.0f));
+			if (ImGui::BeginMenu("Add +")) {
+				ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/icons/objects/scene.png"), ImVec2(16, 16));
+				ImGui::SameLine();
+				if (ImGui::MenuItem("Scene")) {}
+				ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/icons/objects/cube.png"), ImVec2(16, 16));
+				ImGui::SameLine();
+				if (ImGui::BeginMenu("Object")) {
+					ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/icons/objects/light.png"), ImVec2(16, 16));
+					ImGui::SameLine();
+					if (ImGui::MenuItem("Light")) {}
+					ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/icons/objects/cube.png"), ImVec2(16, 16));
+					ImGui::SameLine();
+					if (ImGui::MenuItem("Model")) {}
+					ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/icons/objects/material.png"), ImVec2(16, 16));
+					ImGui::SameLine();
+					if (ImGui::MenuItem("Shader")) {}
+					ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/icons/objects/script.png"), ImVec2(16, 16));
+					ImGui::SameLine();
+					if (ImGui::MenuItem("Script")) {}
+					ImGui::EndMenu();
+				}
+				ImGui::EndMenu();
+			}
+			ImGui::PopStyleColor();
+			ImGui::EndMenuBar();
+
+		}
+		ImGui::End();
 
 		ImGui::EndFrame();
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-		glUseProgram(0);
-		glBindTexture(GL_TEXTURE_2D, 0);
 
 		int display_w, display_h;
 		glfwGetFramebufferSize(window, &display_w, &display_h);
@@ -382,25 +508,48 @@ int main() {
 		}
 
 
-
-
 		// Updates and exports the camera matrix to the Vertex Shader
 		cam.updateMatrix(45.0f, 0.1f, 100.0f);
+
+		std::cout << selectedObjectID << "\n";
+
+		if(isHoverViewport)
+		{
+			//We check the selection logic
+			double mouseX = ImGui::GetMousePos().x;
+			double mouseY = ImGui::GetMousePos().y;
+
+			// Convert mouse coordinates to NDC (-1 to 1)
+			float ndcX = (2.0f * mouseX) / 800 - 1.0f;
+			float ndcY = 1.0f - (2.0f * mouseY) / 600;
+
+			// Create a ray from the camera position through the mouse cursor
+			Ray ray;
+			ray.origin = cam.Position; // Camera position
+			ray.direction = glm::vec3(ndcX, ndcY, -1.0f); // Assume camera looks along negative z
+
+
+			// Check for ray-box intersection
+			bool isMouseOverAirplane = RayIntersectsMesh(ray, loader.models[0].meshes[0]);
+
+			// Print result
+			if (isMouseOverAirplane) {
+				std::cout << "Mouse is over the model!" << std::endl;
+			}
+			
+		}
 
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);
 		// Take care of all GLFW events
 		glfwPollEvents();
 
-		
-		
-
 	}
 	
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
-
+	debugLine.~Line();
 	loader.Unload();
 	// Delete window before ending the program
 	glfwDestroyWindow(window);

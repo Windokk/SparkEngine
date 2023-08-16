@@ -49,6 +49,8 @@ unsigned int skyboxIndices[] = {
 SceneLoader::SceneLoader() {
 }
 
+
+
 void SceneLoader::Load1(const char* loaded_file) {
 	file = loaded_file;
 	parser = SceneParser(file);
@@ -75,7 +77,11 @@ void SceneLoader::Load1(const char* loaded_file) {
 		if (parser.models[i].instancing == 1) {
 			models.push_back(Model((parser.models[i].model_path).c_str()));
 		}
+		objects.push_back(parser.models[i].name);
 	}
+
+	outlineShader = Shader("./shaders/outlining.vert", "./shaders/outlining.frag", "");
+
 
 	// Prepare framebuffer rectangle VBO and VAO
 	glGenVertexArrays(1, &rectVAO);
@@ -91,7 +97,6 @@ void SceneLoader::Load1(const char* loaded_file) {
 	// Create Frame Buffer Object
 	glGenFramebuffers(1, &FBO);
 	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
-
 
 	// Create Framebuffer Texture
 	glGenTextures(1, &framebufferTexture);
@@ -111,7 +116,7 @@ void SceneLoader::Load1(const char* loaded_file) {
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO);
 
 	// Error checking framebuffer
-	auto fboStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	int fboStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	if (fboStatus != GL_FRAMEBUFFER_COMPLETE)
 		std::cout << "Framebuffer error: " << fboStatus << std::endl;
 
@@ -135,7 +140,6 @@ void SceneLoader::Load1(const char* loaded_file) {
 		std::cout << "Post-Processing Framebuffer error: " << fboStatus << std::endl;
 
 
-
 	//We create the lights
 	for (int i = 0; i < parser.lights.size(); i++) {
 		Light_Object_Infos infos;
@@ -145,9 +149,10 @@ void SceneLoader::Load1(const char* loaded_file) {
 		infos.lightModel = parser.lights[i].light_matrix;
 		infos.lightModel = glm::translate(infos.lightModel, infos.lightPos);
 		light_object_infos.push_back(infos);
+		objects.push_back(parser.lights[i].name);
 	}
 
-	glm::mat4 objectModel =  glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+	glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 
 	//We set the shaders's values
 	for (int i = 0; i < parser.shaders.size(); i++)
@@ -156,7 +161,7 @@ void SceneLoader::Load1(const char* loaded_file) {
 			
 			if (light_object_infos.size()>0) {
 				shaders[i].shader.Activate();
-				glUniformMatrix4fv(glGetUniformLocation(shaders[i].shader.ID, "model"), 1, GL_FALSE, glm::value_ptr(objectModel));
+				glUniformMatrix4fv(glGetUniformLocation(shaders[i].shader.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
 				glUniform4f(glGetUniformLocation(shaders[i].shader.ID, "lightColor"), light_object_infos[0].lightColor.x, light_object_infos[0].lightColor.y, light_object_infos[0].lightColor.z, light_object_infos[0].lightColor.w);
 				glUniform3f(glGetUniformLocation(shaders[i].shader.ID, "lightPos"), light_object_infos[0].lightPos.x, light_object_infos[0].lightPos.y, light_object_infos[0].lightPos.z);
 				glUniform1f(glGetUniformLocation(shaders[i].shader.ID, "light_intensity"), light_object_infos[0].lightIntensity);
@@ -189,15 +194,8 @@ void SceneLoader::Load1(const char* loaded_file) {
 				glUniform3f(glGetUniformLocation(shaders[i].shader.ID, "lightPos"), light_object_infos[0].lightPos.x, light_object_infos[0].lightPos.y, light_object_infos[0].lightPos.z);
 			}
 		}
-		else if (shaders[i].name == "outlineShader") {
-			shaders[i].shader.Activate();
-			outlineShader = shaders[i].shader;
-			GLuint outlineModelLoc = glGetUniformLocation(shaders[i].shader.ID, "model");
-			GLuint outlineScaleLoc = glGetUniformLocation(shaders[i].shader.ID, "size");
-			glUniformMatrix4fv(outlineModelLoc, 1, GL_FALSE, glm::value_ptr(objectModel));
-			glUniform1f(outlineScaleLoc, 1);
-		}
 	}
+
 }
 
 void SceneLoader::Load2() {
@@ -279,7 +277,6 @@ void SceneLoader::Load2() {
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
 
 		std::string facesCubemap[6] =
 		{
