@@ -11,6 +11,7 @@ void ImGuiMain::Load(GLFWwindow* window, ImGuiIO& io)
 	ImGui_ImplOpenGL3_Init("#version 330");
 	windowFlags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoBringToFrontOnFocus;
 	io.ConfigFlags |= (ImGuiConfigFlags_NoMouseCursorChange, ImGuiConfigFlags_DockingEnable);
+	io.Fonts->AddFontFromFileTTF("OpenSans-Medium.ttf", 13);
 }
 
 void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& selectedObjectID, ImGuiIO& io)
@@ -154,11 +155,13 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 
 	//Outliner
 	ImGui::Begin("Outliner", &showCloseButton);
-	ImGui::BeginListBox("Models", ImVec2(200, 80));
-	
-	ImGui::EndListBox();
-	ImGui::BeginListBox("Lights", ImVec2(200, 80));
-	
+	ImGui::BeginListBox("##", ImVec2(200, 80));
+	for (int i = 0; i < loader.parser.objects.size(); i++) {
+		if (ImGui::Selectable((loader.parser.objects[i].name).c_str())) {
+			selectedObjectID = i;
+			std::cout << selectedObjectID;
+		}
+	}
 	ImGui::EndListBox();
 	ImGui::End();
 
