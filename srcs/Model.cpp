@@ -2,7 +2,7 @@
 #include "Shader.h"
 
 
-Model::Model(const char* file, unsigned int instancing, std::vector<glm::mat4> instanceMatrix)
+Model::Model(const char* file, int id, unsigned int instancing, std::vector<glm::mat4> instanceMatrix)
 {
 	// Make a JSON object
 	std::string text = get_file_contents(file);
@@ -17,13 +17,15 @@ Model::Model(const char* file, unsigned int instancing, std::vector<glm::mat4> i
 
 	// Traverse all nodes
 	traverseNode(0);
+
+	model_id = id;
 }
-void Model::Draw(Shader& shader, Camera& camera, int modeltype, glm::vec3 translation, glm::quat rotation, glm::vec3 scale)
+void Model::Draw(Shader& shader, Camera& camera, glm::vec3 translation, glm::quat rotation, glm::vec3 scale)
 {
 	// Go over all meshes and draw each one
 	for (unsigned int i = 0; i < meshes.size(); i++)
 	{
-		meshes[i].Mesh::Draw(shader, camera, modeltype, matricesMeshes[i], translation, rotation, scale);
+		meshes[i].Mesh::Draw(shader, camera, matricesMeshes[i], translation, rotation, scale);
 	}
 }
 

@@ -1,8 +1,6 @@
 #include"Camera.h"
 #include"imgui/imgui.h"
-#include"imgui/imgui_impl_glfw.h"
-#include "imgui/imgui_impl_opengl3.h"
-#include "Utils.h"
+#include "EngineUtils.h"
 
 Camera::Camera(int width, int height, glm::vec3 position, glm::vec3 rotation)
 {
@@ -38,13 +36,11 @@ void Camera::Matrix(Shader& shader, const char* uniform)
 	glUniformMatrix4fv(glGetUniformLocation(shader.ID, uniform), 1, GL_FALSE, glm::value_ptr(cameraMatrix));
 }
 
-
-
-void Camera::Inputs(GLFWwindow* window)
+void Camera::Inputs(GLFWwindow* window, float speed, float sensitivity)
 {
 	ImGuiIO& io = ImGui::GetIO();
 	// Handles key inputs
-	if (io.KeysDown[GLFW_KEY_Z]) // Replace GLFW_KEY_A with the desired key
+	if (io.KeysDown[GLFW_KEY_Z])
 	{
 		Position += speed * Orientation;
 	}
@@ -72,7 +68,6 @@ void Camera::Inputs(GLFWwindow* window)
 	// Handles mouse inputs
 	if (io.MouseDown[GLFW_MOUSE_BUTTON_LEFT])
 	{
-
 		// Prevents camera from jumping on the first click
 		if (firstClick)
 		{
@@ -87,7 +82,7 @@ void Camera::Inputs(GLFWwindow* window)
 		glfwGetCursorPos(window, &mouseX, &mouseY);
 
 		// Normalizes and shifts the coordinates of the cursor such that they begin in the middle of the screen
-		// and then "transforms" them into degrees 
+		// and then "transforms" them into degrees
 		float rotX = sensitivity * (float)(mouseY - (height / 3)) / height;
 		float rotY = sensitivity * (float)(mouseX - (width / 2)) / width;
 

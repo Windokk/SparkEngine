@@ -56,7 +56,6 @@
         { "model": "assets/defaults/models/jupiter/scene.gltf" },
         { "shader": "defaultShader" },
         { "instancing": "1" },
-        { "type": "0" },
         { "location": [ "0.0", "0.0", "0.0" ] },
         { "rotation": [ "1.0", "0.0", "0.0", "0.0" ] },
         { "scale": [ "1.0", "1.0", "1.0" ] }
@@ -68,7 +67,6 @@
         { "model": "assets/defaults/models/asteroid/scene.gltf" },
         { "shader": "particle_asteroidShader" },
         { "instancing": "2000" },
-        { "type": "0" },
         { "location": [ "0.0", "0.0", "0.0" ] },
         { "rotation": [ "1.0", "0.0", "0.0", "0.0" ] },
         { "scale": [ "1.0", "1.0", "1.0" ] }
@@ -77,19 +75,19 @@
     }
 
   ],
-  "meshes": [],
   "skybox": [
-    {
-      "skybox1": [
-        { "shader": "skyboxShader" },
-        { "right": "assets/defaults/textures/skyboxes/space/right.png" },
-        { "left": "assets/defaults/textures/skyboxes/space/left.png" },
-        { "top": "assets/defaults/textures/skyboxes/space/top.png" },
-        { "bottom": "assets/defaults/textures/skyboxes/space/bottom.png" },
-        { "front": "assets/defaults/textures/skyboxes/space/front.png" },
-        { "back": "assets/defaults/textures/skyboxes/space/back.png" }
-      ]
-    }
-  ]
+        {
+            "skybox1": [
+                { "shader": "skyboxShader" },
+                { "right": "assets/defaults/textures/skyboxes/space/right.png" },
+                { "left": "assets/defaults/textures/skyboxes/space/left.png" },
+                { "top": "assets/defaults/textures/skyboxes/space/top.png" },
+                { "bottom": "assets/defaults/textures/skyboxes/space/bottom.png" },
+                { "front": "assets/defaults/textures/skyboxes/space/front.png" },
+                { "back": "assets/defaults/textures/skyboxes/space/back.png" }
+            ]
+        }
+    ]
+
 
 }

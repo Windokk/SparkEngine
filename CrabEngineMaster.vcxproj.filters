@@ -144,7 +144,7 @@
     <ClCompile Include="srcs\VAO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="srcs\Utils.cpp">
+    <ClCompile Include="srcs\EngineUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="srcs\Texture.cpp">
@@ -177,6 +177,12 @@
     <ClCompile Include="srcs\imgui\imgui_widgets.cpp">
       <Filter>Source Files\imgui</Filter>
     </ClCompile>
+    <ClCompile Include="srcs\ImGuiMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\Components.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="srcs\VBO.h">
@@ -185,7 +191,7 @@
     <ClInclude Include="srcs\VAO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="srcs\Utils.h">
+    <ClInclude Include="srcs\EngineUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="srcs\Texture.h">
@@ -240,6 +246,15 @@
       <Filter>Header Files\imgui</Filter>
     </ClInclude>
     <ClInclude Include="srcs\Line.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\InputsUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\ImGuiMain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\Components.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

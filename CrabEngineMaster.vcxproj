@@ -71,8 +71,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\elipt\Downloads\CrabEngineMaster\Libraries\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\elipt\Downloads\CrabEngineMaster\Libraries\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\elipt\Documents\GitHub\CrabEngine\Libraries\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\elipt\Documents\GitHub\CrabEngine\Libraries\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -110,6 +110,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\elipt\Downloads\CrabEngineMaster\Libraries\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -137,8 +138,10 @@
   <ItemGroup>
     <ClCompile Include="CrabEngine.cpp" />
     <ClCompile Include="srcs\Camera.cpp" />
+    <ClCompile Include="srcs\Components.cpp" />
     <ClCompile Include="srcs\EBO.cpp" />
     <ClCompile Include="srcs\glad.c" />
+    <ClCompile Include="srcs\ImGuiMain.cpp" />
     <ClCompile Include="srcs\imgui\imgui.cpp" />
     <ClCompile Include="srcs\imgui\imgui_demo.cpp" />
     <ClCompile Include="srcs\imgui\imgui_draw.cpp" />
@@ -153,13 +156,15 @@
     <ClCompile Include="srcs\Shader.cpp" />
     <ClCompile Include="srcs\stb.cpp" />
     <ClCompile Include="srcs\Texture.cpp" />
-    <ClCompile Include="srcs\Utils.cpp" />
+    <ClCompile Include="srcs\EngineUtils.cpp" />
     <ClCompile Include="srcs\VAO.cpp" />
     <ClCompile Include="srcs\VBO.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="srcs\Camera.h" />
+    <ClInclude Include="srcs\Components.h" />
     <ClInclude Include="srcs\EBO.h" />
+    <ClInclude Include="srcs\ImGuiMain.h" />
     <ClInclude Include="srcs\imgui\imconfig.h" />
     <ClInclude Include="srcs\imgui\imgui.h" />
     <ClInclude Include="srcs\imgui\imgui_impl_glfw.h" />
@@ -169,6 +174,7 @@
     <ClInclude Include="srcs\imgui\imstb_rectpack.h" />
     <ClInclude Include="srcs\imgui\imstb_textedit.h" />
     <ClInclude Include="srcs\imgui\imstb_truetype.h" />
+    <ClInclude Include="srcs\InputsUtils.h" />
     <ClInclude Include="srcs\Line.h" />
     <ClInclude Include="srcs\Mesh.h" />
     <ClInclude Include="srcs\Model.h" />
@@ -176,7 +182,7 @@
     <ClInclude Include="srcs\SceneParser.h" />
     <ClInclude Include="srcs\Shader.h" />
     <ClInclude Include="srcs\Texture.h" />
-    <ClInclude Include="srcs\Utils.h" />
+    <ClInclude Include="srcs\EngineUtils.h" />
     <ClInclude Include="srcs\VAO.h" />
     <ClInclude Include="srcs\VBO.h" />
   </ItemGroup>

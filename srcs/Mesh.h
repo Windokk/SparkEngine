@@ -31,7 +31,6 @@ public:
 	(
 		Shader& shader,
 		Camera& camera,
-		int modeltype,
 		glm::mat4 matrix,
 		glm::vec3 translation,
 		glm::quat rotation,

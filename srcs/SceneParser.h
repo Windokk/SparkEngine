@@ -1,93 +1,61 @@
 #ifndef SceneParser_CLASS_H
 #define SceneParser_CLASS_H
 
-
 #include"Shader.h"
-#include"Utils.h"
+#include"EngineUtils.h"
+#include"Components.h"
 
 #include<glm/glm.hpp>
 #include<json/json.h>
 #include<glm/gtc/matrix_transform.hpp>
 #include<glm/gtc/type_ptr.hpp>
 #include<iostream>
+#include <variant>
 
 using json = nlohmann::json;
 using namespace nlohmann;
 
+//Shaders data
+struct ShaderData {
+	std::string name;
+	std::string vert;
+	std::string frag;
+	std::string geom;
+};
+//Object Data
+struct Object {
+	std::string name;
+	std::vector<std::variant<TransformComponent,ModelComponent,LightComponent>> components;
+};
+
 class SceneParser
 {
-	public:
-		SceneParser(const char* file);
-		
-		//Shaders data
-		struct ShaderData{
-			std::string name;
-			std::string vert;
-			std::string frag;
-			std::string geom;
-		};
-		std::vector<ShaderData> shaders;
+public:
+	SceneParser(const char* file);
 
-		//Lights Data
-		struct LightData
-		{
-			std::string name;
-			glm::mat4 light_matrix;
-			glm::vec3 light_location;
-			glm::quat light_rotation;
-			glm::vec3 light_scale;
-			float intensity;
-			glm::vec4 rgba;
-		};
-		std::vector<LightData> lights;
+	//Shaders data
+	std::vector<ShaderData> shaders;
 
-		//Models Data
-		struct ModelData
-		{
-			std::string name;
-			std::string model_path;
-			std::string shader;
-			int instancing;
-			int type;
-			glm::vec3 location;
-			glm::quat rotation;
-			glm::vec3 scale;
-		};
-		std::vector<ModelData> models;
+	//Skybox Data
+	struct SkyboxData {
+		std::string shader;
+		std::string right;
+		std::string left;
+		std::string top;
+		std::string bottom;
+		std::string front;
+		std::string back;
+	} skybox;
+	
+	std::vector<Object> objects;
+	 
+private:
 
-		//Meshes Data
-		struct MeshData {
-			std::string name;
-			std::string shape;
-			int size;
-			std::string shader;
-			std::string type;
-			glm::vec3 location;
-			glm::quat rotation;
-			glm::vec3 scale;
-			const char* diffuse;
-			const char* specular;
-		};
-		std::vector<MeshData> meshes;
+	const char* loaded_file = "";
+	std::vector<unsigned char> data;
+	json JSON;
 
-		//Skybox Data
-		struct SkyboxData {
-			std::string shader;
-			std::string right;
-			std::string left;
-			std::string top;
-			std::string bottom;
-			std::string front;
-			std::string back;
-		} skybox;
-
-	private:
-
-		const char* loaded_file = "";
-		std::vector<unsigned char> data;
-		json JSON;
-
-		std::vector<unsigned char> getData();
+	std::vector<unsigned char> getData();
 };
 
 #endif
