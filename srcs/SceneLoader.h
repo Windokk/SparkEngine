@@ -19,6 +19,25 @@ struct Transform {
 	glm::vec3 Scale;
 };
 
+struct Light_Object_Infos {
+	int objectID;
+	lightType type;
+	glm::vec3 lightPos;
+	glm::vec3 lightDirection = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::vec3 ambient;
+	glm::vec3 diffuse;
+	glm::vec3 specular;
+	float constant = 1.0f;
+	float linear = 0.09f;
+	float quadratic = 0.032f;
+	float cutOff = glm::cos(glm::radians(12.5f));
+	float outerCutOff = glm::cos(glm::radians(15.0f));
+	glm::vec3 lightColor;
+	float lightIntensity;
+	glm::mat4 lightModel;
+
+};
+
 class SceneLoader 
 {
 public:
@@ -45,24 +64,6 @@ public:
 	std::vector<Shader_Infos> shaders;
 
 	//Lights
-	struct Light_Object_Infos {
-		int objectID;
-		lightType type;
-		glm::vec3 lightPos;
-		glm::vec3 lightDirection = glm::vec3(0.0f, 0.0f, 0.0f);
-		glm::vec3 ambient;
-		glm::vec3 diffuse;
-		glm::vec3 specular;
-		float constant = 1.0f;
-		float linear = 0.09f;
-		float quadratic = 0.032f;
-		float cutOff = glm::cos(glm::radians(12.5f));
-		float outerCutOff = glm::cos(glm::radians(15.0f));
-		glm::vec3 lightColor;
-		float lightIntensity;
-		glm::mat4 lightModel;
-		
-	};
 	std::vector<Light_Object_Infos> light_object_infos;
 
 	//Models
