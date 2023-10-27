@@ -29,7 +29,7 @@ SceneLoader loader;
 
 ImGuiMain gui = ImGuiMain();
 
-const char* current_scene = "./assets/defaults/scenes/test.json";
+const char* current_scene = "./assets/defaults/scenes/test_simple_light.json";
 
 Camera cam = Camera(0, 0, glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
 
@@ -98,6 +98,19 @@ int main() {
 
 	loader.LoadNewScene(current_scene);
 
+	
+	Line zLine = Line();
+	zLine.setColor(glm::vec3(0.0f, 0.0f, 1.0f));
+	zLine.setWidth(10.0f);
+
+	Line xLine = Line();
+	xLine.setColor(glm::vec3(1.0f, 0.0f, 0.0f));
+	xLine.setWidth(10.0f);
+
+	Line yLine = Line();
+	yLine.setColor(glm::vec3(0.0f, 1.0f, 0.0f));
+	yLine.setWidth(10.0f);
+
 	while (!glfwWindowShouldClose(window)) {
 		// Updates counter and times
 		crntTime = glfwGetTime();
@@ -150,15 +163,37 @@ int main() {
 		// Switch back to the normal depth function
 		glDepthFunc(GL_LESS);
 
-		view = glm::mat4(glm::mat3(glm::lookAt(cam.Position, cam.Position + cam.Orientation, cam.Up)));
+
+		view = glm::mat4(glm::lookAt(cam.Position, cam.Position + cam.Orientation, cam.Up));
 		projection = glm::perspective(glm::radians(45.0f), (float)width_ / height_, 0.1f, 100.0f);
+
+		zLine.setMVP(projection * view);
+		zLine.draw(cam, loader.objects_Transforms[selectedObjectID].Location, glm::quat(1, 0, 0, 0), "z");
+
+		xLine.setMVP(projection * view);
+		xLine.draw(cam, loader.objects_Transforms[selectedObjectID].Location, glm::quat(1, 0, 0, 0), "x");
+
+		yLine.setMVP(projection * view);
+		yLine.draw(cam, loader.objects_Transforms[selectedObjectID].Location, glm::quat(1,0,0,0), "y");
+
 
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, loader.FBO);
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, loader.postProcessingFBO);
 		// Conclude the multisampling and copy it to the post-processing FBO
 		glBlitFramebuffer(0, 0, width_, height_, 0, 0, width_, height_, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+
+
 		// Bind the default framebuffer
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		// Draw the framebuffer rectangle
+		loader.framebufferProgram.Activate();
+		glBindVertexArray(loader.rectVAO);
+		float framebufferWidth = width_;  // Replace with your desired width
+		float framebufferHeight = height_;
+		glUniform2f(glGetUniformLocation(loader.framebufferProgram.ID, "resolution"), framebufferWidth, framebufferHeight);
+		glDisable(GL_DEPTH_TEST); // prevents framebuffer rectangle from being discarded
+		glBindTexture(GL_TEXTURE_2D, loader.postProcessingTexture);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
 
 		// Clean the back buffer and depth buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -168,6 +203,7 @@ int main() {
 
 		// Updates and exports the camera matrix to the Vertex Shader
 		cam.updateMatrix(45.0f, 0.1f, 100.0f);
+
 
 		glfwSwapInterval(0);
 		// Swap the back buffer with the front buffer
@@ -179,6 +215,9 @@ int main() {
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
+	zLine.~Line();
+	yLine.~Line();
+	xLine.~Line();
 	loader.Unload();
 	// Delete window before ending the program
 	glfwDestroyWindow(window);

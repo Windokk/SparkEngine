@@ -1,167 +1,156 @@
 {
-    "asset" : {
-        "generator" : "Khronos glTF Blender I/O v3.4.50",
-        "version" : "2.0"
-    },
-    "extensionsUsed" : [
-        "KHR_materials_specular"
-    ],
-    "scene" : 0,
-    "scenes" : [
-        {
-            "name" : "Scene",
-            "nodes" : [
-                0
-            ]
-        }
-    ],
-    "nodes" : [
-        {
-            "mesh" : 0,
-            "name" : "mesh1",
-            "rotation" : [
-                0.7076970338821411,
-                0,
-                0,
-                0.7065160870552063
-            ],
-            "scale" : [
-                0.038760583847761154,
-                0.03876058757305145,
-                0.03876058757305145
-            ]
-        }
-    ],
-    "materials" : [
-        {
-            "doubleSided" : true,
-            "extensions" : {
-                "KHR_materials_specular" : {
-                    "specularColorTexture" : {
-                        "index" : 0
-                    }
-                }
-            },
-            "name" : "Mat1",
-            "pbrMetallicRoughness" : {
-                "baseColorTexture" : {
-                    "index" : 1
-                },
-                "metallicFactor" : 0,
-                "roughnessFactor" : 0.5
-            }
-        }
-    ],
-    "meshes" : [
-        {
-            "name" : "Object002_Material #86_0",
-            "primitives" : [
-                {
-                    "attributes" : {
-                        "POSITION" : 0,
-                        "TEXCOORD_0" : 1,
-                        "NORMAL" : 2
-                    },
-                    "indices" : 3,
-                    "material" : 0
-                }
-            ]
-        }
-    ],
-    "textures" : [
-        {
-            "sampler" : 0,
-            "source" : 0
-        },
-        {
-            "sampler" : 0,
-            "source" : 1
-        }
-    ],
-    "images" : [
-        {
-            "mimeType" : "image/png",
-            "name" : "Image",
-            "uri" : "Image.png"
-        },
-        {
-            "mimeType" : "image/png",
-            "name" : "diffuse",
-            "uri" : "diffuse.png"
-        }
-    ],
-    "accessors" : [
-        {
-            "bufferView" : 0,
-            "componentType" : 5126,
-            "count" : 6740,
-            "max" : [
-                208.3461456298828,
-                213.3697509765625,
-                60.30982971191406
-            ],
-            "min" : [
-                -208.31846618652344,
-                -135.5721435546875,
-                -38.45983123779297
-            ],
-            "type" : "VEC3"
-        },
-        {
-            "bufferView" : 1,
-            "componentType" : 5126,
-            "count" : 6740,
-            "type" : "VEC2"
-        },
-        {
-            "bufferView" : 2,
-            "componentType" : 5126,
-            "count" : 6740,
-            "type" : "VEC3"
-        },
-        {
-            "bufferView" : 3,
-            "componentType" : 5123,
-            "count" : 18822,
-            "type" : "SCALAR"
-        }
-    ],
-    "bufferViews" : [
-        {
-            "buffer" : 0,
-            "byteLength" : 80880,
-            "byteOffset" : 0,
-            "target" : 34962
-        },
-        {
-            "buffer" : 0,
-            "byteLength" : 53920,
-            "byteOffset" : 80880,
-            "target" : 34962
-        },
-        {
-            "buffer" : 0,
-            "byteLength" : 80880,
-            "byteOffset" : 134800,
-            "target" : 34962
-        },
-        {
-            "buffer" : 0,
-            "byteLength" : 37644,
-            "byteOffset" : 215680,
-            "target" : 34963
-        }
-    ],
-    "samplers" : [
-        {
-            "magFilter" : 9729,
-            "minFilter" : 9987
-        }
-    ],
-    "buffers" : [
-        {
-            "byteLength" : 253324,
-            "uri" : "scene.bin"
-        }
-    ]
+	"asset":{
+		"generator":"Khronos glTF Blender I/O v3.6.27",
+		"version":"2.0"
+	},
+	"extensionsUsed":[
+		"KHR_materials_specular"
+	],
+	"scene":0,
+	"scenes":[
+		{
+			"name":"Scene",
+			"nodes":[
+				0
+			]
+		}
+	],
+	"nodes":[
+		{
+			"mesh":0,
+			"name":"mesh1"
+		}
+	],
+	"materials":[
+		{
+			"doubleSided":true,
+			"extensions":{
+				"KHR_materials_specular":{
+					"specularColorTexture":{
+						"index":0
+					}
+				}
+			},
+			"name":"Mat1",
+			"pbrMetallicRoughness":{
+				"baseColorTexture":{
+					"index":1
+				},
+				"metallicFactor":0,
+				"roughnessFactor":0.5
+			}
+		}
+	],
+	"meshes":[
+		{
+			"name":"Object002_Material #86_0",
+			"primitives":[
+				{
+					"attributes":{
+						"POSITION":0,
+						"NORMAL":1,
+						"TEXCOORD_0":2
+					},
+					"indices":3,
+					"material":0
+				}
+			]
+		}
+	],
+	"textures":[
+		{
+			"sampler":0,
+			"source":0
+		},
+		{
+			"sampler":0,
+			"source":1
+		}
+	],
+	"images":[
+		{
+			"mimeType":"image/png",
+			"name":"Image",
+			"uri":"Image.png"
+		},
+		{
+			"mimeType":"image/png",
+			"name":"diffuse",
+			"uri":"diffuse.png"
+		}
+	],
+	"accessors":[
+		{
+			"bufferView":0,
+			"componentType":5126,
+			"count":6744,
+			"max":[
+				208.3461456298828,
+				213.3697509765625,
+				60.30982971191406
+			],
+			"min":[
+				-208.31846618652344,
+				-135.5721435546875,
+				-38.45983123779297
+			],
+			"type":"VEC3"
+		},
+		{
+			"bufferView":1,
+			"componentType":5126,
+			"count":6744,
+			"type":"VEC3"
+		},
+		{
+			"bufferView":2,
+			"componentType":5126,
+			"count":6744,
+			"type":"VEC2"
+		},
+		{
+			"bufferView":3,
+			"componentType":5123,
+			"count":18822,
+			"type":"SCALAR"
+		}
+	],
+	"bufferViews":[
+		{
+			"buffer":0,
+			"byteLength":80928,
+			"byteOffset":0,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":80928,
+			"byteOffset":80928,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":53952,
+			"byteOffset":161856,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":37644,
+			"byteOffset":215808,
+			"target":34963
+		}
+	],
+	"samplers":[
+		{
+			"magFilter":9729,
+			"minFilter":9987
+		}
+	],
+	"buffers":[
+		{
+			"byteLength":253452,
+			"uri":"scene.bin"
+		}
+	]
 }

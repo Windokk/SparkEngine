@@ -346,6 +346,9 @@
     <None Include="shaders\outlining.frag">
       <Filter>Resource Files\shaders\outlining</Filter>
     </None>
+    <None Include="assets\defaults\scenes\test_simple_light.json">
+      <Filter>Resource Files\assets\defaults\scenes</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\defaults\textures\brick.png">

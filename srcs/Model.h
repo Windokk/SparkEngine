@@ -13,7 +13,7 @@ public:
 	// Loads in a model from a file and stores the information in 'data', 'JSON', and 'file'
 	Model(const char* file, int id, unsigned int instancing = 1, std::vector<glm::mat4> instanceMatrix = {});
 
-	void Draw(Shader& shader,Camera& camera,glm::vec3 translation,glm::quat rotation,glm::vec3 scale);
+	void Draw(Shader& shader,Camera& camera,glm::vec3 translation,glm::quat rotation,glm::vec3 scale, std::vector<light_Infos> lights);
 	std::vector<Mesh> meshes;
 	int model_id;
 

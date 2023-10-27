@@ -41,45 +41,47 @@ SceneParser::SceneParser(const char* file)
 			}
 			//We load the skybox
 			for (auto& x : JSON["skybox"][0].items()) {
-				std::string shader{};
-				std::string right{};
-				std::string left{};
-				std::string top{};
-				std::string bottom{};
-				std::string front{};
-				std::string back{};
+				if (x.value() != NULL) {
+					std::string shader{};
+					std::string right{};
+					std::string left{};
+					std::string top{};
+					std::string bottom{};
+					std::string front{};
+					std::string back{};
 
-				for (auto& y : JSON["skybox"][0][x.key()][0].items()) {
-					shader = ((std::string)y.value());
-				}
-				for (auto& y : JSON["skybox"][0][x.key()][1].items()) {
-					right = (std::string)y.value();
-				}
-				for (auto& y : JSON["skybox"][0][x.key()][2].items()) {
-					left = (std::string)y.value();
-				}
-				for (auto& y : JSON["skybox"][0][x.key()][3].items()) {
-					top = (std::string)y.value();
-				}
-				for (auto& y : JSON["skybox"][0][x.key()][4].items()) {
-					bottom = (std::string)y.value();
-				}
-				for (auto& y : JSON["skybox"][0][x.key()][5].items()) {
-					front = (std::string)y.value();
-				}
-				for (auto& y : JSON["skybox"][0][x.key()][6].items()) {
-					back = (std::string)y.value();
-				}
+					for (auto& y : JSON["skybox"][0][x.key()][0].items()) {
+						shader = ((std::string)y.value());
+					}
+					for (auto& y : JSON["skybox"][0][x.key()][1].items()) {
+						right = (std::string)y.value();
+					}
+					for (auto& y : JSON["skybox"][0][x.key()][2].items()) {
+						left = (std::string)y.value();
+					}
+					for (auto& y : JSON["skybox"][0][x.key()][3].items()) {
+						top = (std::string)y.value();
+					}
+					for (auto& y : JSON["skybox"][0][x.key()][4].items()) {
+						bottom = (std::string)y.value();
+					}
+					for (auto& y : JSON["skybox"][0][x.key()][5].items()) {
+						front = (std::string)y.value();
+					}
+					for (auto& y : JSON["skybox"][0][x.key()][6].items()) {
+						back = (std::string)y.value();
+					}
 
-				SkyboxData skybox_data;
-				skybox_data.shader = shader;
-				skybox_data.right = right;
-				skybox_data.left = left;
-				skybox_data.top = top;
-				skybox_data.bottom = bottom;
-				skybox_data.front = front;
-				skybox_data.back = back;
-				skybox = skybox_data;
+					SkyboxData skybox_data;
+					skybox_data.shader = shader;
+					skybox_data.right = right;
+					skybox_data.left = left;
+					skybox_data.top = top;
+					skybox_data.bottom = bottom;
+					skybox_data.front = front;
+					skybox_data.back = back;
+					skybox = skybox_data;
+				}
 			}
 			//We load the objects
 			for (unsigned int i = 0; i < JSON["objects"].size(); i++) {
@@ -142,19 +144,150 @@ SceneParser::SceneParser(const char* file)
 								}
 								if (comp_name.key() == "light") {
 									LightComponent light;
-									std::string light_name;
+									lightType type;
+									glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f);
+									glm::vec3 direction = glm::vec3(0.0f, 0.0f, 0.0f);
+									glm::vec3 ambient;
+									glm::vec3 diffuse;
+									glm::vec3 specular;
+									float constant = 1.0f;
+									float linear = 0.09f;
+									float quadratic = 0.032f;
+									float cutOff = glm::cos(glm::radians(12.5f));
+									float outerCutOff = glm::cos(glm::radians(15.0f));
 									float intensity;
-									glm::vec4 color;
+									glm::vec3 color;
+									//Type
 									for (auto& param : comp_properties[0].items()) {
-										light_name = param.value();
+										std::string type_str= (std::string)param.value();
+										if (type_str == "directionnal") {
+											type = LT_DIRECTIONNAL;
+										}
+										else if (type_str == "point") {
+											type = LT_POINT;
+										}
+										else if (type_str == "spot") {
+											type = LT_SPOT;
+										}
 									}
-									for (auto& param : comp_properties[1].items()) {
-										intensity = std::stof((std::string)param.value());
+									switch (type) {
+									case LT_DIRECTIONNAL:
+										//Direction
+										for (auto& param : comp_properties[1].items()) {
+											direction = glm::vec3(std::stof((std::string)param.value()[0]), std::stof((std::string)param.value()[1]), std::stof((std::string)param.value()[2]));
+										}
+										//Ambient
+										for (auto& param : comp_properties[2].items()) {
+											ambient = glm::vec3(std::stof((std::string)param.value()[0]), std::stof((std::string)param.value()[1]), std::stof((std::string)param.value()[2]));
+										}
+										//Diffuse
+										for (auto& param : comp_properties[3].items()) {
+											diffuse = glm::vec3(std::stof((std::string)param.value()[0]), std::stof((std::string)param.value()[1]), std::stof((std::string)param.value()[2]));
+										}
+										//Specular
+										for (auto& param : comp_properties[4].items()) {
+											specular = glm::vec3(std::stof((std::string)param.value()[0]), std::stof((std::string)param.value()[1]), std::stof((std::string)param.value()[2]));
+										}
+										//Intensity
+										for (auto& param : comp_properties[5].items()) {
+											intensity = std::stof((std::string)param.value());
+										}
+										//Color
+										for (auto& param : comp_properties[6].items()) {
+											color = glm::vec3(std::stof((std::string)param.value()[0]), std::stof((std::string)param.value()[1]), std::stof((std::string)param.value()[2]));
+										}
+										break;
+									case LT_POINT:
+										//Ambient
+										for (auto& param : comp_properties[1].items()) {
+											ambient = glm::vec3(std::stof((std::string)param.value()[0]), std::stof((std::string)param.value()[1]), std::stof((std::string)param.value()[2]));
+										}
+										//Diffuse
+										for (auto& param : comp_properties[2].items()) {
+											diffuse = glm::vec3(std::stof((std::string)param.value()[0]), std::stof((std::string)param.value()[1]), std::stof((std::string)param.value()[2]));
+										}
+										//Specular
+										for (auto& param : comp_properties[3].items()) {
+											specular = glm::vec3(std::stof((std::string)param.value()[0]), std::stof((std::string)param.value()[1]), std::stof((std::string)param.value()[2]));
+										}
+										//Constant
+										for (auto& param : comp_properties[4].items()) {
+											constant = std::stof((std::string)param.value());
+										}
+										//Linear
+										for (auto& param : comp_properties[5].items()) {
+											linear = std::stof((std::string)param.value());
+										}
+										//Quadratic
+										for (auto& param : comp_properties[6].items()) {
+											quadratic = std::stof((std::string)param.value());
+										}
+										//Intensity
+										for (auto& param : comp_properties[7].items()) {
+											intensity = std::stof((std::string)param.value());
+										}
+										//Color
+										for (auto& param : comp_properties[8].items()) {
+											color = glm::vec3(std::stof((std::string)param.value()[0]), std::stof((std::string)param.value()[1]), std::stof((std::string)param.value()[2]));
+										}
+										break;
+									case LT_SPOT:
+										//Direction
+										for (auto& param : comp_properties[1].items()) {
+											direction = glm::vec3(std::stof((std::string)param.value()[0]), std::stof((std::string)param.value()[1]), std::stof((std::string)param.value()[2]));
+										}
+										//Ambient
+										for (auto& param : comp_properties[2].items()) {
+											ambient = glm::vec3(std::stof((std::string)param.value()[0]), std::stof((std::string)param.value()[1]), std::stof((std::string)param.value()[2]));
+										}
+										//Diffuse
+										for (auto& param : comp_properties[3].items()) {
+											diffuse = glm::vec3(std::stof((std::string)param.value()[0]), std::stof((std::string)param.value()[1]), std::stof((std::string)param.value()[2]));
+										}
+										//Specular
+										for (auto& param : comp_properties[4].items()) {
+											specular = glm::vec3(std::stof((std::string)param.value()[0]), std::stof((std::string)param.value()[1]), std::stof((std::string)param.value()[2]));
+										}
+										//Constant
+										for (auto& param : comp_properties[5].items()) {
+											constant = std::stof((std::string)param.value());
+										}
+										//Linear
+										for (auto& param : comp_properties[6].items()) {
+											linear = std::stof((std::string)param.value());
+										}
+										//Quadratic
+										for (auto& param : comp_properties[7].items()) {
+											quadratic = std::stof((std::string)param.value());
+										}
+										//CutOff
+										for (auto& param : comp_properties[8].items()) {
+											cutOff = glm::cos(glm::radians(std::stof((std::string)param.value())));
+										}
+										//OuterCutOff
+										for (auto& param : comp_properties[9].items()) {
+											outerCutOff = glm::cos(glm::radians(std::stof((std::string)param.value())));
+										}
+										//Intensity
+										for (auto& param : comp_properties[10].items()) {
+											intensity = std::stof((std::string)param.value());
+										}
+										//Color
+										for (auto& param : comp_properties[11].items()) {
+											color = glm::vec3(std::stof((std::string)param.value()[0]), std::stof((std::string)param.value()[1]), std::stof((std::string)param.value()[2]));
+										}
+										break;
 									}
-									for (auto& param : comp_properties[2].items()) {
-										color = glm::vec4(std::stof((std::string)param.value()[0]), std::stof((std::string)param.value()[1]), std::stof((std::string)param.value()[2]), std::stof((std::string)param.value()[3]));
-									}
-									light.light_name = light_name;
+									light.type = type;
+									light.direction = direction;
+									light.ambient = ambient;
+									light.diffuse = diffuse;
+									light.specular = specular;
+									light.constant = constant;
+									light.linear = linear;
+									light.quadratic = quadratic;
+									light.cutOff = cutOff;
+									light.outerCutOff = outerCutOff;
 									light.intensity = intensity;
 									light.color = color;
 									components.push_back(light);

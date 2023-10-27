@@ -41,7 +41,7 @@ Mesh::Mesh(std::vector <Vertex>& vertices, std::vector <GLuint>& indices, std::v
 
 }
 
-void Mesh::Draw(Shader& shader, Camera& camera, glm::mat4 matrix, glm::vec3 translation, glm::quat rotation, glm::vec3 scale)
+void Mesh::Draw(Shader& shader, Camera& camera, glm::mat4 matrix, glm::vec3 translation, glm::quat rotation, glm::vec3 scale, std::vector<light_Infos> lights)
 {
 	// Bind shader to be able to access uniforms
 
@@ -67,9 +67,60 @@ void Mesh::Draw(Shader& shader, Camera& camera, glm::mat4 matrix, glm::vec3 tran
 		textures[i].texUnit(shader, (type + num).c_str(), i);
 		textures[i].Bind();
 	}
+
 	// Take care of the camera Matrix
-	glUniform3f(glGetUniformLocation(shader.ID, "camPos"), camera.Position.x, camera.Position.y, camera.Position.z);
+	shader.setVec3("camPos", camera.Position);
 	camera.Matrix(shader, "camMatrix");
+	shader.setFloat("material.shininess", 32.0f);
+	int numDirLights = 0;
+	int numPointLights = 0;
+	int numSpotLights = 0;
+	for (int i = 0; i < lights.size(); i++) {
+		switch (lights[i].type) {
+			case LT_DIRECTIONNAL:
+				numDirLights += 1;
+				shader.setVec3("dirLights[" + std::to_string(numDirLights - 1) + "].direction", lights[i].direction);
+				shader.setVec3("dirLights[" + std::to_string(numDirLights - 1) + "].ambient", lights[i].ambient);
+				shader.setVec3("dirLights[" + std::to_string(numDirLights - 1) + "].diffuse", lights[i].diffuse);
+				shader.setVec3("dirLights[" + std::to_string(numDirLights - 1) + "].specular", lights[i].specular);
+				shader.setFloat("dirLights[" + std::to_string(numDirLights - 1) + "].intensity", lights[i].intensity);
+				shader.setVec3("dirLights[" + std::to_string(numDirLights - 1) + "].color", lights[i].color);
+
+				break;
+			case LT_POINT:
+				numPointLights += 1;
+				shader.setVec3("pointLights[" + std::to_string(numPointLights - 1) + "].position", lights[i].position);
+				shader.setVec3("pointLights[" + std::to_string(numPointLights - 1) + "].ambient", lights[i].ambient);
+				shader.setVec3("pointLights[" + std::to_string(numPointLights - 1) + "].diffuse", lights[i].diffuse);
+				shader.setVec3("pointLights[" + std::to_string(numPointLights - 1) + "].specular", lights[i].specular);
+				shader.setFloat("pointLights[" + std::to_string(numPointLights - 1) + "].constant", lights[i].constant);
+				shader.setFloat("pointLights[" + std::to_string(numPointLights - 1) + "].linear", lights[i].linear);
+				shader.setFloat("pointLights[" + std::to_string(numPointLights - 1) + "].quadratic", lights[i].quadratic);
+				shader.setFloat("pointLights[" + std::to_string(numPointLights - 1) + "].intensity", lights[i].intensity);
+				shader.setVec3("pointLights[" + std::to_string(numPointLights - 1) + "].color", lights[i].color);
+				break;
+			case LT_SPOT:
+				numSpotLights += 1;
+				shader.setVec3("spotLights[" + std::to_string(numSpotLights - 1) + "].position", lights[i].position);
+				shader.setVec3("spotLights[" + std::to_string(numSpotLights - 1) + "].direction", lights[i].direction);
+				shader.setVec3("spotLights[" + std::to_string(numSpotLights - 1) + "].ambient", lights[i].ambient);
+				shader.setVec3("spotLights[" + std::to_string(numSpotLights - 1) + "].diffuse", lights[i].diffuse);
+				shader.setVec3("spotLights[" + std::to_string(numSpotLights - 1) + "].specular", lights[i].specular);
+				shader.setFloat("spotLights[" + std::to_string(numSpotLights - 1) + "].constant", lights[i].constant);
+				shader.setFloat("spotLights[" + std::to_string(numSpotLights - 1) + "].linear", lights[i].linear);
+				shader.setFloat("spotLights[" + std::to_string(numSpotLights - 1) + "].quadratic", lights[i].quadratic);
+				shader.setFloat("spotLights[" + std::to_string(numSpotLights - 1) + "].cutOff", lights[i].cutOff);
+				shader.setFloat("spotLights[" + std::to_string(numSpotLights - 1) + "].outerCutOff", lights[i].outerCutOff);
+				shader.setFloat("spotLights[" + std::to_string(numSpotLights - 1) + "].intensity", lights[i].intensity);
+				shader.setVec3("spotLights[" + std::to_string(numSpotLights - 1) + "].color", lights[i].color);
+				break;
+		}
+		
+	}
+
+	shader.setInt("numDirLights", numDirLights);
+	shader.setInt("numPointLights", numPointLights);
+	shader.setInt("numSpotLights", numSpotLights);
 
 	if (instancing == 1)
 	{

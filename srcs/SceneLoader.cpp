@@ -46,6 +46,8 @@ unsigned int skyboxIndices[] = {
 	6, 2, 3
 };
 
+
+
 SceneLoader::SceneLoader() {
 }
 
@@ -149,65 +151,10 @@ void SceneLoader::Load1(const char* loaded_file) {
 		std::cout << "Post-Processing Framebuffer error: " << fboStatus << std::endl;
 
 	//We create the lights
-	
-	for (int i = 0; i < parser.objects.size();i++) {
-		for (int a = 0; a < parser.objects[i].components.size(); a++) {
-			if (std::holds_alternative<LightComponent>(parser.objects[i].components[a])) {
-				LightComponent light = std::get<LightComponent>(parser.objects[i].components[a]);
-				Light_Object_Infos infos;
-				infos.lightColor = light.color;
-				infos.lightIntensity = light.intensity;
-				infos.lightPos = objects_Transforms[i].Location;
-				infos.lightModel = glm::mat4(1.0f);
-				infos.lightModel = glm::translate(infos.lightModel, infos.lightPos);
-				light_object_infos.push_back(infos);
-			}
-		}
-	}
-
-	glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+	CreateLights();
 
 	//We set the shaders's values
-	for (int i = 0; i < parser.shaders.size(); i++)
-	{
-		if (shaders[i].name == "defaultShader") {
-
-			if (light_object_infos.size() > 0) {
-				shaders[i].shader.Activate();
-				glUniformMatrix4fv(glGetUniformLocation(shaders[i].shader.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
-				glUniform4f(glGetUniformLocation(shaders[i].shader.ID, "lightColor"), light_object_infos[0].lightColor.x, light_object_infos[0].lightColor.y, light_object_infos[0].lightColor.z, light_object_infos[0].lightColor.w);
-				glUniform3f(glGetUniformLocation(shaders[i].shader.ID, "lightPos"), light_object_infos[0].lightPos.x, light_object_infos[0].lightPos.y, light_object_infos[0].lightPos.z);
-				glUniform1f(glGetUniformLocation(shaders[i].shader.ID, "light_intensity"), light_object_infos[0].lightIntensity);
-			}
-
-		}
-		else if (shaders[i].name == "skyboxShader")
-		{
-			skyboxShader = shaders[i].shader;
-			shaders[i].shader.Activate();
-			glUniform1i(glGetUniformLocation(shaders[i].shader.ID, "skybox"), 0);
-		}
-		else if (shaders[i].name == "lightShader")
-		{
-			if (light_object_infos.size() > 0) {
-				shaders[i].shader.Activate();
-				glUniformMatrix4fv(glGetUniformLocation(shaders[i].shader.ID, "model"), 1, GL_FALSE, glm::value_ptr(light_object_infos[0].lightModel));
-				glUniform4f(glGetUniformLocation(shaders[i].shader.ID, "lightColor"), light_object_infos[0].lightColor.x, light_object_infos[0].lightColor.y, light_object_infos[0].lightColor.z, light_object_infos[0].lightColor.w);
-			}
-		}
-		else if (shaders[i].name == "framebufferShader") {
-			framebufferProgram = shaders[i].shader;
-			shaders[i].shader.Activate();
-			glUniform1i(glGetUniformLocation(shaders[i].shader.ID, "screenTexture"), 0);
-		}
-		else if (shaders[i].name.substr(0, 8) == "particle") {
-			if (light_object_infos.size() > 0) {
-				shaders[i].shader.Activate();
-				glUniform4f(glGetUniformLocation(shaders[i].shader.ID, "lightColor"), light_object_infos[0].lightColor.x, light_object_infos[0].lightColor.y, light_object_infos[0].lightColor.z, light_object_infos[0].lightColor.w);
-				glUniform3f(glGetUniformLocation(shaders[i].shader.ID, "lightPos"), light_object_infos[0].lightPos.x, light_object_infos[0].lightPos.y, light_object_infos[0].lightPos.z);
-			}
-		}
-	}
+	SetShadersValues();
 }
 
 void SceneLoader::Load2() {
@@ -314,33 +261,36 @@ void SceneLoader::Load2() {
 	//glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
 	// Cycles through all the textures and attaches them to the cubemap object
-	for (unsigned int i = 0; i < 6; i++)
-	{
-		int width, height, nrChannels;
-		unsigned char* data = stbi_load(facesCubemap[i].c_str(), &width, &height, &nrChannels, 0);
-		if (data)
+	if (parser.skybox.top != "") {
+		for (unsigned int i = 0; i < 6; i++)
 		{
-			stbi_set_flip_vertically_on_load(false);
-			glTexImage2D
-			(
-				GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-				0,
-				GL_RGB,
-				width,
-				height,
-				0,
-				GL_RGB,
-				GL_UNSIGNED_BYTE,
-				data
-			);
-			stbi_image_free(data);
+			int width, height, nrChannels;
+			unsigned char* data = stbi_load(facesCubemap[i].c_str(), &width, &height, &nrChannels, 0);
+			if (data)
+			{
+				stbi_set_flip_vertically_on_load(false);
+				glTexImage2D
+				(
+					GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+					0,
+					GL_RGB,
+					width,
+					height,
+					0,
+					GL_RGB,
+					GL_UNSIGNED_BYTE,
+					data
+				);
+				stbi_image_free(data);
+			}
+			else
+			{
+				std::cout << "Failed to load texture: " << facesCubemap[i] << std::endl;
+				stbi_image_free(data);
+			}
 		}
-		else
-		{
-			std::cout << "Failed to load texture: " << facesCubemap[i] << std::endl;
-			stbi_image_free(data);
-		}   
 	}
+	
 }
 
 void SceneLoader::Unload() {
@@ -364,7 +314,26 @@ void SceneLoader::Update(Camera cam)
 				}
 				for (int x = 0; x < models.size(); x++) {
 					if (models[x].model_id == i) {
-						models[x].Draw(shaders[shader_id].shader, cam, objects_Transforms[i].Location, objects_Transforms[i].Rotation, objects_Transforms[i].Scale);
+						std::vector<light_Infos> lights;
+						for (int b = 0; b < light_object_infos.size();b++) {
+							light_Infos light;
+							light.type = light_object_infos[b].type;
+							light.position = objects_Transforms[light_object_infos[b].objectID].Location;
+							light.direction = light_object_infos[b].lightDirection;
+							light.ambient = light_object_infos[b].ambient;
+							light.diffuse = light_object_infos[b].diffuse;
+							light.specular = light_object_infos[b].specular;
+							light.constant = light_object_infos[b].constant;
+							light.linear = light_object_infos[b].linear;
+							light.quadratic = light_object_infos[b].quadratic;
+							light.cutOff = light_object_infos[b].cutOff;
+							light.outerCutOff = light_object_infos[b].outerCutOff;
+							light.intensity = light_object_infos[b].lightIntensity;
+							light.color = light_object_infos[b].lightColor;
+							lights.push_back(light); 
+						}
+						
+						models[x].Draw(shaders[shader_id].shader, cam, objects_Transforms[i].Location, objects_Transforms[i].Rotation, objects_Transforms[i].Scale, lights);
 					}
 				}
 				
@@ -387,4 +356,85 @@ void SceneLoader::LoadNewScene(const char* scene) {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	SceneLoader::Load2();
+}
+
+void SceneLoader::CreateLights() {
+	for (int i = 0; i < parser.objects.size();i++) {
+		for (int a = 0; a < parser.objects[i].components.size(); a++) {
+			if (std::holds_alternative<LightComponent>(parser.objects[i].components[a])) {
+				LightComponent light = std::get<LightComponent>(parser.objects[i].components[a]);
+				Light_Object_Infos infos;
+				infos.type = light.type;
+				infos.lightDirection = light.direction;
+				infos.ambient = light.ambient;
+				infos.diffuse = light.diffuse;
+				infos.specular = light.specular;
+				infos.constant = light.constant;
+				infos.linear = light.linear;
+				infos.quadratic = light.quadratic;
+				infos.cutOff = light.cutOff;
+				infos.outerCutOff = light.outerCutOff;
+				infos.lightIntensity = light.intensity;
+				infos.lightColor = light.color;
+				infos.lightModel = glm::mat4(1.0f);
+				infos.lightModel = glm::translate(infos.lightModel, infos.lightPos);
+				infos.objectID = i;
+				light_object_infos.push_back(infos);
+
+			}
+		}
+	}
+
+}
+
+void SceneLoader::SetLightValues(int objectID, int componentID){
+	LightComponent lightComponent = std::get<LightComponent>(parser.objects[objectID].components[componentID]);
+	Light_Object_Infos infos;
+	infos.lightColor = lightComponent.color;
+	infos.lightIntensity = lightComponent.intensity;
+	infos.lightPos = objects_Transforms[objectID].Location;
+	infos.lightModel = glm::mat4(1.0f);
+	infos.lightModel = glm::translate(infos.lightModel, infos.lightPos);
+	infos.objectID = objectID;
+	for (int i = 0; i < light_object_infos.size(); i++) {
+		if (light_object_infos[i].objectID = objectID) {
+			light_object_infos[i] = infos;
+		}
+	}
+}
+
+void SceneLoader::SetShadersValues() {
+	
+	glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+
+	for (int i = 0; i < parser.shaders.size(); i++)
+	{
+		
+		if (shaders[i].name == "skyboxShader")
+		{
+			skyboxShader = shaders[i].shader;
+			shaders[i].shader.Activate();
+			glUniform1i(glGetUniformLocation(shaders[i].shader.ID, "skybox"), 0);
+		}
+		else if (shaders[i].name == "lightShader")
+		{
+			if (light_object_infos.size() > 0) {
+				shaders[i].shader.Activate();
+				glUniformMatrix4fv(glGetUniformLocation(shaders[i].shader.ID, "model"), 1, GL_FALSE, glm::value_ptr(light_object_infos[0].lightModel));
+				glUniform3f(glGetUniformLocation(shaders[i].shader.ID, "lightColor"), light_object_infos[0].lightColor.x, light_object_infos[0].lightColor.y, light_object_infos[0].lightColor.z);
+			}
+		}
+		else if (shaders[i].name == "framebufferShader") {
+			framebufferProgram = shaders[i].shader;
+			shaders[i].shader.Activate();
+			glUniform1i(glGetUniformLocation(shaders[i].shader.ID, "screenTexture"), 0);
+		}
+		else if (shaders[i].name.substr(0, 8) == "particle") {
+			if (light_object_infos.size() > 0) {
+				shaders[i].shader.Activate();
+				glUniform3f(glGetUniformLocation(shaders[i].shader.ID, "lightColor"), light_object_infos[0].lightColor.x, light_object_infos[0].lightColor.y, light_object_infos[0].lightColor.z);
+				glUniform3f(glGetUniformLocation(shaders[i].shader.ID, "lightPos"), light_object_infos[0].lightPos.x, light_object_infos[0].lightPos.y, light_object_infos[0].lightPos.z);
+			}
+		}
+	}
 }

@@ -1459,7 +1459,7 @@ void ImGui::SeparatorEx(ImGuiSeparatorFlags flags, float thickness)
     }
 }
 
-void ImGui::Separator()
+void ImGui::Separator(float thickness)
 {
     ImGuiContext& g = *GImGui;
     ImGuiWindow* window = g.CurrentWindow;
@@ -1470,7 +1470,7 @@ void ImGui::Separator()
     // FIXME: We cannot g.Style.SeparatorTextBorderSize for thickness as it relates to SeparatorText() which is a decorated separator, not defaulting to 1.0f.
     ImGuiSeparatorFlags flags = (window->DC.LayoutType == ImGuiLayoutType_Horizontal) ? ImGuiSeparatorFlags_Vertical : ImGuiSeparatorFlags_Horizontal;
     flags |= ImGuiSeparatorFlags_SpanAllColumns; // NB: this only applies to legacy Columns() api as they relied on Separator() a lot.
-    SeparatorEx(flags, 1.0f);
+    SeparatorEx(flags, thickness);
 }
 
 void ImGui::SeparatorTextEx(ImGuiID id, const char* label, const char* label_end, float extra_w)

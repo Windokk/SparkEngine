@@ -12,6 +12,8 @@ void ImGuiMain::Load(GLFWwindow* window, ImGuiIO& io)
 	windowFlags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoBringToFrontOnFocus;
 	io.ConfigFlags |= (ImGuiConfigFlags_NoMouseCursorChange, ImGuiConfigFlags_DockingEnable);
 	io.Fonts->AddFontFromFileTTF("OpenSans-Medium.ttf", 13);
+	ImGuiStyle& style = ImGui::GetStyle();
+	style.WindowRounding = 3.0f;
 }
 
 void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& selectedObjectID, ImGuiIO& io)
@@ -19,6 +21,10 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
+
+	if (io.KeysDown[GLFW_KEY_F]) {
+		cam.Position = loader.objects_Transforms[selectedObjectID].Location;
+	}
 
 	if (ImGui::BeginMainMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
@@ -153,21 +159,151 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 	isHoverViewport = (ImGui::IsItemHovered() || ImGui::IsWindowHovered()) && (io.MouseDown[GLFW_MOUSE_BUTTON_LEFT]);
 	ImGui::End();
 
-	//Outliner
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		//Outliner
 	ImGui::Begin("Outliner", &showCloseButton);
-	ImGui::BeginListBox("##", ImVec2(200, 80));
-	for (int i = 0; i < loader.parser.objects.size(); i++) {
-		if (ImGui::Selectable((loader.parser.objects[i].name).c_str())) {
-			selectedObjectID = i;
-			std::cout << selectedObjectID;
+	if (ImGui::BeginListBox("##", ImVec2(200, 80))) {
+		for (int i = 0; i < loader.parser.objects.size(); i++) {
+			if (ImGui::Selectable((loader.parser.objects[i].name).c_str())) {
+				selectedObjectID = i;
+			}
+		}
+		ImGui::EndListBox();
+	}
+	ImGui::End();
+	
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		//Details
+	ImGui::Begin("Details", &showCloseButton);
+	std::string displayName = "Name : " + loader.parser.objects[selectedObjectID].name;
+	ImGui::Text(displayName.c_str());
+	if (ImGui::IsItemHovered()) {
+		if (io.MouseClicked[GLFW_MOUSE_BUTTON_RIGHT]) {
+			showRenameDialog = true;
 		}
 	}
-	ImGui::EndListBox();
+	ImGui::Separator(3.0f);
+		//Transform
+	for (int a = 0; a < loader.parser.objects[selectedObjectID].components.size(); a++) {
+		if (std::holds_alternative<TransformComponent>(loader.parser.objects[selectedObjectID].components[a])) {
+			ImGui::Text("Transform");
+			ImGui::Separator();
+			Transform transform = loader.objects_Transforms[selectedObjectID];
+			///////////////////////////////////
+			//// LOCATION /////////////////////
+			///////////////////////////////////
+			ImGui::Text("Location : ");
+			ImGui::SameLine();
+			static float Location[3];
+			Location[0] = transform.Location.x;
+			Location[1] = transform.Location.y;
+			Location[2] = transform.Location.z;
+			ImGui::InputFloat3("##location", Location);
+			transform.Location.x = Location[0];
+			transform.Location.y = Location[1];
+			transform.Location.z = Location[2];
+			////////////////////////////////////
+			//// ROTATION //////////////////////
+			////////////////////////////////////
+			ImGui::Text("Rotation : ");
+			ImGui::SameLine();
+
+			// Extract axis and angle from the quaternion
+			glm::vec3 axis = glm::axis(transform.Rotation);
+			float angle = glm::angle(transform.Rotation);
+
+			// Modify the axis and angle values
+			static glm::vec3 axisAngle = axis * angle;
+			ImGui::InputFloat3("##axis", &axisAngle[0]);
+
+			// Calculate the resulting vector from the modified axis and angle
+			glm::vec3 newAxis = glm::normalize(axisAngle);
+			float newAngle = glm::length(axisAngle);
+
+			// Convert the modified vector back to a quaternion
+			if (glm::length(newAxis) > 0) {
+				transform.Rotation = glm::angleAxis(glm::radians(newAngle), newAxis);
+			}
+			else {
+				transform.Rotation = glm::quat(1, 0, 0, 0); // Default to identity quaternion if the vector is zero
+			}
+			////////////////////////////////////
+			//// SCALE /////////////////////////
+			////////////////////////////////////
+			ImGui::Text("Scale :       ");
+			ImGui::SameLine();
+			static float Scale[3];
+			Scale[0] = transform.Scale.x;
+			Scale[1] = transform.Scale.y;
+			Scale[2] = transform.Scale.z;
+			ImGui::InputFloat3("##scale", Scale);
+			transform.Scale.x = Scale[0];
+			transform.Scale.y = Scale[1];
+			transform.Scale.z = Scale[2];
+
+			// Reapplying the new transform to the selected Object transform
+			loader.objects_Transforms[selectedObjectID] = transform;
+		}
+		else if (std::holds_alternative<ModelComponent>(loader.parser.objects[selectedObjectID].components[a])) {
+			ImGui::Separator(3.0f);
+			ImGui::Text("Model");
+			ImGui::Separator();
+			ModelComponent model = std::get<ModelComponent>(loader.parser.objects[selectedObjectID].components[a]);
+			char ModelPathbuffer[255]{};
+			ImGui::Text("Model Path : ");
+			ImGui::SameLine();
+			ImGui::InputTextWithHint("##ModelPath", model.model_path.c_str(), ModelPathbuffer, sizeof(ModelPathbuffer));
+			char Shaderbuffer[255]{};
+			ImGui::Text("Shader :         ");
+			ImGui::SameLine();
+			ImGui::InputTextWithHint("##Shader", model.shader.c_str(), Shaderbuffer, sizeof(Shaderbuffer));
+		}
+		else if (std::holds_alternative<LightComponent>(loader.parser.objects[selectedObjectID].components[a])) {
+			ImGui::Separator(3.0f);
+			ImGui::Text("Light");
+			ImGui::Separator();
+			LightComponent light = std::get<LightComponent>(loader.parser.objects[selectedObjectID].components[a]);
+			static float intensity;
+			intensity = light.intensity;
+			ImGui::Text("Intensity :     ");
+			ImGui::SameLine();
+			ImGui::InputFloat("##Intensity", &intensity);
+			light.intensity = intensity;
+			ImGui::Text("Light Color : ");
+			ImGui::SameLine();
+			float light_color[3];
+			light_color[0] = light.color.x;
+			light_color[1] = light.color.y;
+			light_color[2] = light.color.z;
+			ImGui::ColorEdit3("##LightColor", light_color, ImGuiColorEditFlags_DisplayRGB);
+			light.color = glm::vec3(light_color[0], light_color[1], light_color[2]);
+
+		}
+	}  
+	
+
 	ImGui::End();
 
-	//Details
-	ImGui::Begin("Details", &showCloseButton);
-	ImGui::End();
+		//Object Renaming Dialog
+	if (showRenameDialog) {   
+		ImGui::OpenPopup("Action Menu");
+		if (ImGui::BeginPopupModal("Action Menu", &showRenameDialog, ImGuiWindowFlags_AlwaysAutoResize)) {
+			char buf[255]{};
+			ImGui::InputTextWithHint("##Rename", loader.parser.objects[selectedObjectID].name.c_str(), buf, sizeof(buf));
+			if (io.KeysDown[GLFW_KEY_ENTER]) {
+				showRenameDialog = false;
+				loader.parser.objects[selectedObjectID].name = buf;
+			}
+			if (io.MouseClicked[GLFW_MOUSE_BUTTON_LEFT] && not ImGui::IsItemHovered()) {
+				showRenameDialog = false;
+			}
+			ImGui::EndPopup();
+		}
+	}
+
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	//Content Browser
 	ImGui::Begin("Content Browser", &showCloseButton, (ImGuiWindowFlags_MenuBar));
@@ -211,6 +347,8 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 		ImGui::EndMenuBar();
 	}
 	ImGui::End();
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	ImGui::EndFrame();
 

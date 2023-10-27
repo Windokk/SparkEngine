@@ -38,13 +38,13 @@ public:
 
 	//Skybox Data
 	struct SkyboxData {
-		std::string shader;
-		std::string right;
-		std::string left;
-		std::string top;
-		std::string bottom;
-		std::string front;
-		std::string back;
+		std::string shader = "";
+		std::string right = "";
+		std::string left = "";
+		std::string top = "";
+		std::string bottom = "";
+		std::string front = "";
+		std::string back = "";
 	} skybox;
 	
 	std::vector<Object> objects;

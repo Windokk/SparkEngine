@@ -201,6 +201,7 @@
     <None Include="assets\defaults\models\sword\scene.gltf" />
     <None Include="assets\defaults\scenes\space.json" />
     <None Include="assets\defaults\scenes\test.json" />
+    <None Include="assets\defaults\scenes\test_simple_light.json" />
     <None Include="shaders\asteroid.vert" />
     <None Include="shaders\default.frag" />
     <None Include="shaders\default.vert" />

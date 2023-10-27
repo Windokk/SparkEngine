@@ -7,6 +7,7 @@
 #include"EBO.h"
 #include"Camera.h"
 #include"Texture.h"
+#include"EngineUtils.h"
 
 class Mesh
 {
@@ -27,16 +28,9 @@ public:
 		std::vector <glm::mat4> instanceMatrix = {});
 
 	// Draws the mesh
-	void Draw
-	(
-		Shader& shader,
-		Camera& camera,
-		glm::mat4 matrix,
-		glm::vec3 translation,
-		glm::quat rotation,
-		glm::vec3 scale
-		
-		
-	);
+	void Draw(Shader& shader, Camera& camera, glm::mat4 matrix, glm::vec3 translation, glm::quat rotation, glm::vec3 scale, std::vector<light_Infos> lights);
+
+
+	
 };
 #endif
