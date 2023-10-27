@@ -185,7 +185,6 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 		}
 	}
 	ImGui::Separator(3.0f);
-		//Transform
 	for (int a = 0; a < loader.parser.objects[selectedObjectID].components.size(); a++) {
 		if (std::holds_alternative<TransformComponent>(loader.parser.objects[selectedObjectID].components[a])) {
 			ImGui::Text("Transform");
@@ -265,6 +264,20 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 			ImGui::Text("Light");
 			ImGui::Separator();
 			LightComponent light = std::get<LightComponent>(loader.parser.objects[selectedObjectID].components[a]);
+			switch (light.type) {
+			case LT_DIRECTIONNAL:
+				ImGui::Text("Light Type :   Directionnal");
+				break;
+			case LT_POINT:
+				ImGui::Text("Light Type :   Point");
+				break;
+			case LT_SPOT:
+				ImGui::Text("Light Type :   Spot");
+				break;
+			}
+
+
+
 			static float intensity;
 			intensity = light.intensity;
 			ImGui::Text("Intensity :     ");
