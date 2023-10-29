@@ -46,8 +46,6 @@ unsigned int skyboxIndices[] = {
 	6, 2, 3
 };
 
-
-
 SceneLoader::SceneLoader() {
 }
 
@@ -66,7 +64,7 @@ void SceneLoader::Load1(const char* loaded_file) {
 		}
 		else {
 			infos.name = parser.shaders[i].name;
-			infos.shader = (Shader((parser.shaders[i].vert).c_str(), (parser.shaders[i].frag).c_str(), ""));
+			infos.shader = Shader((parser.shaders[i].vert).c_str(), (parser.shaders[i].frag).c_str(), "");
 			shaders.push_back(infos);
 		}
 
@@ -131,30 +129,15 @@ void SceneLoader::Load1(const char* loaded_file) {
 	if (fboStatus != GL_FRAMEBUFFER_COMPLETE)
 		std::cout << "Framebuffer error: " << fboStatus << std::endl;
 
-	// Create FrameBuffer Object
-	glGenFramebuffers(1, &postProcessingFBO);
-	glBindFramebuffer(GL_FRAMEBUFFER, postProcessingFBO);
-
-	// Create Framebuffer Texture
-	glGenTextures(1, &postProcessingTexture);
-	glBindTexture(GL_TEXTURE_2D, postProcessingTexture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width_, height_, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, postProcessingTexture, 0);
-
-	// Error checking framebuffer
-	fboStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-	if (fboStatus != GL_FRAMEBUFFER_COMPLETE)
-		std::cout << "Post-Processing Framebuffer error: " << fboStatus << std::endl;
-
+	
+	
+	//We set the shaders's values
+	SetShadersValues();
 	//We create the lights
 	CreateLights();
 
-	//We set the shaders's values
-	SetShadersValues();
+	
+	
 }
 
 void SceneLoader::Load2() {
@@ -293,7 +276,6 @@ void SceneLoader::Load2() {
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CW);
-	
 }
 
 void SceneLoader::Unload() {
@@ -335,19 +317,16 @@ void SceneLoader::Update(Camera cam)
 							light.color = light_object_infos[b].lightColor;
 							lights.push_back(light); 
 						}
-						
 						models[x].Draw(shaders[shader_id].shader, cam, objects_Transforms[i].Location, objects_Transforms[i].Rotation, objects_Transforms[i].Scale, lights);
 					}
 				}
-				
 			}
 		}
 	}
-
-	
 }
 
 void SceneLoader::LoadNewScene(const char* scene) {
+
 	SceneLoader::Load1(scene);
 
 	glEnable(GL_DEPTH_TEST);
@@ -435,8 +414,8 @@ void SceneLoader::SetShadersValues() {
 		else if (shaders[i].name.substr(0, 8) == "particle") {
 			if (light_object_infos.size() > 0) {
 				shaders[i].shader.Activate();
-				glUniform3f(glGetUniformLocation(shaders[i].shader.ID, "lightColor"), light_object_infos[0].lightColor.x, light_object_infos[0].lightColor.y, light_object_infos[0].lightColor.z);
-				glUniform3f(glGetUniformLocation(shaders[i].shader.ID, "lightPos"), light_object_infos[0].lightPos.x, light_object_infos[0].lightPos.y, light_object_infos[0].lightPos.z);
+				shaders[i].shader.setVec3("lightColor", light_object_infos[0].lightColor);
+				shaders[i].shader.setVec3("lightPos", light_object_infos[0].lightPos);
 			}
 		}
 	}

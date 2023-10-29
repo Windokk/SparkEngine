@@ -15,6 +15,13 @@
 			]
 		},
 		{
+			"framebufferShader": [
+				{ "vert": "./shaders/framebuffer.vert" },
+				{ "frag": "./shaders/framebuffer.frag" },
+				{ "geom": "" }
+			]
+		},
+		{
 			"lightShader": [
 				{ "vert": "./shaders/light.vert" },
 				{ "frag": "./shaders/light.frag" },
@@ -55,8 +62,6 @@
 					]
 				}
 			]
-
-
 		},
 		{
 			"light1": [
@@ -109,11 +114,12 @@
 				{
 					"transform": [
 						{
-							"location": ["-10.0","10.0", "20.0" ] },
-								{ "rotation": [ "1.0", "0.0", "0.0", "0.0" ] },
-								{ "scale": [ "1.0", "1.0", "1.0" ] }
-							]
+							"location": [ "-10.0", "10.0", "20.0" ]
 						},
+						{ "rotation": [ "1.0", "0.0", "0.0", "0.0" ] },
+						{ "scale": [ "1.0", "1.0", "1.0" ] }
+					]
+				},
 				{
 					"light": [
 						{ "type": "spot" },
@@ -132,7 +138,7 @@
 				}
 			]
 		}
-
+		
 	]
 
 }

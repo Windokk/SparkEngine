@@ -22,6 +22,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 
+	//Teleports to selectedObject when pressing F
 	if (io.KeysDown[GLFW_KEY_F]) {
 		cam.Position = loader.objects_Transforms[selectedObjectID].Location;
 	}
@@ -151,16 +152,44 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 		ImGui::EndMainMenuBar();
 	}
 
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
 	//Im Gui Viewport
 	ImGui::SetNextWindowPos(ImVec2(320, 18));
 	ImGui::SetNextWindowSize(ImVec2(640, 395));
 	ImGui::Begin("Viewport", nullptr, windowFlags);
-	ImGui::Image((void*)(intptr_t)loader.postProcessingTexture, ImVec2(640, 360), { 0,1 }, { 1,0 });
+	ImGui::Image((void*)(intptr_t)loader.framebufferTexture, ImVec2(640, 360), { 0,1 }, { 1,0 });
 	isHoverViewport = (ImGui::IsItemHovered() || ImGui::IsWindowHovered()) && (io.MouseDown[GLFW_MOUSE_BUTTON_LEFT]);
+	if (isHoverViewport) {
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+		io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
+		// Fetches the coordinates of the cursor
+		if (io.MouseClicked) {
+			double mouseX, mouseY;
+			glfwGetCursorPos(window, &mouseX, &mouseY);  // Get the mouse position relative to the application window
+
+			int winSizeX, winSizeY;
+			glfwGetWindowSize(window, &winSizeX, &winSizeY);
+
+			// Calculate the ratio between imguiWindowSize and ImVec2(winSizeX, winSizeY)
+			float ratioX = (float)winSizeX / 640;
+			float ratioY = (float)winSizeY / 360;
+
+			// Calculate the global mouse position within the GLFW window
+			float globalMouseX = (mouseX - 328) * ratioX;
+			float globalMouseY = (mouseY - 46) * ratioY;
+		}
+		cam.Inputs(window);
+	}
+	if (!isHoverViewport) {
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange, ImGuiConfigFlags_DockingEnable;
+	}
+
 	ImGui::End();
 
-		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 		//Outliner
 	ImGui::Begin("Outliner", &showCloseButton);
 	if (ImGui::BeginListBox("##", ImVec2(200, 80))) {
@@ -172,10 +201,10 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 		ImGui::EndListBox();
 	}
 	ImGui::End();
-	
-		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		//Details
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	//Details
 	ImGui::Begin("Details", &showCloseButton);
 	std::string displayName = "Name : " + loader.parser.objects[selectedObjectID].name;
 	ImGui::Text(displayName.c_str());
@@ -285,7 +314,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 				Ambient[0] = light.ambient.x;
 				Ambient[1] = light.ambient.y;
 				Ambient[2] = light.ambient.z;
-				ImGui::InputFloat3("##ambient",Ambient);
+				ImGui::InputFloat3("##ambient", Ambient);
 				light.ambient.x = Ambient[0];
 				light.ambient.y = Ambient[1];
 				light.ambient.z = Ambient[2];
@@ -469,7 +498,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 			ImGui::SameLine();
 			ImGui::InputFloat("##Intensity", &intensity);
 			light.intensity = intensity;
-			
+
 			//Color
 			ImGui::Text("Light Color : ");
 			ImGui::SameLine();
@@ -479,7 +508,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 			light_color[2] = light.color.z;
 			ImGui::ColorEdit3("##LightColor", light_color, ImGuiColorEditFlags_DisplayRGB);
 			light.color = glm::vec3(light_color[0], light_color[1], light_color[2]);
-			
+
 			Light_Object_Infos infos;
 			infos.type = light.type;
 			infos.objectID = selectedObjectID;
@@ -507,16 +536,16 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 					loader.parser.objects[selectedObjectID].components[x] = light;
 				}
 			}
-			
-			
+
+
 		}
-	}  
-	
+	}
+
 
 	ImGui::End();
 
-		//Object Renaming Dialog
-	if (showRenameDialog) {   
+	//Object Renaming Dialog
+	if (showRenameDialog) {
 		ImGui::OpenPopup("Action Menu");
 		if (ImGui::BeginPopupModal("Action Menu", &showRenameDialog, ImGuiWindowFlags_AlwaysAutoResize)) {
 			char buf[255]{};
@@ -532,9 +561,9 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 		}
 	}
 
-		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	//Content Browser
+//Content Browser
 	ImGui::Begin("Content Browser", &showCloseButton, (ImGuiWindowFlags_MenuBar));
 	if (ImGui::BeginMenuBar()) {
 		if (ImGui::BeginMenu("Filters")) {
@@ -576,7 +605,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 		ImGui::EndMenuBar();
 	}
 	ImGui::End();
-
+	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	ImGui::EndFrame();
@@ -584,14 +613,5 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-	if (isHoverViewport) {
-		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-		io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
-		// Fetches the coordinates of the cursor
-		cam.Inputs(window);
-	}
-	if (!isHoverViewport) {
-		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-		io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange, ImGuiConfigFlags_DockingEnable;
-	}
+
 }

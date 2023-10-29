@@ -78,8 +78,7 @@ public:
 	unsigned int rectVAO, rectVBO;
 	unsigned int FBO;
 	unsigned int framebufferTexture;
-	unsigned int postProcessingTexture;
-	unsigned int postProcessingFBO;
+	unsigned int object_id_FBO;
 	Shader skyboxShader;
 	Shader framebufferProgram;
 

@@ -25,6 +25,7 @@ void SaveTextureToFile(GLuint textureId, int width, int height, const char* file
 bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_width, int* out_height);
 GLuint LoadImageTexture(const char* path);
 unsigned int LoadTexture(char const* path);
+int mapColorToObjectID(float pixelColor[3]);
 
 #ifndef LIGHT_STRUCT_H
 #define LIGHT_STRUCT_H

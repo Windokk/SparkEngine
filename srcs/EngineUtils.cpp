@@ -1,8 +1,5 @@
 #include "EngineUtils.h"
 
-
-
-
 bool to_bool(std::string str) {
     bool b = true;
     if (str=="false") {
@@ -13,6 +10,7 @@ bool to_bool(std::string str) {
 
 float randf()
 {
+	//Generate a random float between 1 and -1
     return -1.0f + (rand() / (RAND_MAX / 2.0f));
 }
 
