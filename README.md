@@ -46,6 +46,8 @@ The engine is in it's pre-alpha state of developpement so there might be a lot o
 
 - ~Scene Parser Class~
 
+- ~Multiple Lights support~
+
 - ~Basic GUI implementation~
 
 - ~Main Menu~
@@ -55,6 +57,8 @@ The engine is in it's pre-alpha state of developpement so there might be a lot o
 ** Details
 ** Content Browser (Automatical creation of a project directory)
 ** Outliner~
+
+ - Picking
 
  - Project launcher
 
