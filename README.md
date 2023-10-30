@@ -48,13 +48,13 @@ The engine is in it's pre-alpha state of developpement so there might be a lot o
 
 - ~Basic GUI implementation~
 
-- Main Menu
+- ~Main Menu~
 
-- Base windows :
+- ~Base windows :
 ** Viewport (Selection, Outline and Gizmos)
 ** Details
 ** Content Browser (Automatical creation of a project directory)
-** Outliner 
+** Outliner~
 
  - Project launcher
 
