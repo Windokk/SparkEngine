@@ -46,15 +46,19 @@ The engine is in it's pre-alpha state of developpement so there might be a lot o
 
 - ~Scene Parser Class~
 
+- ~Multiple Lights support~
+
 - ~Basic GUI implementation~
 
-- Main Menu
+- ~Main Menu~
 
-- Base windows :
+- ~Base windows :
 ** Viewport (Selection, Outline and Gizmos)
 ** Details
 ** Content Browser (Automatical creation of a project directory)
-** Outliner 
+** Outliner~
+
+ - Picking
 
  - Project launcher
 
