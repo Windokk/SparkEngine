@@ -108,15 +108,16 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\elipt\Downloads\CrabEngineMaster\Libraries\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\elipt\Downloads\bullet3-3.25\examples\ThirdPartyLibs;C:\Users\elipt\Downloads\bullet3-3.25\examples\SharedMemory;C:\Users\elipt\Downloads\bullet3-3.25\src;C:\Users\elipt\Downloads\bullet3-3.25\examples\ExampleBrowser;C:\Users\elipt\Downloads\bullet3-3.25\examples\ThirdPartyLibs\glad;C:\Users\elipt\Downloads\bullet3-3.25\src\clew;C:\Users\elipt\Downloads\CrabEngineMaster\Libraries\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\Users\elipt\Documents\Github\CrabEngine\Libraries\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3_mt.lib;bullet\BulletExampleBrowserLib_vs2010_x64_debug.lib;bullet\gwen_vs2010_x64_debug.lib;bullet\OpenGL_Window_vs2010_x64_debug.lib;bullet\BulletSoftBody_vs2010_x64_debug.lib;bullet\BulletInverseDynamicsUtils_vs2010_x64_debug.lib;bullet\BulletInverseDynamics_vs2010_x64_debug.lib;bullet\BulletDynamics_vs2010_x64_debug.lib;bullet\BulletCollision_vs2010_x64_debug.lib;bullet\LinearMath_vs2010_x64_debug.lib;bullet\BussIK_vs2010_x64_debug.lib;bullet\Bullet3Common_vs2010_x64_debug.lib;bullet\Bullet3OpenCL_clew_vs2010_x64_debug.lib;bullet\Bullet3Dynamics_vs2010_x64_debug.lib;bullet\Bullet3Collision_vs2010_x64_debug.lib;bullet\Bullet3Geometry_vs2010_x64_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
