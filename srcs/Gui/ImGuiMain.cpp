@@ -11,7 +11,7 @@ void ImGuiMain::Load(GLFWwindow* window, ImGuiIO& io)
 	ImGui_ImplOpenGL3_Init("#version 330");
 	windowFlags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoBringToFrontOnFocus;
 	io.ConfigFlags |= (ImGuiConfigFlags_NoMouseCursorChange, ImGuiConfigFlags_DockingEnable);
-	io.Fonts->AddFontFromFileTTF("OpenSans-Medium.ttf", 13);
+	io.Fonts->AddFontFromFileTTF("assets/defaults/gui/engine/fonts/OpenSans-Medium.ttf", 13);
 	ImGuiStyle& style = ImGui::GetStyle();
 	style.WindowRounding = 3.0f;
 }

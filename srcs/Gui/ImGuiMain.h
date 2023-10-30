@@ -1,10 +1,10 @@
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_glfw.h"
-#include "imgui/imgui_impl_opengl3.h"
+#include "../Libs/ImGui_Lib/imgui.h"
+#include "../Libs/ImGui_Lib/imgui_impl_glfw.h"
+#include "../Libs/ImGui_Lib/imgui_impl_opengl3.h"
 
-#include "EngineUtils.h"
-#include "Camera.h"
-#include "SceneLoader.h"
+#include "../Utils/Engine/EngineUtils.h"
+#include "../Basic Rendering/Camera/Camera.h"
+#include "../Scene Management/SceneLoader.h"
 
 class ImGuiMain {
 public:

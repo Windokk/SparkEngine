@@ -2,29 +2,22 @@
 	"shaders": [
 		{
 			"defaultShader": [
-				{ "vert": "./shaders/default.vert" },
-				{ "frag": "./shaders/default.frag" },
+				{ "vert": "./srcs/Shaders/Defaults/Engine/default.vert" },
+				{ "frag": "./srcs/Shaders/Defaults/Engine/default.frag" },
 				{ "geom": "" }
 			]
 		},
 		{
 			"skyboxShader": [
-				{ "vert": "./shaders/skybox.vert" },
-				{ "frag": "./shaders/skybox.frag" },
+				{ "vert": "./srcs/Shaders/Defaults/Engine/Skyboxes/skybox.vert" },
+				{ "frag": "./srcs/Shaders/Defaults/Engine/Skyboxes/skybox.frag" },
 				{ "geom": "" }
 			]
 		},
 		{
 			"framebufferShader": [
-				{ "vert": "./shaders/framebuffer.vert" },
-				{ "frag": "./shaders/framebuffer.frag" },
-				{ "geom": "" }
-			]
-		},
-		{
-			"lightShader": [
-				{ "vert": "./shaders/light.vert" },
-				{ "frag": "./shaders/light.frag" },
+				{ "vert": "./srcs/Shaders/Defaults/Engine/Framebuffer/framebuffer.vert" },
+				{ "frag": "./srcs/Shaders/Defaults/Engine/Framebuffer/framebuffer.frag" },
 				{ "geom": "" }
 			]
 		}

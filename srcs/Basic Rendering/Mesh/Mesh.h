@@ -3,11 +3,11 @@
 
 #include<string>
 
-#include"VAO.h"
-#include"EBO.h"
-#include"Camera.h"
-#include"Texture.h"
-#include"EngineUtils.h"
+#include"../VAO/VAO.h"
+#include"../EBO/EBO.h"
+#include"../Camera/Camera.h"
+#include"../Texture/Texture.h"
+#include"../../Utils/Engine/EngineUtils.h"
 
 class Mesh
 {

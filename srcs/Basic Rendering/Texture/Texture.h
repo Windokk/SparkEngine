@@ -4,7 +4,7 @@
 #include<glad/glad.h>
 #include<stb/stb_image.h>
 
-#include"Shader.h"
+#include"../Shader/Shader.h"
 
 class Texture
 {

@@ -1,8 +1,8 @@
 #ifndef SceneParser_CLASS_H
 #define SceneParser_CLASS_H
 
-#include"Shader.h"
-#include"EngineUtils.h"
+#include"../Basic Rendering/Shader/Shader.h"
+#include"../Utils/Engine/EngineUtils.h"
 #include"Components.h"
 
 #include<glm/glm.hpp>

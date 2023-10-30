@@ -138,54 +138,28 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CrabEngine.cpp" />
-    <ClCompile Include="srcs\Camera.cpp" />
-    <ClCompile Include="srcs\Components.cpp" />
-    <ClCompile Include="srcs\EBO.cpp" />
-    <ClCompile Include="srcs\glad.c" />
-    <ClCompile Include="srcs\ImGuiMain.cpp" />
-    <ClCompile Include="srcs\imgui\imgui.cpp" />
-    <ClCompile Include="srcs\imgui\imgui_demo.cpp" />
-    <ClCompile Include="srcs\imgui\imgui_draw.cpp" />
-    <ClCompile Include="srcs\imgui\imgui_impl_glfw.cpp" />
-    <ClCompile Include="srcs\imgui\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="srcs\imgui\imgui_tables.cpp" />
-    <ClCompile Include="srcs\imgui\imgui_widgets.cpp" />
-    <ClCompile Include="srcs\Mesh.cpp" />
-    <ClCompile Include="srcs\Model.cpp" />
-    <ClCompile Include="srcs\SceneLoader.cpp" />
-    <ClCompile Include="srcs\SceneParser.cpp" />
-    <ClCompile Include="srcs\Shader.cpp" />
-    <ClCompile Include="srcs\stb.cpp" />
-    <ClCompile Include="srcs\Texture.cpp" />
-    <ClCompile Include="srcs\EngineUtils.cpp" />
-    <ClCompile Include="srcs\VAO.cpp" />
-    <ClCompile Include="srcs\VBO.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="srcs\Camera.h" />
-    <ClInclude Include="srcs\Components.h" />
-    <ClInclude Include="srcs\EBO.h" />
-    <ClInclude Include="srcs\ImGuiMain.h" />
-    <ClInclude Include="srcs\imgui\imconfig.h" />
-    <ClInclude Include="srcs\imgui\imgui.h" />
-    <ClInclude Include="srcs\imgui\imgui_impl_glfw.h" />
-    <ClInclude Include="srcs\imgui\imgui_impl_opengl3.h" />
-    <ClInclude Include="srcs\imgui\imgui_impl_opengl3_loader.h" />
-    <ClInclude Include="srcs\imgui\imgui_internal.h" />
-    <ClInclude Include="srcs\imgui\imstb_rectpack.h" />
-    <ClInclude Include="srcs\imgui\imstb_textedit.h" />
-    <ClInclude Include="srcs\imgui\imstb_truetype.h" />
-    <ClInclude Include="srcs\InputsUtils.h" />
-    <ClInclude Include="srcs\Line.h" />
-    <ClInclude Include="srcs\Mesh.h" />
-    <ClInclude Include="srcs\Model.h" />
-    <ClInclude Include="srcs\SceneLoader.h" />
-    <ClInclude Include="srcs\SceneParser.h" />
-    <ClInclude Include="srcs\Shader.h" />
-    <ClInclude Include="srcs\Texture.h" />
-    <ClInclude Include="srcs\EngineUtils.h" />
-    <ClInclude Include="srcs\VAO.h" />
-    <ClInclude Include="srcs\VBO.h" />
+    <ClCompile Include="srcs\Basic Rendering\Camera\Camera.cpp" />
+    <ClCompile Include="srcs\Basic Rendering\EBO\EBO.cpp" />
+    <ClCompile Include="srcs\Basic Rendering\Mesh\Mesh.cpp" />
+    <ClCompile Include="srcs\Basic Rendering\Model\Model.cpp" />
+    <ClCompile Include="srcs\Basic Rendering\Shader\Shader.cpp" />
+    <ClCompile Include="srcs\Basic Rendering\Texture\Texture.cpp" />
+    <ClCompile Include="srcs\Basic Rendering\VAO\VAO.cpp" />
+    <ClCompile Include="srcs\Basic Rendering\VBO\VBO.cpp" />
+    <ClCompile Include="srcs\Gui\ImGuiMain.cpp" />
+    <ClCompile Include="srcs\Libs\glad.c" />
+    <ClCompile Include="srcs\Libs\ImGui_Lib\imgui.cpp" />
+    <ClCompile Include="srcs\Libs\ImGui_Lib\imgui_demo.cpp" />
+    <ClCompile Include="srcs\Libs\ImGui_Lib\imgui_draw.cpp" />
+    <ClCompile Include="srcs\Libs\ImGui_Lib\imgui_impl_glfw.cpp" />
+    <ClCompile Include="srcs\Libs\ImGui_Lib\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="srcs\Libs\ImGui_Lib\imgui_tables.cpp" />
+    <ClCompile Include="srcs\Libs\ImGui_Lib\imgui_widgets.cpp" />
+    <ClCompile Include="srcs\Libs\stb.cpp" />
+    <ClCompile Include="srcs\Scene Management\Components.cpp" />
+    <ClCompile Include="srcs\Scene Management\SceneLoader.cpp" />
+    <ClCompile Include="srcs\Scene Management\SceneParser.cpp" />
+    <ClCompile Include="srcs\Utils\Engine\EngineUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\defaults\models\asteroid\scene.bin" />
@@ -200,24 +174,20 @@
     <None Include="assets\defaults\models\spitfire\scene.gltf" />
     <None Include="assets\defaults\models\sword\scene.bin" />
     <None Include="assets\defaults\models\sword\scene.gltf" />
-    <None Include="assets\defaults\scenes\space.json" />
-    <None Include="assets\defaults\scenes\test.json" />
     <None Include="assets\defaults\scenes\test_simple_light.json" />
-    <None Include="shaders\asteroid.vert" />
-    <None Include="shaders\default.frag" />
-    <None Include="shaders\default.vert" />
-    <None Include="shaders\framebuffer.frag" />
-    <None Include="shaders\framebuffer.vert" />
-    <None Include="shaders\grass.frag" />
-    <None Include="shaders\light.frag" />
-    <None Include="shaders\light.vert" />
-    <None Include="shaders\normals.frag" />
-    <None Include="shaders\normals.geom" />
-    <None Include="shaders\outlining.frag" />
-    <None Include="shaders\outlining.vert" />
-    <None Include="shaders\skybox.frag" />
-    <None Include="shaders\skybox.vert" />
-    <None Include="shaders\windows.frag" />
+    <None Include="srcs\Shaders\Defaults\Engine\default.frag" />
+    <None Include="srcs\Shaders\Defaults\Engine\default.vert" />
+    <None Include="srcs\Shaders\Defaults\Engine\Framebuffer\framebuffer.frag" />
+    <None Include="srcs\Shaders\Defaults\Engine\Framebuffer\framebuffer.vert" />
+    <None Include="srcs\Shaders\Defaults\Engine\Geometry\normals.frag" />
+    <None Include="srcs\Shaders\Defaults\Engine\Geometry\normals.geom" />
+    <None Include="srcs\Shaders\Defaults\Engine\Instancing\asteroid.vert" />
+    <None Include="srcs\Shaders\Defaults\Engine\Outlining\outlining.frag" />
+    <None Include="srcs\Shaders\Defaults\Engine\Outlining\outlining.vert" />
+    <None Include="srcs\Shaders\Defaults\Engine\Skyboxes\skybox.frag" />
+    <None Include="srcs\Shaders\Defaults\Engine\Skyboxes\skybox.vert" />
+    <None Include="srcs\Shaders\Defaults\Engine\Translucency\grass.frag" />
+    <None Include="srcs\Shaders\Defaults\Engine\Translucency\windows.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\defaults\gui\engine\menus\help\book.png" />
@@ -260,6 +230,32 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\defaults\texts\credits&amp;licence\credits.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="srcs\Basic Rendering\Camera\Camera.h" />
+    <ClInclude Include="srcs\Basic Rendering\EBO\EBO.h" />
+    <ClInclude Include="srcs\Basic Rendering\Mesh\Mesh.h" />
+    <ClInclude Include="srcs\Basic Rendering\Model\Model.h" />
+    <ClInclude Include="srcs\Basic Rendering\Shader\Shader.h" />
+    <ClInclude Include="srcs\Basic Rendering\Texture\Texture.h" />
+    <ClInclude Include="srcs\Basic Rendering\VAO\VAO.h" />
+    <ClInclude Include="srcs\Basic Rendering\VBO\VBO.h" />
+    <ClInclude Include="srcs\Gui\ImGuiMain.h" />
+    <ClInclude Include="srcs\Libs\ImGui_Lib\imconfig.h" />
+    <ClInclude Include="srcs\Libs\ImGui_Lib\imgui.h" />
+    <ClInclude Include="srcs\Libs\ImGui_Lib\imgui_impl_glfw.h" />
+    <ClInclude Include="srcs\Libs\ImGui_Lib\imgui_impl_opengl3.h" />
+    <ClInclude Include="srcs\Libs\ImGui_Lib\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="srcs\Libs\ImGui_Lib\imgui_internal.h" />
+    <ClInclude Include="srcs\Libs\ImGui_Lib\imstb_rectpack.h" />
+    <ClInclude Include="srcs\Libs\ImGui_Lib\imstb_textedit.h" />
+    <ClInclude Include="srcs\Libs\ImGui_Lib\imstb_truetype.h" />
+    <ClInclude Include="srcs\Scene Management\Components.h" />
+    <ClInclude Include="srcs\Scene Management\SceneLoader.h" />
+    <ClInclude Include="srcs\Scene Management\SceneParser.h" />
+    <ClInclude Include="srcs\Utils\Engine\EngineUtils.h" />
+    <ClInclude Include="srcs\Utils\Inputs\InputsUtils.h" />
+    <ClInclude Include="srcs\Utils\Rendering\Line.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

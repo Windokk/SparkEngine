@@ -1,6 +1,5 @@
 #include"Camera.h"
-#include"imgui/imgui.h"
-#include "EngineUtils.h"
+
 
 Camera::Camera(int width, int height, glm::vec3 position, glm::vec3 rotation)
 {

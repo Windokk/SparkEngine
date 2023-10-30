@@ -8,15 +8,12 @@
 #include<glm/gtc/type_ptr.hpp>
 #include <glm/gtx/string_cast.hpp>
 
-#include "srcs/imgui/imgui.h"
-#include "srcs/imgui/imgui_impl_glfw.h"
-#include "srcs/imgui/imgui_impl_opengl3.h"
+#include "srcs/Libs/ImGui_Lib/imgui_internal.h"
 
-#include "srcs/SceneLoader.h"
-#include "srcs/EngineUtils.h"
-#include "srcs/imgui/imgui_internal.h"
-#include "srcs/Line.h"
-#include "srcs/ImGuiMain.h"
+#include "srcs/Scene Management/SceneLoader.h"
+#include "srcs/Utils/Engine/EngineUtils.h"
+#include "srcs/Utils/Rendering/Line.h"
+#include "srcs/Gui/ImGuiMain.h"
 
 unsigned int width_ = 1280;
 unsigned int height_ = 720;

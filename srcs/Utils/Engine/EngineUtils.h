@@ -10,7 +10,7 @@
 #include <glad/glad.h>
 #include<stb/stb_image_write.h>
 #include <stb/stb_image.h>
-#include"imgui/imgui.h"
+#include"../../Libs/ImGui_Lib/imgui.h"
 #include<glm/gtc/matrix_transform.hpp>
 #include<glm/gtc/type_ptr.hpp>
 #include <iostream>
@@ -25,7 +25,6 @@ void SaveTextureToFile(GLuint textureId, int width, int height, const char* file
 bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_width, int* out_height);
 GLuint LoadImageTexture(const char* path);
 unsigned int LoadTexture(char const* path);
-int mapColorToObjectID(float pixelColor[3]);
 
 #ifndef LIGHT_STRUCT_H
 #define LIGHT_STRUCT_H

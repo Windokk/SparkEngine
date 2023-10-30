@@ -2,7 +2,8 @@
 #define MODEL_CLASS_H
 
 #include<json/json.h>
-#include"Mesh.h"
+#include"../Mesh/Mesh.h"
+#include "../Shader/Shader.h"
 
 using json = nlohmann::json;
 

@@ -1,9 +1,9 @@
 #ifndef SceneLoader_CLASS_H
 #define SceneLoader_CLASS_H
 
-#include "Model.h"
+#include "../Basic Rendering/Model/Model.h"
 #include"SceneParser.h"
-#include "EngineUtils.h"
+#include "../Utils/Engine/EngineUtils.h"
 
 #include <variant>
 #include <json/json.h>

@@ -1,7 +1,7 @@
  #include<glm/gtc/type_ptr.hpp>
 #include <string>
 
-#include "EngineUtils.h"
+#include "../Utils/Engine/EngineUtils.h"
 
 #ifndef Component_CLASS_H
 #define Component_CLASS_H
