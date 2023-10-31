@@ -210,7 +210,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CrabEngine.cpp">
+    <ClCompile Include="CrystalEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="srcs\Basic Rendering\Camera\Camera.cpp">
