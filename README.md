@@ -18,72 +18,53 @@ The engine is in it's pre-alpha state of developpement so there might be a lot o
 
 ## To Do list (Alpha 0.0.1)
 
-- ~2D Shapes with Open GL~
-
-- ~3D Simple Models~
-
-- ~Texture importing and binding~
-
-- ~Camera movement~
-
-- ~Light management~
-
-- ~Specular maps implementation~
-
-- ~Different types of lights management~
-
-- ~Mesh classes~
-
-- ~External model importation~
-
-- ~Transparency and blending~
-
-- ~Skyboxes~
-
-- ~Anti-Aliasing~
-
-- ~Scene file (in json)~
-
-- ~Scene Parser Class~
-
-- ~Multiple Lights support~
-
-- ~Basic GUI implementation~
-
-- ~Main Menu~
-
-- ~Base windows :
-** Viewport (Selection, Outline and Gizmos)
-** Details
-** Content Browser (Automatical creation of a project directory)
-** Outliner~
-
- - Bullet Physics Engine integration
-
- - Picking
-
- - Manipluation guizmos
-
- - Enhanced GUI
-
- - Scene Creation and Saving
-
- - Settings
-
- - Project launcher
-
-- Shadow maps
-
-- Normal maps
-
-- Bloom
+| Task          | Status        |
+| ------------- | ------------- |
+| 2D Shapes with Open GL  | Done     🟢   |
+| 3D Simple Models  | Done 🟢   |
+|Texture importing and binding|Done 🟢 |
+|Camera movement|Done 🟢|
+|Light management|Done 🟢|
+|Specular maps implementation|Done 🟢|
+|Different types of lights management|Done 🟢|
+|Mesh classes|Done 🟢|
+|External model importation|Done 🟢|
+|Transparency and blending|Done 🟢|
+|Skyboxes|Done 🟢|
+|Anti-Aliasing|Done 🟢|
+|Scene file (in json)|Done 🟢|
+|Scene Parser Class|Done 🟢|
+|Multiple Lights support|Done 🟢|
+|Basic GUI implementation|Done 🟢|
+|Main Menu|Done 🟢|
+|Viewport Window|Done 🟢|
+|Details|Done 🟢|
+|Content Browser|Done 🟢|
+|Outliner|Done 🟢|
+|Bullet Physics Engine integration|Doing 🟠|
+|Picking|Doing 🟠|
+|Manipluation guizmos|To do 🔴|
+|Enhanced GUI|To do 🔴|
+|Scene Creation and Saving|To do 🔴|
+|Settings|To do 🔴|
+|Project launcher|To do 🔴|
+|Shadow maps|To do 🔴|
+|Normal maps|To do 🔴|
+|Bloom|To do 🔴|
 
 ## License
 
 [![Alt Text](https://www.gnu.org/graphics/gplv3-88x31.png)](https://www.gnu.org/licenses/gpl-3.0.html)
 [GNU GPL](https://www.gnu.org/licenses/gpl-3.0.html)
 
+## Resources Used
+
+- Open GL with GLFW (context and window management) : [GLFW](https://www.glfw.org/)
+- Open GL with Glad (OpenGL bindings and graphic card support) : [GLAD](https://glad.dav1d.de/)
+- GLM (mathemical functions and types) : [GLM](https://github.com/g-truc/glm)
+- Dear ImGUi (all UI) : [DEAR IMGUI](https://github.com/ocornut/imgui)
+- Bullet Physics (Physical interactions) : [BULLET PHYSICS](https://github.com/bulletphysics/bullet3)
+
 ## Authors
 
 - [@Windokk](https://github.com/Windokk)
-
