@@ -58,7 +58,17 @@ The engine is in it's pre-alpha state of developpement so there might be a lot o
 ** Content Browser (Automatical creation of a project directory)
 ** Outliner~
 
+ - Bullet Physics Engine integration
+
  - Picking
+
+ - Manipluation guizmos
+
+ - Enhanced GUI
+
+ - Scene Creation and Saving
+
+ - Settings
 
  - Project launcher
 
