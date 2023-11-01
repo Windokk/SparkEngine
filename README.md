@@ -1,6 +1,8 @@
 # Welcome to the Spark Engine !
 ![Status](https://img.shields.io/badge/Status-Alpha_0.0.1_In_Progress-orange)   [![GNU GPL License](https://img.shields.io/badge/License-GNU_GPL_V3-blue)](https://www.gnu.org/licenses/gpl-3.0.html)
 
+![Alt text](assets/defaults/logos/Logo No Background Big.png)
+
 A 3D Game Engine In C++ created as a test engine for my own portolio.
 
 ## Description
