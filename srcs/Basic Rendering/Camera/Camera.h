@@ -43,6 +43,6 @@ public:
 	// Exports the camera matrix to a shader
 	void Matrix(Shader& shader, const char* uniform);
 	// Handles camera inputs
-	void Inputs(GLFWwindow* window, float speed = 0.01f, float sensitivity = 100.0f);
+	void Inputs(GLFWwindow* window, float speed = 0.01f, float sensitivity = 100.0f, ImVec2 viewport_Pos = ImVec2(0,0));
 };
 #endif

@@ -14,6 +14,7 @@
 #include "srcs/Utils/Engine/EngineUtils.h"
 #include "srcs/Utils/Rendering/Line.h"
 #include "srcs/Gui/ImGuiMain.h"
+#include "srcs/Physics/BulletMain.h"
 
 unsigned int width_ = 1280;
 unsigned int height_ = 720;
@@ -35,6 +36,8 @@ void windowclosecallback(GLFWwindow* window) {
 	glfwSetWindowShouldClose(window, GLFW_TRUE);
 }
 
+BulletMain bullet;
+
 int main() {
 	// Initialize GLFW
 	glfwInit();
@@ -48,7 +51,7 @@ int main() {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// Create a GLFWwindow object of 800 by 800 pixels, naming it "Crab Engine"
-	GLFWwindow* window = glfwCreateWindow(width_, height_, "Crab Engine", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(width_, height_, "Spark Engine", NULL, NULL);
 
 	// Sets the window's icons
 	GLFWimage images[2];
@@ -95,18 +98,7 @@ int main() {
 
 	loader.LoadNewScene(current_scene);
 
-	
-	Line zLine = Line();
-	zLine.setColor(glm::vec3(0.0f, 0.0f, 1.0f));
-	zLine.setWidth(10.0f);
-
-	Line xLine = Line();
-	xLine.setColor(glm::vec3(1.0f, 0.0f, 0.0f));
-	xLine.setWidth(10.0f);
-
-	Line yLine = Line();
-	yLine.setColor(glm::vec3(0.0f, 1.0f, 0.0f));
-	yLine.setWidth(10.0f);
+	bullet = BulletMain();
 
 	while (!glfwWindowShouldClose(window)) {
 		// Updates counter and times
@@ -121,14 +113,14 @@ int main() {
 				FPS = NEW_FPS;
 			}
 			std::string ms = std::to_string((timeDiff / counter) * 1000);
-			std::string newTitle = "CrabEngine - " + FPS + "FPS / " + ms + "ms";
+			std::string newTitle = "Spark Engine - " + FPS + "FPS / " + ms + "ms";
 			glfwSetWindowTitle(window, newTitle.c_str());
 			// Resets times and counter
 			prevTime = crntTime;
 			counter = 0;
-			// Use this if you have disabled VSync
-			//camera.Inputs(window);
 		}
+
+		bullet.Update();
 
 		glBindFramebuffer(GL_FRAMEBUFFER, loader.FBO);
 
@@ -193,13 +185,11 @@ int main() {
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
-	zLine.~Line();
-	yLine.~Line();
-	xLine.~Line();
 	loader.Unload();
 	// Delete window before ending the program
 	glfwDestroyWindow(window);
 	// Terminate GLFW before ending the program
+	bullet.Unload();
 	glfwTerminate();
 	return 0;
 }

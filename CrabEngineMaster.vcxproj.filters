@@ -208,9 +208,15 @@
     <Filter Include="Source Files\utils\engine">
       <UniqueIdentifier>{6179aa98-044f-4c19-9fa6-6a7abf4ec0b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\physics">
+      <UniqueIdentifier>{bf0ed285-627a-4aec-856b-47599c1a4c9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\physics">
+      <UniqueIdentifier>{8254daf4-4974-4dba-9aa2-17bf5a18f473}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CrystalEngine.cpp">
+    <ClCompile Include="SparkEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="srcs\Basic Rendering\Camera\Camera.cpp">
@@ -278,6 +284,9 @@
     </ClCompile>
     <ClCompile Include="srcs\Utils\Engine\EngineUtils.cpp">
       <Filter>Source Files\utils\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\Physics\BulletMain.cpp">
+      <Filter>Source Files\physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -550,6 +559,9 @@
     </ClInclude>
     <ClInclude Include="srcs\Libs\ImGui_Lib\imconfig.h">
       <Filter>Header Files\libs\imgui lib</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\Physics\BulletMain.h">
+      <Filter>Header Files\physics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

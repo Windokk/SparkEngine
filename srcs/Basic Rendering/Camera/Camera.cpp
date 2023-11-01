@@ -35,7 +35,7 @@ void Camera::Matrix(Shader& shader, const char* uniform)
 	glUniformMatrix4fv(glGetUniformLocation(shader.ID, uniform), 1, GL_FALSE, glm::value_ptr(cameraMatrix));
 }
 
-void Camera::Inputs(GLFWwindow* window, float speed, float sensitivity)
+void Camera::Inputs(GLFWwindow* window, float speed, float sensitivity, ImVec2 viewport_Pos)
 {
 	ImGuiIO& io = ImGui::GetIO();
 	// Handles key inputs

@@ -6,14 +6,11 @@ ImGuiMain::ImGuiMain()
 
 void ImGuiMain::Load(GLFWwindow* window, ImGuiIO& io)
 {
-	ImGui::StyleColorsDark();
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
-	windowFlags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoBringToFrontOnFocus;
-	io.ConfigFlags |= (ImGuiConfigFlags_NoMouseCursorChange, ImGuiConfigFlags_DockingEnable);
+	io.ConfigFlags |= (ImGuiConfigFlags_NoMouseCursorChange, ImGuiConfigFlags_DockingEnable); 
 	io.Fonts->AddFontFromFileTTF("assets/defaults/gui/engine/fonts/OpenSans-Medium.ttf", 13);
-	ImGuiStyle& style = ImGui::GetStyle();
-	style.WindowRounding = 3.0f;
+	ImGuiMain::SetupImGuiStyle();
 }
 
 void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& selectedObjectID, ImGuiIO& io)
@@ -21,6 +18,8 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
+
+	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
 
 	//Teleports to selectedObject when pressing F
 	if (io.KeysDown[GLFW_KEY_F]) {
@@ -155,11 +154,9 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	//Im Gui Viewport
-	ImGui::SetNextWindowPos(ImVec2(320, 18));
-	ImGui::SetNextWindowSize(ImVec2(640, 395));
-	ImGui::Begin("Viewport", nullptr, windowFlags);
+	ImGui::Begin("Viewport", nullptr);
 	ImGui::Image((void*)(intptr_t)loader.framebufferTexture, ImVec2(640, 360), { 0,1 }, { 1,0 });
-	isHoverViewport = (ImGui::IsItemHovered() || ImGui::IsWindowHovered()) && (io.MouseDown[GLFW_MOUSE_BUTTON_LEFT]);
+	isHoverViewport = (ImGui::IsItemHovered()) && (io.MouseDown[GLFW_MOUSE_BUTTON_LEFT]);
 	if (isHoverViewport) {
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 		io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
@@ -179,7 +176,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 			float globalMouseX = (mouseX - 328) * ratioX;
 			float globalMouseY = (mouseY - 46) * ratioY;
 		}
-		cam.Inputs(window);
+		cam.Inputs(window,0.01F, 100.0f, ImGui::GetWindowPos());
 	}
 	if (!isHoverViewport) {
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);

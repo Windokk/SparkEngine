@@ -24,7 +24,7 @@
     <ProjectGuid>{6661966c-8fa0-4819-9762-4bce618c93f2}</ProjectGuid>
     <RootNamespace>CrabEngineMaster</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>CrystalEngineMaster</ProjectName>
+    <ProjectName>SparkEngineMaster</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -138,7 +138,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CrystalEngine.cpp" />
+    <ClCompile Include="SparkEngine.cpp" />
     <ClCompile Include="srcs\Basic Rendering\Camera\Camera.cpp" />
     <ClCompile Include="srcs\Basic Rendering\EBO\EBO.cpp" />
     <ClCompile Include="srcs\Basic Rendering\Mesh\Mesh.cpp" />
@@ -157,6 +157,7 @@
     <ClCompile Include="srcs\Libs\ImGui_Lib\imgui_tables.cpp" />
     <ClCompile Include="srcs\Libs\ImGui_Lib\imgui_widgets.cpp" />
     <ClCompile Include="srcs\Libs\stb.cpp" />
+    <ClCompile Include="srcs\Physics\BulletMain.cpp" />
     <ClCompile Include="srcs\Scene Management\Components.cpp" />
     <ClCompile Include="srcs\Scene Management\SceneLoader.cpp" />
     <ClCompile Include="srcs\Scene Management\SceneParser.cpp" />
@@ -251,6 +252,7 @@
     <ClInclude Include="srcs\Libs\ImGui_Lib\imstb_rectpack.h" />
     <ClInclude Include="srcs\Libs\ImGui_Lib\imstb_textedit.h" />
     <ClInclude Include="srcs\Libs\ImGui_Lib\imstb_truetype.h" />
+    <ClInclude Include="srcs\Physics\BulletMain.h" />
     <ClInclude Include="srcs\Scene Management\Components.h" />
     <ClInclude Include="srcs\Scene Management\SceneLoader.h" />
     <ClInclude Include="srcs\Scene Management\SceneParser.h" />
