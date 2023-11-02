@@ -1,8 +1,13 @@
-# Welcome to the Spark Engine !
-![Status](https://img.shields.io/badge/Status-Alpha_0.0.1_In_Progress-orange)   [![GNU GPL License](https://img.shields.io/badge/License-GNU_GPL_V3-blue)](https://www.gnu.org/licenses/gpl-3.0.html)
+<div style="text-align: center;">
 
+# Welcome to the Spark Engine !
+<img src="https://img.shields.io/static/v1?label=Status&message=Alpha 0.0.1 In Progress&logo=cplusplus&color=orange&logoColor=f2f2f2" width="275"/>
+<img src="https://img.shields.io/static/v1?label=License&message=GNU GPL V3&logo=gnu&color=blue" href="https://www.gnu.org/licenses/gpl-3.0.html" width="200"/>
+<br>
 <img src="assets/defaults/logos/Logo_No_Background.png" alt="Alt text" width="200"/>
+<br>
 A 3D Game Engine In C++ created as a test engine for my own portolio.
+</div>
 
 ## Description
 The Spark Engine is a 3D Game Engine that allows gam devs to create an environnement for a player to play in. It is created in vs code, but as it is open source, you can edit it on any IDE that you want.
@@ -69,3 +74,8 @@ The engine is in it's pre-alpha state of developpement so there might be a lot o
 ## Authors
 
 - [@Windokk](https://github.com/Windokk)
+
+
+## Feedback
+
+If you have any feedback, please reach out to us at windokk.valorshonn@gmail.com
