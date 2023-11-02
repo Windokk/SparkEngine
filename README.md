@@ -1,12 +1,15 @@
-<div style="text-align: center;">
+<div align="center">
+
+<img src="assets/defaults/logos/Logo_No_Background.png" alt="Alt text" width="200"/>
 
 # Welcome to the Spark Engine !
+<img src="https://img.shields.io/static/v1?label=Build&message=Passing&color=brightgreen" width="130"/>
+<br>
 <img src="https://img.shields.io/static/v1?label=Status&message=Alpha 0.0.1 In Progress&logo=cplusplus&color=orange&logoColor=f2f2f2" width="275"/>
 <img src="https://img.shields.io/static/v1?label=License&message=GNU GPL V3&logo=gnu&color=blue" href="https://www.gnu.org/licenses/gpl-3.0.html" width="200"/>
 <br>
-<img src="assets/defaults/logos/Logo_No_Background.png" alt="Alt text" width="200"/>
 <br>
-A 3D Game Engine In C++ created as a test engine for my own portolio.
+A 3D Game Engine In C++ created using Open GL
 </div>
 
 ## Description
