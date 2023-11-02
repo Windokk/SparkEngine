@@ -11,7 +11,9 @@
 <br>
 A 3D Game Engine In C++ created using Open GL
 <br>
-<a href="url">Getting Started</a>
+<a href="https://github.com/Windokk/SparkEngine/wiki/">Wiki</a>
+<a href="https://github.com/Windokk/SparkEngine/wiki/Getting-Started">Getting Started</a>
+
 </div>
 
 ## Description
