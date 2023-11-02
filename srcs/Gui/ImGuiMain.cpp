@@ -8,7 +8,7 @@ void ImGuiMain::Load(GLFWwindow* window, ImGuiIO& io)
 {
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
-	io.ConfigFlags |= (ImGuiConfigFlags_NoMouseCursorChange, ImGuiConfigFlags_DockingEnable); 
+	io.ConfigFlags |= (ImGuiConfigFlags_NoMouseCursorChange, ImGuiConfigFlags_DockingEnable);
 	io.Fonts->AddFontFromFileTTF("assets/defaults/gui/engine/fonts/OpenSans-Medium.ttf", 13);
 	ImGuiMain::SetupImGuiStyle();
 }
@@ -154,40 +154,26 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
 	//Im Gui Viewport
+	ImGuiStyle& style = ImGui::GetStyle();
+	style.WindowPadding = ImVec2(0, 0);
 	ImGui::Begin("Viewport", nullptr);
-	ImGui::Image((void*)(intptr_t)loader.framebufferTexture, ImVec2(640, 360), { 0,1 }, { 1,0 });
-	isHoverViewport = (ImGui::IsItemHovered()) && (io.MouseDown[GLFW_MOUSE_BUTTON_LEFT]);
-	if (isHoverViewport) {
+	viewportSize = ImGui::GetWindowSize();
+	ImGui::Image((void*)(intptr_t)loader.framebufferTexture,ImGui::GetContentRegionAvail(),ImVec2(0, 1),ImVec2(1, 0));
+	isHoverViewport = (ImGui::IsItemHovered());
+	if (isHoverViewport && io.MouseDown[GLFW_MOUSE_BUTTON_LEFT] && ImGui::IsWindowDocked()) {
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 		io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
-		// Fetches the coordinates of the cursor
-		if (io.MouseClicked) {
-			double mouseX, mouseY;
-			glfwGetCursorPos(window, &mouseX, &mouseY);  // Get the mouse position relative to the application window
-
-			int winSizeX, winSizeY;
-			glfwGetWindowSize(window, &winSizeX, &winSizeY);
-
-			// Calculate the ratio between imguiWindowSize and ImVec2(winSizeX, winSizeY)
-			float ratioX = (float)winSizeX / 640;
-			float ratioY = (float)winSizeY / 360;
-
-			// Calculate the global mouse position within the GLFW window
-			float globalMouseX = (mouseX - 328) * ratioX;
-			float globalMouseY = (mouseY - 46) * ratioY;
-		}
-		cam.Inputs(window,0.01F, 100.0f, ImGui::GetWindowPos());
+		cam.Inputs(window, 0.01F, 100.0f,ImVec2(ImGui::GetWindowPos().x + ImGui::GetWindowSize().x / 2, ImGui::GetWindowPos().y + ImGui::GetWindowSize().y / 2), ImGui::GetWindowSize());
 	}
-	if (!isHoverViewport) {
+	if (!isHoverViewport || io.MouseReleased[GLFW_MOUSE_BUTTON_LEFT]) {
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange, ImGuiConfigFlags_DockingEnable;
 	}
-
 	ImGui::End();
-
+	style.WindowPadding = ImVec2(8, 8);
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-		//Outliner
+	//Outliner
 	ImGui::Begin("Outliner", &showCloseButton);
 	if (ImGui::BeginListBox("##", ImVec2(200, 80))) {
 		for (int i = 0; i < loader.parser.objects.size(); i++) {
@@ -213,62 +199,34 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 	ImGui::Separator(3.0f);
 	for (int a = 0; a < loader.parser.objects[selectedObjectID].components.size(); a++) {
 		if (std::holds_alternative<TransformComponent>(loader.parser.objects[selectedObjectID].components[a])) {
-			ImGui::Text("Transform");
-			ImGui::Separator();
 			Transform transform = loader.objects_Transforms[selectedObjectID];
-			///////////////////////////////////
-			//// LOCATION /////////////////////
-			///////////////////////////////////
-			ImGui::Text("Location : ");
-			ImGui::SameLine();
-			static float Location[3];
-			Location[0] = transform.Location.x;
-			Location[1] = transform.Location.y;
-			Location[2] = transform.Location.z;
-			ImGui::InputFloat3("##location", Location);
-			transform.Location.x = Location[0];
-			transform.Location.y = Location[1];
-			transform.Location.z = Location[2];
-			////////////////////////////////////
-			//// ROTATION //////////////////////
-			////////////////////////////////////
-			ImGui::Text("Rotation : ");
-			ImGui::SameLine();
+			if (ImGui::CollapsingHeader("Transform")) {
+				///////////  LOCATION  ///////////////////////
+				DrawVec3Control("Location", transform.Location);
+				ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX(),ImGui::GetCursorPosY() + 3.0f));
+				///////////  ROTATION ////////////////////////
+				// Extract axis and angle from the quaternion
+				glm::vec3 axis = glm::axis(transform.Rotation);
+				float angle = glm::angle(transform.Rotation);
+				// Modify the axis and angle values
+				static glm::vec3 axisAngle = axis * angle;
+				DrawVec3Control("Rotation", axisAngle);
+				ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX(), ImGui::GetCursorPosY() + 3.0f));
+				// Calculate the resulting vector from the modified axis and angle
+				glm::vec3 newAxis = glm::normalize(axisAngle);
+				float newAngle = glm::length(axisAngle);
+				// Convert the modified vector back to a quaternion
+				if (glm::length(newAxis) > 0) {
+					transform.Rotation = glm::angleAxis(glm::radians(newAngle), newAxis);
+				}
+				else {
+					transform.Rotation = glm::quat(1, 0, 0, 0); // Default to identity quaternion if the vector is zero
+				}
 
-			// Extract axis and angle from the quaternion
-			glm::vec3 axis = glm::axis(transform.Rotation);
-			float angle = glm::angle(transform.Rotation);
-
-			// Modify the axis and angle values
-			static glm::vec3 axisAngle = axis * angle;
-			ImGui::InputFloat3("##axis", &axisAngle[0]);
-
-			// Calculate the resulting vector from the modified axis and angle
-			glm::vec3 newAxis = glm::normalize(axisAngle);
-			float newAngle = glm::length(axisAngle);
-
-			// Convert the modified vector back to a quaternion
-			if (glm::length(newAxis) > 0) {
-				transform.Rotation = glm::angleAxis(glm::radians(newAngle), newAxis);
+				///////////   SCALE   ///////////////////////
+				DrawVec3Control("Scale", transform.Scale);
 			}
-			else {
-				transform.Rotation = glm::quat(1, 0, 0, 0); // Default to identity quaternion if the vector is zero
-			}
-			////////////////////////////////////
-			//// SCALE /////////////////////////
-			////////////////////////////////////
-			ImGui::Text("Scale :       ");
-			ImGui::SameLine();
-			static float Scale[3];
-			Scale[0] = transform.Scale.x;
-			Scale[1] = transform.Scale.y;
-			Scale[2] = transform.Scale.z;
-			ImGui::InputFloat3("##scale", Scale);
-			transform.Scale.x = Scale[0];
-			transform.Scale.y = Scale[1];
-			transform.Scale.z = Scale[2];
-
-			// Reapplying the new transform to the selected Object transform
+			// Reapply the new transform to the selected Object transform
 			loader.objects_Transforms[selectedObjectID] = transform;
 		}
 		else if (std::holds_alternative<ModelComponent>(loader.parser.objects[selectedObjectID].components[a])) {

@@ -214,6 +214,12 @@
     <Filter Include="Source Files\physics">
       <UniqueIdentifier>{8254daf4-4974-4dba-9aa2-17bf5a18f473}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\basic rendering\fbo">
+      <UniqueIdentifier>{d13b0569-462f-4b65-8201-75bacd461435}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\basic rendering\fbo">
+      <UniqueIdentifier>{2936a9a3-cd7e-40e1-ab0f-4de1a0feed62}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SparkEngine.cpp">
@@ -285,8 +291,11 @@
     <ClCompile Include="srcs\Utils\Engine\EngineUtils.cpp">
       <Filter>Source Files\utils\engine</Filter>
     </ClCompile>
-    <ClCompile Include="srcs\Physics\BulletMain.cpp">
-      <Filter>Source Files\physics</Filter>
+    <ClCompile Include="srcs\Gui\ImGuiUtils.cpp">
+      <Filter>Source Files\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\Basic Rendering\FBO\FrameBuffer.cpp">
+      <Filter>Source Files\basic rendering\fbo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -560,8 +569,11 @@
     <ClInclude Include="srcs\Libs\ImGui_Lib\imconfig.h">
       <Filter>Header Files\libs\imgui lib</Filter>
     </ClInclude>
-    <ClInclude Include="srcs\Physics\BulletMain.h">
-      <Filter>Header Files\physics</Filter>
+    <ClInclude Include="srcs\Gui\ImGuiUtils.h">
+      <Filter>Header Files\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\Basic Rendering\FBO\FrameBuffer.h">
+      <Filter>Header Files\basic rendering\fbo</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

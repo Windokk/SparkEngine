@@ -35,7 +35,7 @@ void Camera::Matrix(Shader& shader, const char* uniform)
 	glUniformMatrix4fv(glGetUniformLocation(shader.ID, uniform), 1, GL_FALSE, glm::value_ptr(cameraMatrix));
 }
 
-void Camera::Inputs(GLFWwindow* window, float speed, float sensitivity, ImVec2 viewport_Pos)
+void Camera::Inputs(GLFWwindow* window, float speed, float sensitivity, ImVec2 viewportCenter, ImVec2 viewportSize)
 {
 	ImGuiIO& io = ImGui::GetIO();
 	// Handles key inputs
@@ -67,10 +67,9 @@ void Camera::Inputs(GLFWwindow* window, float speed, float sensitivity, ImVec2 v
 	// Handles mouse inputs
 	if (io.MouseDown[GLFW_MOUSE_BUTTON_LEFT])
 	{
-		// Prevents camera from jumping on the first click
 		if (firstClick)
 		{
-			glfwSetCursorPos(window, (width / 2), (height / 3));
+			glfwSetCursorPos(window, round(viewportCenter.x), round(viewportCenter.y));
 			firstClick = false;
 		}
 
@@ -79,11 +78,10 @@ void Camera::Inputs(GLFWwindow* window, float speed, float sensitivity, ImVec2 v
 		double mouseY;
 		// Fetches the coordinates of the cursor
 		glfwGetCursorPos(window, &mouseX, &mouseY);
-
 		// Normalizes and shifts the coordinates of the cursor such that they begin in the middle of the screen
-		// and then "transforms" them into degrees
-		float rotX = sensitivity * (float)(mouseY - (height / 3)) / height;
-		float rotY = sensitivity * (float)(mouseX - (width / 2)) / width;
+		// and then "transforms" them into degrees 
+		float rotX = sensitivity * (float)(mouseY - round(viewportCenter.y)) / viewportSize.y;
+		float rotY = sensitivity * (float)(mouseX - round(viewportCenter.x)) / viewportSize.x;
 
 		// Calculates upcoming vertical change in the Orientation
 		glm::vec3 newOrientation = glm::rotate(Orientation, glm::radians(-rotX), glm::normalize(glm::cross(Orientation, Up)));
@@ -98,11 +96,10 @@ void Camera::Inputs(GLFWwindow* window, float speed, float sensitivity, ImVec2 v
 		Orientation = glm::rotate(Orientation, glm::radians(-rotY), Up);
 
 		// Sets mouse cursor to the middle of the screen so that it doesn't end up roaming around
-		glfwSetCursorPos(window, (width / 2), (height / 3));
+		glfwSetCursorPos(window, round(viewportCenter.x), round(viewportCenter.y));
 	}
 	else if (io.MouseReleased[GLFW_MOUSE_BUTTON_LEFT])
 	{
-		// Unhides cursor since camera is not looking around anymore
 		// Makes sure the next time the camera looks around it doesn't jump
 		firstClick = true;
 	}

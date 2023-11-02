@@ -23,9 +23,9 @@ public:
 	glm::vec3 Up = glm::vec3(0.0f, 1.0f, 0.0f);
 	glm::mat4 cameraMatrix = glm::mat4(1.0f);
 	glm::mat4 GetViewMatrix()
-    {
-        return glm::lookAt(Position, Position + Orientation, Up);
-    }
+	{
+		return glm::lookAt(Position, Position + Orientation, Up);
+	}
 	// Prevents the camera from jumping around when first clicking left click
 	bool firstClick = true;
 
@@ -43,6 +43,6 @@ public:
 	// Exports the camera matrix to a shader
 	void Matrix(Shader& shader, const char* uniform);
 	// Handles camera inputs
-	void Inputs(GLFWwindow* window, float speed = 0.01f, float sensitivity = 100.0f, ImVec2 viewport_Pos = ImVec2(0,0));
+	void Inputs(GLFWwindow* window, float speed = 0.01f, float sensitivity = 100.0f, ImVec2 viewportCenter = ImVec2(0, 0), ImVec2 viewportSize = ImVec2(0, 0));
 };
 #endif

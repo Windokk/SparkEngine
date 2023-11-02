@@ -42,7 +42,7 @@ The engine is in it's pre-alpha state of developpement so there might be a lot o
 |Details|Done 🟢|
 |Content Browser|Done 🟢|
 |Outliner|Done 🟢|
-|Bullet Physics Engine integration|Doing 🟠|
+|Bullet Physics Engine integration|Delayed 🟠|
 |Picking|Doing 🟠|
 |Manipluation guizmos|To do 🔴|
 |Enhanced GUI|To do 🔴|

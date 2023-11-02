@@ -1,7 +1,6 @@
 #include"SceneLoader.h"
 
-float rectangleVertices[] =
-{
+float rectangleVertices[] = {
 	//  Coords   // texCoords
 	 1.0f, -1.0f,  1.0f, 0.0f,
 	-1.0f, -1.0f,  0.0f, 0.0f,
@@ -91,7 +90,6 @@ void SceneLoader::Load1(const char* loaded_file) {
 		}
 	}
 
-
 	// Prepare framebuffer rectangle VBO and VAO
 	glGenVertexArrays(1, &rectVAO);
 	glGenBuffers(1, &rectVBO);
@@ -129,14 +127,10 @@ void SceneLoader::Load1(const char* loaded_file) {
 	if (fboStatus != GL_FRAMEBUFFER_COMPLETE)
 		std::cout << "Framebuffer error: " << fboStatus << std::endl;
 
-	
-	
 	//We set the shaders's values
 	SetShadersValues();
 	//We create the lights
 	CreateLights();
-
-	
 	
 }
 

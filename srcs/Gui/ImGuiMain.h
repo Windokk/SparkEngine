@@ -5,6 +5,7 @@
 #include "../Utils/Engine/EngineUtils.h"
 #include "../Basic Rendering/Camera/Camera.h"
 #include "../Scene Management/SceneLoader.h"
+#include "ImGuiUtils.h"
 
 class ImGuiMain {
 public:
@@ -101,6 +102,7 @@ public:
 		style.Colors[ImGuiCol_NavWindowingDimBg] = ImVec4(0.196078434586525f, 0.1764705926179886f, 0.5450980663299561f, 0.501960813999176f);
 		style.Colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.196078434586525f, 0.1764705926179886f, 0.5450980663299561f, 0.501960813999176f);
 	}
+	ImVec2 viewportSize;
 	bool isHoverViewport;
 	bool showCloseButton;
 	bool showRenameDialog = false;

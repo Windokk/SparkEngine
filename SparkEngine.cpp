@@ -14,7 +14,6 @@
 #include "srcs/Utils/Engine/EngineUtils.h"
 #include "srcs/Utils/Rendering/Line.h"
 #include "srcs/Gui/ImGuiMain.h"
-#include "srcs/Physics/BulletMain.h"
 
 unsigned int width_ = 1280;
 unsigned int height_ = 720;
@@ -31,12 +30,12 @@ const char* current_scene = "./assets/defaults/scenes/test_simple_light.json";
 
 Camera cam = Camera(0, 0, glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
 
+
 void windowclosecallback(GLFWwindow* window) {
 	SaveTextureToFile(loader.framebufferTexture, width_, height_, "./assets/generated/screenshots/texture.png");
 	glfwSetWindowShouldClose(window, GLFW_TRUE);
 }
 
-BulletMain bullet;
 
 int main() {
 	// Initialize GLFW
@@ -74,6 +73,7 @@ int main() {
 
 	//Load GLAD so it configures OpenGL
 	gladLoadGL();
+	
 
 	//Creates a loader object to load scenes
 	loader.width_ = width_;
@@ -96,9 +96,9 @@ int main() {
 	ImGuiIO& io = ImGui::GetIO();
 	gui.Load(window, io);
 
-	loader.LoadNewScene(current_scene);
+	
 
-	bullet = BulletMain();
+	loader.LoadNewScene(current_scene);
 
 	while (!glfwWindowShouldClose(window)) {
 		// Updates counter and times
@@ -120,12 +120,10 @@ int main() {
 			counter = 0;
 		}
 
-		bullet.Update();
-
 		glBindFramebuffer(GL_FRAMEBUFFER, loader.FBO);
 
 		// Specify the color of the background
-		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
+		glClearColor(0.12f, 0.12f, 0.12f, 1.0f);
 		// Clean the back buffer and depth buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 		// Enable depth testing since it's disabled when drawing the framebuffer rectangle
@@ -160,9 +158,6 @@ int main() {
 		// Draw the framebuffer rectangle
 		loader.framebufferProgram.Activate();
 		glBindVertexArray(loader.rectVAO);
-		float framebufferWidth = loader.width_;  // Replace with your desired width
-		float framebufferHeight = loader.height_;
-		glUniform2f(glGetUniformLocation(loader.framebufferProgram.ID, "resolution"), framebufferWidth, framebufferHeight);
 		glDisable(GL_DEPTH_TEST); // prevents framebuffer rectangle from being discarded
 		glBindTexture(GL_TEXTURE_2D, loader.framebufferTexture);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -171,6 +166,10 @@ int main() {
 		
 		//We draw the ImGui interface
 		gui.Draw(window, cam, loader, selectedObjectID, io);
+
+		if (gui.viewportSize.x != cam.width || gui.viewportSize.y != cam.height) {
+			cam.updateSize(gui.viewportSize.x, gui.viewportSize.y);
+		}
 
 		// Updates and exports the camera matrix to the Vertex Shader
 		cam.updateMatrix(45.0f, 0.1f, 100.0f);
@@ -189,7 +188,6 @@ int main() {
 	// Delete window before ending the program
 	glfwDestroyWindow(window);
 	// Terminate GLFW before ending the program
-	bullet.Unload();
 	glfwTerminate();
 	return 0;
 }
