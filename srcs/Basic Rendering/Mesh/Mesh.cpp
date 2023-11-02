@@ -115,7 +115,6 @@ void Mesh::Draw(Shader& shader, Camera& camera, glm::mat4 matrix, glm::vec3 tran
 				shader.setVec3("spotLights[" + std::to_string(numSpotLights - 1) + "].color", lights[i].color);
 				break;
 		}
-		
 	}
 
 	shader.setInt("numDirLights", numDirLights);

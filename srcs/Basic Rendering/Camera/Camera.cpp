@@ -18,8 +18,8 @@ void Camera::updateSize(int new_width, int new_height)
 void Camera::updateMatrix(float FOVdeg, float nearPlane, float farPlane)
 {
 	// Initializes matrices since otherwise they will be the null matrix
-	glm::mat4 view = glm::mat4(1.0f);
-	glm::mat4 projection = glm::mat4(1.0f);
+	view = glm::mat4(1.0f);
+	projection = glm::mat4(1.0f);
 
 	// Makes camera look in the right direction from the right position
 	view = glm::lookAt(Position, Position + Orientation, Up);

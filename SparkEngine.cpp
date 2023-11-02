@@ -4,9 +4,11 @@
 #include<GLFW/glfw3.h>
 #include<stb/stb_image.h>
 #include<stb/stb_image_write.h>
+#include<glm/glm.hpp>
 #include<glm/gtc/matrix_transform.hpp>
 #include<glm/gtc/type_ptr.hpp>
-#include <glm/gtx/string_cast.hpp>
+#include<glm/gtx/rotate_vector.hpp>
+#include<glm/gtx/vector_angle.hpp>
 
 #include "srcs/Libs/ImGui_Lib/imgui_internal.h"
 
@@ -135,10 +137,10 @@ int main() {
 		glDepthFunc(GL_LEQUAL);
 
 		loader.skyboxShader.Activate();
-		glm::mat4 view = glm::mat4(glm::mat3(glm::lookAt(cam.Position, cam.Position + cam.Orientation, cam.Up)));
-		glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)width_ / height_, 0.1f, 100.0f);
-		glUniformMatrix4fv(glGetUniformLocation(loader.skyboxShader.ID, "view"), 1, GL_FALSE, glm::value_ptr(view));
-		glUniformMatrix4fv(glGetUniformLocation(loader.skyboxShader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+		glm::mat4 view = glm::mat3(cam.view);
+		glm::mat4 projection = cam.projection;
+		loader.skyboxShader.setMat4("view", view);
+		loader.skyboxShader.setMat4("projection", projection);
 
 		// Draws the cubemap as the last object so we can save a bit of performance by discarding all fragments
 		// where an object is present (a depth of 1.0f will always fail against any object's depth value)
@@ -149,9 +151,6 @@ int main() {
 		glBindVertexArray(0);
 		// Switch back to the normal depth function
 		glDepthFunc(GL_LESS);
-
-		view = glm::mat4(glm::mat3(glm::lookAt(cam.Position, cam.Position + cam.Orientation, cam.Up)));
-		projection = glm::perspective(glm::radians(45.0f), (float)width_ / height_, 0.1f, 100.0f);
 
 		// Bind the default framebuffer
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
