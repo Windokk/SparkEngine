@@ -157,6 +157,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 	ImGuiStyle& style = ImGui::GetStyle();
 	style.WindowPadding = ImVec2(0, 0);
 	ImGui::Begin("Viewport", nullptr);
+	viewportPos = ImGui::GetWindowPos();
 	viewportSize = ImGui::GetWindowSize();
 	ImGui::Image((void*)(intptr_t)loader.framebufferTexture,ImGui::GetContentRegionAvail(),ImVec2(0, 1),ImVec2(1, 0));
 	isHoverViewport = (ImGui::IsItemHovered());

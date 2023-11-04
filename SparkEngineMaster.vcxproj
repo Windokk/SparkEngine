@@ -154,6 +154,7 @@
     <ClCompile Include="srcs\Gui\ImGuiUtils.cpp" />
     <ClCompile Include="srcs\Libs\glad.c" />
     <ClCompile Include="srcs\Libs\ImGui_Lib\imgui.cpp" />
+    <ClCompile Include="srcs\Libs\ImGui_Lib\ImGuizmo.cpp" />
     <ClCompile Include="srcs\Libs\ImGui_Lib\imgui_demo.cpp" />
     <ClCompile Include="srcs\Libs\ImGui_Lib\imgui_draw.cpp" />
     <ClCompile Include="srcs\Libs\ImGui_Lib\imgui_impl_glfw.cpp" />
@@ -171,6 +172,8 @@
     <None Include="assets\defaults\models\asteroid\scene.gltf" />
     <None Include="assets\defaults\models\cube\scene.bin" />
     <None Include="assets\defaults\models\cube\scene.gltf" />
+    <None Include="assets\defaults\models\flying_island\scene.bin" />
+    <None Include="assets\defaults\models\flying_island\scene.gltf" />
     <None Include="assets\defaults\models\jupiter\scene.bin" />
     <None Include="assets\defaults\models\jupiter\scene.gltf" />
     <None Include="assets\defaults\models\plane\scene.bin" />
@@ -179,6 +182,7 @@
     <None Include="assets\defaults\models\spitfire\scene.gltf" />
     <None Include="assets\defaults\models\sword\scene.bin" />
     <None Include="assets\defaults\models\sword\scene.gltf" />
+    <None Include="assets\defaults\scenes\scene_render.json" />
     <None Include="assets\defaults\scenes\test_simple_light.json" />
     <None Include="srcs\Shaders\Defaults\Engine\default.frag" />
     <None Include="srcs\Shaders\Defaults\Engine\default.vert" />
@@ -250,6 +254,7 @@
     <ClInclude Include="srcs\Gui\ImGuiUtils.h" />
     <ClInclude Include="srcs\Libs\ImGui_Lib\imconfig.h" />
     <ClInclude Include="srcs\Libs\ImGui_Lib\imgui.h" />
+    <ClInclude Include="srcs\Libs\ImGui_Lib\ImGuizmo.h" />
     <ClInclude Include="srcs\Libs\ImGui_Lib\imgui_impl_glfw.h" />
     <ClInclude Include="srcs\Libs\ImGui_Lib\imgui_impl_opengl3.h" />
     <ClInclude Include="srcs\Libs\ImGui_Lib\imgui_impl_opengl3_loader.h" />

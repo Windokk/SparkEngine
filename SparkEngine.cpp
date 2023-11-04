@@ -11,6 +11,7 @@
 #include<glm/gtx/vector_angle.hpp>
 
 #include "srcs/Libs/ImGui_Lib/imgui_internal.h"
+#include "srcs/Libs/ImGui_Lib/ImGuizmo.h"
 
 #include "srcs/Scene Management/SceneLoader.h"
 #include "srcs/Utils/Engine/EngineUtils.h"
@@ -22,21 +23,18 @@ unsigned int height_ = 720;
 
 unsigned int anti_aliasing_samples = 8;
 
+static int guizmoMode = -1;
+static int guizmoWorld = -1;
+
 int selectedObjectID;
 
 SceneLoader loader;
 
 ImGuiMain gui = ImGuiMain();
 
-const char* current_scene = "./assets/defaults/scenes/test_simple_light.json";
+const char* current_scene = "./assets/defaults/scenes/scene_render.json";
 
 Camera cam = Camera(0, 0, glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
-
-
-void windowclosecallback(GLFWwindow* window) {
-	SaveTextureToFile(loader.framebufferTexture, width_, height_, "./assets/generated/screenshots/texture.png");
-	glfwSetWindowShouldClose(window, GLFW_TRUE);
-}
 
 
 int main() {
@@ -61,8 +59,6 @@ int main() {
 	glfwSetWindowIcon(window, 1, images);
 	stbi_image_free(images[0].pixels);
 	stbi_image_free(images[1].pixels);
-
-	glfwSetWindowCloseCallback(window, windowclosecallback);
 
 	if (window == NULL)
 	{
@@ -170,8 +166,131 @@ int main() {
 			cam.updateSize(gui.viewportSize.x, gui.viewportSize.y);
 		}
 
+		if (io.KeysDown[GLFW_KEY_F9]) {
+			SaveTextureToFile(loader.framebufferTexture, width_, height_, "assets/generated/screenshots/texture.png");
+		}
+
+		if (io.KeysDown[GLFW_KEY_T]) {
+			guizmoMode = ImGuizmo::OPERATION::TRANSLATE;
+		}
+
+		if (io.KeysDown[GLFW_KEY_R]) {
+			guizmoMode = ImGuizmo::OPERATION::ROTATE;
+		}
+
+		if (io.KeysDown[GLFW_KEY_S]) {
+			guizmoMode = ImGuizmo::OPERATION::SCALE;
+		}
+
 		// Updates and exports the camera matrix to the Vertex Shader
 		cam.updateMatrix(45.0f, 0.1f, 100.0f);
+
+		ImGuizmo::SetDrawlist();
+		ImGuizmo::SetRect(gui.viewportPos.x, gui.viewportPos.y, gui.viewportSize.x, gui.viewportSize.y);
+
+		if (guizmoMode == -1)
+			guizmoMode = ImGuizmo::OPERATION::TRANSLATE;
+		if (guizmoMode != -1) {
+			// check if ImGuizmo is hovered
+
+			glm::mat4 view = cam.view;
+			glm::mat4 projection = cam.projection;
+
+			
+			glm::mat4 transformMat = glm::mat4(1.0f);
+			transformMat = glm::translate(glm::mat4(1.0f), loader.objects_Transforms[selectedObjectID].Location) *
+				glm::toMat4(loader.objects_Transforms[selectedObjectID].Rotation) *
+				glm::scale(glm::mat4(1.0f),
+					glm::vec3(loader.objects_Transforms[selectedObjectID].Scale.x * 0.5, loader.objects_Transforms[selectedObjectID].Scale.y * 0.5,
+						loader.objects_Transforms[selectedObjectID].Scale.z * 0.5));
+
+			bool snap = io.KeysDown[GLFW_KEY_LEFT_CONTROL];
+			float snapValue = 0.5f;
+
+			if (guizmoMode == ImGuizmo::OPERATION::ROTATE)
+				snapValue = 45.0f;
+
+			float snapValues[3] = { snapValue, snapValue, snapValue };
+
+			ImGuizmo::Manipulate(
+				glm::value_ptr(view), 
+				glm::value_ptr(projection),
+				(ImGuizmo::OPERATION)guizmoMode, 
+				(ImGuizmo::MODE)guizmoWorld,
+				glm::value_ptr(transformMat), 
+				nullptr,
+				snap ? snapValues : nullptr,
+				guizmoMode == ImGuizmo::BOUNDS ? bounds : nullptr,
+				snap ? boundsSnap : nullptr);
+
+			if (ImGuizmo::IsOver()) {
+				usingImGuizmo = true;
+			}
+			else {
+				usingImGuizmo = false;
+			}
+
+			if (ImGuizmo::IsUsing()) {
+
+				glm::vec3 translation, rotation, scale;
+				DecomposeTransform(transformMat, translation, rotation,
+					scale);
+
+				switch (m_GuizmoMode) {
+				case ImGuizmo::OPERATION::TRANSLATE: {
+					transform.position = translation;
+					break;
+				}
+				case ImGuizmo::OPERATION::ROTATE: {
+					glm::vec3 deltaRot = rotation - originalRot;
+					transform.rotation += deltaRot;
+
+					if (HyperAPI::isRunning) {
+						if (selectedObject
+							->HasComponent<Rigidbody2D>()) {
+							auto& rigidbody =
+								selectedObject
+								->GetComponent<Rigidbody2D>();
+
+							b2Body* body = (b2Body*)rigidbody.body;
+							body->SetTransform(
+								body->GetPosition(),
+								body->GetAngle() +
+								glm::radians(deltaRot.z));
+						}
+
+						if (selectedObject
+							->HasComponent<Rigidbody3D>()) {
+							auto& rigidbody =
+								selectedObject
+								->GetComponent<Rigidbody3D>();
+
+							btRigidBody* body =
+								(btRigidBody*)rigidbody.body;
+							btQuaternion rot =
+								body->getWorldTransform().getRotation();
+							rot.setEulerZYX(glm::radians(deltaRot.z),
+								glm::radians(deltaRot.y),
+								glm::radians(deltaRot.x));
+							body->getWorldTransform().setRotation(rot);
+						}
+					}
+					break;
+				}
+				case ImGuizmo::OPERATION::SCALE: {
+					transform.scale =
+						Vector3(scale.x * 2, scale.y * 2, scale.z * 2);
+					break;
+				}
+				case ImGuizmo::OPERATION::BOUNDS: {
+					transform.position = translation;
+					transform.scale =
+						Vector3(scale.x * 2, scale.y * 2, scale.z * 2);
+					break;
+				}
+				}
+			}
+		}
 
 		glfwSwapInterval(0);
 		// Swap the back buffer with the front buffer

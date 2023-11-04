@@ -220,6 +220,12 @@
     <Filter Include="Source Files\basic rendering\fbo">
       <UniqueIdentifier>{2936a9a3-cd7e-40e1-ab0f-4de1a0feed62}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\assets\defaults\models\flying_island">
+      <UniqueIdentifier>{af157e12-de3a-4645-8007-1025b39914fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\defaults\textures\skyboxes\base">
+      <UniqueIdentifier>{abcf5893-ff5d-45df-82f0-146e8db3f89f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SparkEngine.cpp">
@@ -296,6 +302,9 @@
     </ClCompile>
     <ClCompile Include="srcs\Basic Rendering\FBO\FrameBuffer.cpp">
       <Filter>Source Files\basic rendering\fbo</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\Libs\ImGui_Lib\ImGuizmo.cpp">
+      <Filter>Source Files\libs\imgui lib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -376,6 +385,15 @@
     </None>
     <None Include="srcs\Shaders\Defaults\Engine\Framebuffer\framebuffer.vert">
       <Filter>Resource Files\shaders\defalults\engine\framebuffer</Filter>
+    </None>
+    <None Include="assets\defaults\models\flying_island\scene.bin">
+      <Filter>Resource Files\assets\defaults\models\flying_island</Filter>
+    </None>
+    <None Include="assets\defaults\models\flying_island\scene.gltf">
+      <Filter>Resource Files\assets\defaults\models\flying_island</Filter>
+    </None>
+    <None Include="assets\defaults\scenes\scene_render.json">
+      <Filter>Resource Files\assets\defaults\scenes</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -574,6 +592,9 @@
     </ClInclude>
     <ClInclude Include="srcs\Basic Rendering\FBO\FrameBuffer.h">
       <Filter>Header Files\basic rendering\fbo</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\Libs\ImGui_Lib\ImGuizmo.h">
+      <Filter>Header Files\libs\imgui lib</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
