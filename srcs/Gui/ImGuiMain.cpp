@@ -1,5 +1,8 @@
   #include "ImGuiMain.h"
 
+
+
+
 ImGuiMain::ImGuiMain()
 {
 }
@@ -18,6 +21,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
+	ImGuizmo::BeginFrame();
 
 	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
 
@@ -153,15 +157,37 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
+	static ImGuizmo::MODE currentGizmoMode(ImGuizmo::LOCAL);
+	static ImGuizmo::OPERATION currentGizmoOperation(ImGuizmo::TRANSLATE);
+	static bool useSnap = false;
+	static float snap[3] = { 1.f, 1.f, 1.f };
+	static float bounds[] = { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f };
+	static float boundsSnap[] = { 0.1f, 0.1f, 0.1f };
+	static bool boundSizing = false;
+	static bool boundSizingSnap = false;
+
+	float viewManipulateRight = io.DisplaySize.x;
+	float viewManipulateTop = 0;
+
 	//Im Gui Viewport
 	ImGuiStyle& style = ImGui::GetStyle();
 	style.WindowPadding = ImVec2(0, 0);
 	ImGui::Begin("Viewport", nullptr);
+
+	ImGuizmo::SetDrawlist();
+	float windowWidth = (float)ImGui::GetWindowWidth();
+	float windowHeight = (float)ImGui::GetWindowHeight();
+	ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+	viewManipulateRight = ImGui::GetWindowPos().x + windowWidth;
+	viewManipulateTop = ImGui::GetWindowPos().y;
+
+	//Viewport variables
 	viewportPos = ImGui::GetWindowPos();
 	viewportSize = ImGui::GetWindowSize();
 	ImGui::Image((void*)(intptr_t)loader.framebufferTexture,ImGui::GetContentRegionAvail(),ImVec2(0, 1),ImVec2(1, 0));
 	isHoverViewport = (ImGui::IsItemHovered());
-	if (isHoverViewport && io.MouseDown[GLFW_MOUSE_BUTTON_LEFT] && ImGui::IsWindowDocked()) {
+
+	if (isHoverViewport && io.MouseDown[GLFW_MOUSE_BUTTON_LEFT] && ImGui::IsWindowDocked() && !ImGuizmo::IsUsingAny()) {
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 		io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
 		cam.Inputs(window, 0.01F, 100.0f,ImVec2(ImGui::GetWindowPos().x + ImGui::GetWindowSize().x / 2, ImGui::GetWindowPos().y + ImGui::GetWindowSize().y / 2), ImGui::GetWindowSize());
@@ -170,8 +196,46 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange, ImGuiConfigFlags_DockingEnable;
 	}
+	const float* cameraView = glm::value_ptr(cam.view);
+	const float* cameraProjection = glm::value_ptr(cam.projection);
+
+	TransformComponent& transform = loader.parser.objects[selectedObjectID].GetComponent<TransformComponent>();
+
+	glm::mat4 transformMat = glm::mat4(1.0f);
+	transformMat = glm::translate(glm::mat4(1.0f), loader.objects_Transforms[selectedObjectID].Location) * glm::toMat4(loader.objects_Transforms[selectedObjectID].Rotation) * glm::scale(glm::mat4(1.0f),glm::vec3(loader.objects_Transforms[selectedObjectID].Scale.x * 0.5, loader.objects_Transforms[selectedObjectID].Scale.y * 0.5,loader.objects_Transforms[selectedObjectID].Scale.z * 0.5));
+	
+
+	ImGuizmo::Manipulate(cameraView, cameraProjection, currentGizmoOperation, currentGizmoMode, glm::value_ptr(transformMat), NULL, useSnap ? &snap[0] : NULL, boundSizing ? bounds : NULL, boundSizingSnap ? boundsSnap : NULL);
+
+	glm::vec3 skew;
+	glm::vec4 perspective;
+	glm::decompose(transformMat, transform.Scale, transform.Rotation, transform.Location, skew, perspective);
+
+	transform.Scale /= 0.5;
+
+	loader.objects_Transforms[selectedObjectID].Location = transform.Location;
+	loader.objects_Transforms[selectedObjectID].Rotation = transform.Rotation;
+	loader.objects_Transforms[selectedObjectID].Scale = transform.Scale;
+
+
 	ImGui::End();
 	style.WindowPadding = ImVec2(8, 8);
+
+	if (io.KeysDown[GLFW_KEY_T]) {
+		currentGizmoOperation = ImGuizmo::OPERATION::TRANSLATE;
+	}
+
+	if (io.KeysDown[GLFW_KEY_R]) {
+		currentGizmoOperation = ImGuizmo::OPERATION::ROTATE;
+	}
+
+	if (io.KeysDown[GLFW_KEY_S]) {
+		currentGizmoOperation = ImGuizmo::OPERATION::SCALE;
+	}
+
+	
+	
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	//Outliner
@@ -202,10 +266,18 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 		if (std::holds_alternative<TransformComponent>(loader.parser.objects[selectedObjectID].components[a])) {
 			Transform transform = loader.objects_Transforms[selectedObjectID];
 			if (ImGui::CollapsingHeader("Transform")) {
+
+				//////////////////////////////////////////////
 				///////////  LOCATION  ///////////////////////
+				//////////////////////////////////////////////
+
 				DrawVec3Control("Location", transform.Location);
-				ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX(),ImGui::GetCursorPosY() + 3.0f));
+				ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX(), ImGui::GetCursorPosY() + 3.0f));
+
+				//////////////////////////////////////////////
 				///////////  ROTATION ////////////////////////
+				//////////////////////////////////////////////
+
 				// Extract axis and angle from the quaternion
 				glm::vec3 axis = glm::axis(transform.Rotation);
 				float angle = glm::angle(transform.Rotation);
@@ -223,8 +295,9 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 				else {
 					transform.Rotation = glm::quat(1, 0, 0, 0); // Default to identity quaternion if the vector is zero
 				}
-
-				///////////   SCALE   ///////////////////////
+				//////////////////////////////////////////////
+				///////////   SCALE   ////////////////////////
+				//////////////////////////////////////////////
 				DrawVec3Control("Scale", transform.Scale);
 			}
 			// Reapply the new transform to the selected Object transform

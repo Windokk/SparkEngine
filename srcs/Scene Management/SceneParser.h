@@ -26,6 +26,42 @@ struct ShaderData {
 struct Object {
 	std::string name;
 	std::vector<std::variant<TransformComponent,ModelComponent,LightComponent>> components;
+	
+	
+    template <typename T>
+    T& GetComponent() {
+        return *std::get_if<T>(&components[0]);
+    }
+
+    template <>
+    TransformComponent& GetComponent<TransformComponent>() {
+        for (auto& component : components) {
+            if (auto pComponent = std::get_if<TransformComponent>(&component)) {
+                return *pComponent;
+            }
+        }
+        throw std::runtime_error("TransformComponent not found");
+    }
+
+    template <>
+    ModelComponent& GetComponent<ModelComponent>() {
+        for (auto& component : components) {
+            if (auto pComponent = std::get_if<ModelComponent>(&component)) {
+                return *pComponent;
+            }
+        }
+        throw std::runtime_error("ModelComponent not found");
+    }
+
+    template <>
+    LightComponent& GetComponent<LightComponent>() {
+        for (auto& component : components) {
+            if (auto pComponent = std::get_if<LightComponent>(&component)) {
+                return *pComponent;
+            }
+        }
+        throw std::runtime_error("LightComponent not found");
+    }
 };
 
 class SceneParser

@@ -6,6 +6,8 @@
 #include "../Basic Rendering/Camera/Camera.h"
 #include "../Scene Management/SceneLoader.h"
 #include "ImGuiUtils.h"
+#include "../Libs/ImGui_Lib/ImGuizmo.h"
+#include <glm/gtx/matrix_decompose.hpp>
 
 class ImGuiMain {
 public:
