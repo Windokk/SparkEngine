@@ -1,4 +1,6 @@
-#include"../../Libs/ImGui_Lib/imgui.h"
+#include "../Engine/EngineUtils.h"
+#include "../../Scene Management/SceneLoader.h"
+#include "../../Gui/ImGuiMain.h"
 
 enum class AlphaNumericKeys {
     // Alphabets
@@ -18,3 +20,4 @@ enum class AlphaNumericKeys {
     LeftTrigger, RightTrigger, Back, Start, LeftStick, RightStick,
     DPadUp, DPadDown, DPadLeft, DPadRight
 };
+

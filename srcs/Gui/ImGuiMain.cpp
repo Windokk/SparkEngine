@@ -1,6 +1,4 @@
-  #include "ImGuiMain.h"
-
-
+#include "ImGuiMain.h"
 
 
 ImGuiMain::ImGuiMain()
@@ -12,7 +10,14 @@ void ImGuiMain::Load(GLFWwindow* window, ImGuiIO& io)
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
 	io.ConfigFlags |= (ImGuiConfigFlags_NoMouseCursorChange, ImGuiConfigFlags_DockingEnable);
-	io.Fonts->AddFontFromFileTTF("assets/defaults/gui/engine/fonts/OpenSans-Medium.ttf", 13);
+	io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/defaults/gui/engine/fonts/OpenSans-Medium.ttf", 13);
+	static const ImWchar icons_ranges[] = { ICON_MIN_FA, ICON_MAX_16_FA, 0 };
+	ImFontConfig icons_config;
+	icons_config.MergeMode = true;
+	icons_config.PixelSnapH = true;
+	solid = io.Fonts->AddFontFromFileTTF("assets/defaults/gui/engine/fonts/fa-solid-900.ttf", 13.0f,&icons_config, icons_ranges);
+
+
 	ImGuiMain::SetupImGuiStyle();
 }
 
@@ -23,6 +28,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 	ImGui::NewFrame();
 	ImGuizmo::BeginFrame();
 
+
 	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
 
 	//Teleports to selectedObject when pressing F
@@ -32,35 +38,11 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 
 	if (ImGui::BeginMainMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
-			if (ImGui::BeginMenu("New")) {
-				ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/icons/objects/scene.png"), ImVec2(16, 16));
-				ImGui::SameLine();
-				if (ImGui::MenuItem("Scene")) {}
-				ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/icons/objects/cube.png"), ImVec2(16, 16));
-				ImGui::SameLine();
-				if (ImGui::BeginMenu("Object")) {
-					ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/icons/objects/light.png"), ImVec2(16, 16));
-					ImGui::SameLine();
-					if (ImGui::MenuItem("Light")) {}
-					ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/icons/objects/cube.png"), ImVec2(16, 16));
-					ImGui::SameLine();
-					if (ImGui::MenuItem("Model")) {}
-					ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/icons/objects/material.png"), ImVec2(16, 16));
-					ImGui::SameLine();
-					if (ImGui::MenuItem("Shader")) {}
-					ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/icons/objects/script.png"), ImVec2(16, 16));
-					ImGui::SameLine();
-					if (ImGui::MenuItem("Script")) {}
-					ImGui::EndMenu();
-				}
-				ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/icons/objects/folder.png"), ImVec2(16, 16));
-				ImGui::SameLine();
-				if (ImGui::MenuItem("Project")) {}
-				ImGui::EndMenu();
+			if (ImGui::MenuItem(ICON_FA_FILE_PLUS "  New", "Ctrl+N")) {
 			}
 			ImGui::Separator();
-			if (ImGui::BeginMenu("Import to project")) {
-				if (ImGui::MenuItem("Scene")) {
+			if (ImGui::BeginMenu(ICON_FA_FILE_UPLOAD "  Import to project")) {
+				if (ImGui::MenuItem(ICON_FA_CLAPPERBOARD "  Scene")) {
 					std::string file = OpenWindowsFileDialog(L"Scene file (.json)\0*.json\0");
 					if (file != "") {
 						file = replaceCharacters(file, '\\', '/');
@@ -68,42 +50,33 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 						loader.LoadNewScene(file.c_str());
 					}
 				}
-				if (ImGui::MenuItem("Model")) {
+				if (ImGui::MenuItem(ICON_FA_CUBE "  Model")) {
 				}
-				if (ImGui::MenuItem("Texture")) {
-				}
-				ImGui::EndMenu();
-			}
-			ImGui::Spacing();
-			ImGui::Spacing();
-			if (ImGui::BeginMenu("Save")) {
-				if (ImGui::MenuItem("Scene")) {
-				}
-				if (ImGui::MenuItem("Object")) {
+				if (ImGui::MenuItem(ICON_FA_IMAGE"  Texture")) {
 				}
 				ImGui::EndMenu();
 			}
-			ImGui::Spacing();
-			ImGui::Spacing();
-			if (ImGui::BeginMenu("Open")) {
-				if (ImGui::MenuItem("Project")) {}
-				ImGui::EndMenu();
+			
+			if (ImGui::MenuItem(ICON_FA_SAVE "  Save", "Ctrl+S")) {
 			}
-			ImGui::Spacing();
-			ImGui::Spacing();
-			if (ImGui::MenuItem("Quit")) {}
+			if (ImGui::MenuItem(ICON_FA_FILE_EDIT "  Open", "Ctrl+O")) 
+			{
+			}
+			if (ImGui::MenuItem(ICON_FA_POWER_OFF "  Quit", "Alt+F4")) 
+			{
+			}
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Edit")) {
-			if (ImGui::MenuItem("Select all")) {}
-			if (ImGui::MenuItem("Redo")) {}
-			if (ImGui::MenuItem("Undo")) {}
+			if (ImGui::MenuItem("Select all","Ctrl+A")) {}
+			if (ImGui::MenuItem("Redo","Ctrl+Maj+Z")) {}
+			if (ImGui::MenuItem("Undo","Ctrl+Z")) {}
 			ImGui::Separator();
-			if (ImGui::MenuItem("Cut")) {}
-			if (ImGui::MenuItem("Copy")) {}
-			if (ImGui::MenuItem("Paste")) {}
-			if (ImGui::MenuItem("Duplicate")) {}
-			if (ImGui::MenuItem("Delete")) {}
+			if (ImGui::MenuItem("Cut","Ctrl+X")) {}
+			if (ImGui::MenuItem("Copy","Ctrl+C")) {}
+			if (ImGui::MenuItem("Paste","Ctrl+V")) {}
+			if (ImGui::MenuItem("Duplicate", "Ctrl+D")) {}
+			if (ImGui::MenuItem("Delete", "Suppr")) {}
 			ImGui::Separator();
 			if (ImGui::MenuItem("Editor Preferences")) {}
 			if (ImGui::MenuItem("Project Settings")) {}
@@ -111,6 +84,10 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Window")) {
+			if (ImGui::MenuItem(ICON_FA_CAMERA"  Viewport")) {}
+			if (ImGui::MenuItem(ICON_FA_FILE"  Content Browser")) {}
+			if (ImGui::MenuItem(ICON_FA_LIST"  Details panel")) {}
+			if (ImGui::MenuItem(ICON_FA_CUBES"  Hierarchy")) {}
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Tools")) {
@@ -151,14 +128,15 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 			}
 			ImGui::EndMenu();
 		}
-		// Add more menus here
 		ImGui::EndMainMenuBar();
 	}
 
+
 	//////////////////////////////////////////////////////////////////////////////////////////
-	
-	static ImGuizmo::MODE currentGizmoMode(ImGuizmo::LOCAL);
+
+	static ImGuizmo::MODE currentGizmoMode(ImGuizmo::WORLD);
 	static ImGuizmo::OPERATION currentGizmoOperation(ImGuizmo::TRANSLATE);
+
 	static bool useSnap = false;
 	static float snap[3] = { 1.f, 1.f, 1.f };
 	static float bounds[] = { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f };
@@ -172,7 +150,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 	//Im Gui Viewport
 	ImGuiStyle& style = ImGui::GetStyle();
 	style.WindowPadding = ImVec2(0, 0);
-	ImGui::Begin("Viewport", nullptr);
+	ImGui::Begin(ICON_FA_CAMERA"  Viewport", nullptr);
 
 	ImGuizmo::SetDrawlist();
 	float windowWidth = (float)ImGui::GetWindowWidth();
@@ -181,29 +159,50 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 	viewManipulateRight = ImGui::GetWindowPos().x + windowWidth;
 	viewManipulateTop = ImGui::GetWindowPos().y;
 
+	const float* cameraView = glm::value_ptr(cam.view);
+	const float* cameraProjection = glm::value_ptr(cam.projection);
+
 	//Viewport variables
 	viewportPos = ImGui::GetWindowPos();
 	viewportSize = ImGui::GetWindowSize();
+	
+	ImGui::SetCursorPosY(ImGui::GetCursorPosY() +5);
+	ImGui::Button(ICON_FA_CUBE "  Perspective"); //TODO : Change "perspective" to the camera perspective value
+	ImGui::SameLine();
+	ImGui::SetCursorPosX(viewportSize.x/2);
+	ImGui::Button(ICON_FA_PLAY);
+	ImGui::SameLine();
+	ImGui::SetCursorPosX(viewportSize.x-110);
+	ImGui::Button(ICON_FA_ARROWS);
+	if (ImGui::IsItemClicked()) {
+		currentGizmoOperation = ImGuizmo::OPERATION::TRANSLATE;
+	}
+	ImGui::SameLine();
+	ImGui::Button(ICON_FA_SYNC);
+	if (ImGui::IsItemClicked()) {
+		currentGizmoOperation = ImGuizmo::OPERATION::ROTATE;
+	}
+	ImGui::SameLine();
+	ImGui::Button(ICON_FA_EXTERNAL_LINK);
+	if (ImGui::IsItemClicked()) {
+		currentGizmoOperation = ImGuizmo::OPERATION::SCALE;
+	}
+
 	ImGui::Image((void*)(intptr_t)loader.framebufferTexture,ImGui::GetContentRegionAvail(),ImVec2(0, 1),ImVec2(1, 0));
 	isHoverViewport = (ImGui::IsItemHovered());
 
-	if (isHoverViewport && io.MouseDown[GLFW_MOUSE_BUTTON_LEFT] && ImGui::IsWindowDocked() && !ImGuizmo::IsUsingAny()) {
-		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-		io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
+	if (isHoverViewport && ImGui::IsWindowDocked() && !ImGuizmo::IsUsingAny()) {
+		
 		cam.Inputs(window, 0.01F, 100.0f,ImVec2(ImGui::GetWindowPos().x + ImGui::GetWindowSize().x / 2, ImGui::GetWindowPos().y + ImGui::GetWindowSize().y / 2), ImGui::GetWindowSize());
 	}
-	if (!isHoverViewport || io.MouseReleased[GLFW_MOUSE_BUTTON_LEFT]) {
-		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-		io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange, ImGuiConfigFlags_DockingEnable;
+	if (!isHoverViewport) {
+		
 	}
-	const float* cameraView = glm::value_ptr(cam.view);
-	const float* cameraProjection = glm::value_ptr(cam.projection);
 
 	TransformComponent& transform = loader.parser.objects[selectedObjectID].GetComponent<TransformComponent>();
 
 	glm::mat4 transformMat = glm::mat4(1.0f);
 	transformMat = glm::translate(glm::mat4(1.0f), loader.objects_Transforms[selectedObjectID].Location) * glm::toMat4(loader.objects_Transforms[selectedObjectID].Rotation) * glm::scale(glm::mat4(1.0f),glm::vec3(loader.objects_Transforms[selectedObjectID].Scale.x * 0.5, loader.objects_Transforms[selectedObjectID].Scale.y * 0.5,loader.objects_Transforms[selectedObjectID].Scale.z * 0.5));
-	
 
 	ImGuizmo::Manipulate(cameraView, cameraProjection, currentGizmoOperation, currentGizmoMode, glm::value_ptr(transformMat), NULL, useSnap ? &snap[0] : NULL, boundSizing ? bounds : NULL, boundSizingSnap ? boundsSnap : NULL);
 
@@ -233,13 +232,11 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 		currentGizmoOperation = ImGuizmo::OPERATION::SCALE;
 	}
 
-	
-	
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	//Outliner
-	ImGui::Begin("Outliner", &showCloseButton);
+	//Hierarchy
+	ImGui::Begin(ICON_FA_CUBES"  Hierarchy", &showCloseButton);
 	if (ImGui::BeginListBox("##", ImVec2(200, 80))) {
 		for (int i = 0; i < loader.parser.objects.size(); i++) {
 			if (ImGui::Selectable((loader.parser.objects[i].name).c_str())) {
@@ -253,7 +250,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	//Details
-	ImGui::Begin("Details", &showCloseButton);
+	ImGui::Begin(ICON_FA_LIST"  Details", &showCloseButton);
 	std::string displayName = "Name : " + loader.parser.objects[selectedObjectID].name;
 	ImGui::Text(displayName.c_str());
 	if (ImGui::IsItemHovered()) {
@@ -592,13 +589,11 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//Content Browser
-	ImGui::Begin("Content Browser", &showCloseButton, (ImGuiWindowFlags_MenuBar));
+	//Content Browser
+	ImGui::Begin(ICON_FA_FILE"  Content Browser", &showCloseButton, (ImGuiWindowFlags_MenuBar));
 	if (ImGui::BeginMenuBar()) {
-		if (ImGui::BeginMenu("Filters")) {
-			ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/menus/contentbrowser/filter.png"), ImVec2(16, 16));
-			ImGui::SameLine();
-			ImGui::MenuItem(("Select filter(s) :"), NULL, false, false);
+		if (ImGui::BeginMenu(ICON_FA_FILTER"  Filters")) {
+			ImGui::MenuItem(ICON_FA_FILTER "  Select filter(s) :", NULL, false, false);
 			ImGui::Separator();
 			ImGui::EndMenu();
 		}

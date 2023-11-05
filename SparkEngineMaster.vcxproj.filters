@@ -596,5 +596,8 @@
     <ClInclude Include="srcs\Libs\ImGui_Lib\ImGuizmo.h">
       <Filter>Header Files\libs\imgui lib</Filter>
     </ClInclude>
+    <ClInclude Include="srcs\Libs\ImGui_Lib\IconsFontAwesome5Pro.h">
+      <Filter>Header Files\libs\imgui lib</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

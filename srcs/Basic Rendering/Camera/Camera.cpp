@@ -35,8 +35,10 @@ void Camera::Matrix(Shader& shader, const char* uniform)
 	glUniformMatrix4fv(glGetUniformLocation(shader.ID, uniform), 1, GL_FALSE, glm::value_ptr(cameraMatrix));
 }
 
+
 void Camera::Inputs(GLFWwindow* window, float speed, float sensitivity, ImVec2 viewportCenter, ImVec2 viewportSize)
 {
+
 	ImGuiIO& io = ImGui::GetIO();
 	// Handles key inputs
 	if (io.KeysDown[GLFW_KEY_Z])
@@ -67,12 +69,14 @@ void Camera::Inputs(GLFWwindow* window, float speed, float sensitivity, ImVec2 v
 	// Handles mouse inputs
 	if (io.MouseDown[GLFW_MOUSE_BUTTON_LEFT])
 	{
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+		io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
+
 		if (firstClick)
 		{
-			glfwSetCursorPos(window, round(viewportCenter.x), round(viewportCenter.y));
 			firstClick = false;
+			glfwGetCursorPos(window, &originalmouseX, &originalmouseY);
 		}
-
 		// Stores the coordinates of the cursor
 		double mouseX;
 		double mouseY;
@@ -80,8 +84,8 @@ void Camera::Inputs(GLFWwindow* window, float speed, float sensitivity, ImVec2 v
 		glfwGetCursorPos(window, &mouseX, &mouseY);
 		// Normalizes and shifts the coordinates of the cursor such that they begin in the middle of the screen
 		// and then "transforms" them into degrees 
-		float rotX = sensitivity * (float)(mouseY - round(viewportCenter.y)) / viewportSize.y;
-		float rotY = sensitivity * (float)(mouseX - round(viewportCenter.x)) / viewportSize.x;
+		float rotX = sensitivity * (float)(mouseY - round(originalmouseY)) / viewportSize.y;
+		float rotY = sensitivity * (float)(mouseX - round(originalmouseX)) / viewportSize.x;
 
 		// Calculates upcoming vertical change in the Orientation
 		glm::vec3 newOrientation = glm::rotate(Orientation, glm::radians(-rotX), glm::normalize(glm::cross(Orientation, Up)));
@@ -94,12 +98,13 @@ void Camera::Inputs(GLFWwindow* window, float speed, float sensitivity, ImVec2 v
 
 		// Rotates the Orientation left and right
 		Orientation = glm::rotate(Orientation, glm::radians(-rotY), Up);
-
-		// Sets mouse cursor to the middle of the screen so that it doesn't end up roaming around
-		glfwSetCursorPos(window, round(viewportCenter.x), round(viewportCenter.y));
+		
+		glfwSetCursorPos(window, originalmouseX, originalmouseY);
 	}
-	else if (io.MouseReleased[GLFW_MOUSE_BUTTON_LEFT])
+	if (!io.MouseDown[GLFW_MOUSE_BUTTON_LEFT] && !firstClick)
 	{
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange, ImGuiConfigFlags_DockingEnable;
 		// Makes sure the next time the camera looks around it doesn't jump
 		firstClick = true;
 	}

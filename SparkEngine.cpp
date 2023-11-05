@@ -15,7 +15,7 @@
 #include "srcs/Scene Management/SceneLoader.h"
 #include "srcs/Utils/Engine/EngineUtils.h"
 #include "srcs/Utils/Rendering/Line.h"
-#include "srcs/Gui/ImGuiMain.h"
+#include "srcs/Utils/Inputs/InputsUtils.h"
 
 unsigned int width_ = 1280;
 unsigned int height_ = 720;
@@ -31,7 +31,6 @@ ImGuiMain gui = ImGuiMain();
 const char* current_scene = "./assets/defaults/scenes/scene_render.json";
 
 Camera cam = Camera(0, 0, glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
-
 
 int main() {
 	// Initialize GLFW
@@ -67,7 +66,6 @@ int main() {
 
 	//Load GLAD so it configures OpenGL
 	gladLoadGL();
-	
 
 	//Creates a loader object to load scenes
 	loader.width_ = width_;
@@ -89,8 +87,6 @@ int main() {
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
 	gui.Load(window, io);
-
-	
 
 	loader.LoadNewScene(current_scene);
 
@@ -161,9 +157,18 @@ int main() {
 		if (gui.viewportSize.x != cam.width || gui.viewportSize.y != cam.height) {
 			cam.updateSize(gui.viewportSize.x, gui.viewportSize.y);
 		}
-
+		//////////////////////////////////////////////////
+		//////////////   SHORTCUTS   /////////////////////
+		//////////////////////////////////////////////////
+		
+		//Screenshots
 		if (io.KeysDown[GLFW_KEY_F9]) {
 			SaveTextureToFile(loader.framebufferTexture, width_, height_, "assets/generated/screenshots/texture.png");
+		}
+
+		//Teleports to selectedObject when pressing F
+		if (io.KeysDown[GLFW_KEY_F]) {
+			cam.Position = loader.objects_Transforms[selectedObjectID].Location;
 		}
 
 		// Updates and exports the camera matrix to the Vertex Shader

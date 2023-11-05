@@ -252,6 +252,7 @@
     <ClInclude Include="srcs\Basic Rendering\VBO\VBO.h" />
     <ClInclude Include="srcs\Gui\ImGuiMain.h" />
     <ClInclude Include="srcs\Gui\ImGuiUtils.h" />
+    <ClInclude Include="srcs\Libs\ImGui_Lib\IconsFontAwesome5Pro.h" />
     <ClInclude Include="srcs\Libs\ImGui_Lib\imconfig.h" />
     <ClInclude Include="srcs\Libs\ImGui_Lib\imgui.h" />
     <ClInclude Include="srcs\Libs\ImGui_Lib\ImGuizmo.h" />

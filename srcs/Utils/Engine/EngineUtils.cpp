@@ -1,5 +1,6 @@
 #include "EngineUtils.h"
 
+
 bool to_bool(std::string str) {
     bool b = true;
     if (str=="false") {
@@ -159,3 +160,4 @@ unsigned int LoadTexture(char const* path)
 
 	return textureID;
 }
+

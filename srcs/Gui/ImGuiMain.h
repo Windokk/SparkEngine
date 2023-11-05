@@ -8,6 +8,8 @@
 #include "ImGuiUtils.h"
 #include "../Libs/ImGui_Lib/ImGuizmo.h"
 #include <glm/gtx/matrix_decompose.hpp>
+#include "../Libs/ImGui_Lib/IconsFontAwesome5Pro.h"
+
 
 class ImGuiMain {
 public:
@@ -71,7 +73,7 @@ public:
 		style.Colors[ImGuiCol_CheckMark] = ImVec4(0.4980392158031464f, 0.5137255191802979f, 1.0f, 1.0f);
 		style.Colors[ImGuiCol_SliderGrab] = ImVec4(0.4980392158031464f, 0.5137255191802979f, 1.0f, 1.0f);
 		style.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.5372549295425415f, 0.5529412031173706f, 1.0f, 1.0f);
-		style.Colors[ImGuiCol_Button] = ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 1.0f);
+		style.Colors[ImGuiCol_Button] = ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 0.0f);
 		style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.196078434586525f, 0.1764705926179886f, 0.5450980663299561f, 1.0f);
 		style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.2352941185235977f, 0.2156862765550613f, 0.5960784554481506f, 1.0f);
 		style.Colors[ImGuiCol_Header] = ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 1.0f);
@@ -108,5 +110,7 @@ public:
 	ImVec2 viewportPos;
 	bool isHoverViewport;
 	bool showCloseButton;
+	ImFont* regular;
+	ImFont* solid;
 	bool showRenameDialog = false;
 };
