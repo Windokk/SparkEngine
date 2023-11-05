@@ -99,32 +99,22 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Help")) {
-			ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/menus/help/question.png"), ImVec2(16, 16));
-			ImGui::SameLine();
-			if (ImGui::MenuItem("Wiki")) {
+			if (ImGui::MenuItem(ICON_FA_QUESTION"  Wiki")) {
 				system("start https://github.com/Windokk/CrabEngine/wiki");
 			}
-			ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/menus/help/code.png"), ImVec2(16, 16));
-			ImGui::SameLine();
-			if (ImGui::MenuItem("Engine Source code")) {
-				system("start https://github.com/Windokk/CrabEngine");
-			}
-			ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/menus/help/book.png"), ImVec2(16, 16));
-			ImGui::SameLine(); // Move to the same line as the image
-			if (ImGui::MenuItem("Engine Documentation"))
+			if (ImGui::MenuItem(ICON_FA_CODE"  Engine Source code")) {system("start https://github.com/Windokk/CrabEngine");}
+			if (ImGui::MenuItem(ICON_FA_BOOK"  Engine Documentation"))
 			{
 				system("start https://github.com/Windokk/CrabEngine/blob/master/docs/README.md");
 			}
-
-			ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/menus/help/list.png"), ImVec2(16, 16));
-			ImGui::SameLine();
-			if (ImGui::MenuItem("Credits")) {
-				ImGui::Begin("Credits", nullptr, ImGuiWindowFlags_Popup);
-				ImGui::End();
+			if (ImGui::MenuItem(ICON_FA_LIST"  Credits")) {
+				
+				if (showCredits) {
+					ImGui::Begin("dzzddz");
+					ImGui::End();
+				}
 			}
-			ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/menus/help/certificate.png"), ImVec2(16, 16));
-			ImGui::SameLine();
-			if (ImGui::MenuItem("License")) {
+			if (ImGui::MenuItem(ICON_FA_CERTIFICATE"  License")) {
 			}
 			ImGui::EndMenu();
 		}
@@ -150,7 +140,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 	//Im Gui Viewport
 	ImGuiStyle& style = ImGui::GetStyle();
 	style.WindowPadding = ImVec2(0, 0);
-	ImGui::Begin(ICON_FA_CAMERA"  Viewport", nullptr);
+	ImGui::Begin(ICON_FA_CAMERA"  Viewport");
 
 	ImGuizmo::SetDrawlist();
 	float windowWidth = (float)ImGui::GetWindowWidth();
@@ -236,7 +226,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	//Hierarchy
-	ImGui::Begin(ICON_FA_CUBES"  Hierarchy", &showCloseButton);
+	ImGui::Begin(ICON_FA_CUBES"  Hierarchy");
 	if (ImGui::BeginListBox("##", ImVec2(200, 80))) {
 		for (int i = 0; i < loader.parser.objects.size(); i++) {
 			if (ImGui::Selectable((loader.parser.objects[i].name).c_str())) {
@@ -250,7 +240,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	//Details
-	ImGui::Begin(ICON_FA_LIST"  Details", &showCloseButton);
+	ImGui::Begin(ICON_FA_LIST"  Details");
 	std::string displayName = "Name : " + loader.parser.objects[selectedObjectID].name;
 	ImGui::Text(displayName.c_str());
 	if (ImGui::IsItemHovered()) {
@@ -590,7 +580,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	//Content Browser
-	ImGui::Begin(ICON_FA_FILE"  Content Browser", &showCloseButton, (ImGuiWindowFlags_MenuBar));
+	ImGui::Begin(ICON_FA_FILE"  Content Browser", nullptr, (ImGuiWindowFlags_MenuBar));
 	if (ImGui::BeginMenuBar()) {
 		if (ImGui::BeginMenu(ICON_FA_FILTER"  Filters")) {
 			ImGui::MenuItem(ICON_FA_FILTER "  Select filter(s) :", NULL, false, false);

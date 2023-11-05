@@ -113,4 +113,5 @@ public:
 	ImFont* regular;
 	ImFont* solid;
 	bool showRenameDialog = false;
+	bool showCredits = true;
 };
