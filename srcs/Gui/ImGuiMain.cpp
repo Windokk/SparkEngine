@@ -5,6 +5,17 @@ ImGuiMain::ImGuiMain()
 {
 }
 
+void LoadSceneFromFile(SceneLoader& loader) {
+	std::string file = OpenWindowsFileDialog(L"Scene file (.json)\0*.json\0");
+	if (file != "") {
+		file = replaceCharacters(file, '\\', '/');
+		std::string file_relative;
+		file_relative = make_relative(file, file_relative);
+		std::cout << file_relative;
+		loader.LoadNewScene(file.c_str());
+	}
+}
+
 void ImGuiMain::Load(GLFWwindow* window, ImGuiIO& io)
 {
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
@@ -41,12 +52,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 			ImGui::Separator();
 			if (ImGui::BeginMenu(ICON_FA_FILE_UPLOAD "  Import to project")) {
 				if (ImGui::MenuItem(ICON_FA_CLAPPERBOARD "  Scene")) {
-					std::string file = OpenWindowsFileDialog(L"Scene file (.json)\0*.json\0");
-					if (file != "") {
-						file = replaceCharacters(file, '\\', '/');
-						file = file.substr(51, file.size() - 51);
-						loader.LoadNewScene(file.c_str());
-					}
+					LoadSceneFromFile(loader);
 				}
 				if (ImGui::MenuItem(ICON_FA_CUBE "  Model")) {
 				}

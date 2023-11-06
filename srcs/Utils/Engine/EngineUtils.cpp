@@ -1,6 +1,7 @@
 #include "EngineUtils.h"
 
 
+
 bool to_bool(std::string str) {
     bool b = true;
     if (str=="false") {
@@ -161,3 +162,23 @@ unsigned int LoadTexture(char const* path)
 	return textureID;
 }
 
+std::string substr(const std::string& mainString, const std::string& subString) {
+	std::string result = mainString;
+	size_t pos = result.find(subString);
+
+	if (pos != std::string::npos) {
+		result.erase(pos, subString.length());
+	}
+
+	return result;
+}
+
+namespace fs = std::filesystem;
+
+std::string make_relative(const std::string& absolute_path, const std::string& base_path) {
+	fs::path absPath(absolute_path);
+	fs::path basePath(base_path);
+
+	fs::path relativePath = fs::relative(absPath, basePath);
+	return relativePath.string();
+}

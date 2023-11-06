@@ -258,6 +258,14 @@ void SceneLoader::Update(Camera cam)
 
 void SceneLoader::LoadNewScene(const char* scene) {
 
+	objects_Transforms.clear();
+	models.clear();
+	light_object_infos.clear();
+	shaders.clear();
+	parser.objects.clear();
+	parser.shaders.clear();
+	parser.skybox = SceneParser::SkyboxData();
+
 	SceneLoader::Load1(scene);
 
 	glEnable(GL_DEPTH_TEST);

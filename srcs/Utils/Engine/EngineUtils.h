@@ -17,6 +17,7 @@
 #include <glm/gtx/string_cast.hpp>
 #include <GLFW/glfw3.h>
 #include <GL/gl.h>
+#include <filesystem>
 
 bool to_bool(std::string str);
 float randf();
@@ -27,8 +28,8 @@ void SaveTextureToFile(GLuint textureId, int width, int height, const char* file
 bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_width, int* out_height);
 GLuint LoadImageTexture(const char* path);
 unsigned int LoadTexture(char const* path);
-
-
+std::string substr(const std::string& mainString, const std::string& subString);
+std::string make_relative(const std::string& absolute_path, const std::string& base_path);
 #ifndef LIGHT_STRUCT_H
 #define LIGHT_STRUCT_H
 
