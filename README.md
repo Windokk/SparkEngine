@@ -18,9 +18,22 @@ A 3D Game Engine In C++ created using Open GL
 </div>
 
 ## Description
-The Spark Engine is a 3D Game Engine that allows gam devs to create an environnement for a player to play in. It is created in vs code, but as it is open source, you can edit it on any IDE that you want.
 
-It uses the Open GL [GLFW](https://www.glfw.org/) Lib for global window management, the [GLM](https://glm.g-truc.net/0.9.9/index.html) lib for all of the mathematics and the [STB](https://github.com/nothings/stb) lib for the images and textures management.
+Welcome to the Spark Engine project, The Spark Engine is a powerful, C++ and OpenGL-based 3D game engine designed to provide game developers with complete control over their engine and game development process. With a commitment to empowering creativity, the Spark Engine is dedicated to fostering growth within the game industry. It enables developers to create immersive environments of various styles, including realistic, low-poly, and cell-shaded graphics, ensuring versatility and flexibility in game design.
+
+#### Key Features:
+
+- Full control for developers, allowing complete customization and optimization.
+- Supports various graphic styles, from realistic to low poly and cell-shaded.
+- Open-source and free to use, with no royalties.
+- Designed to be highly accessible for game developers of all levels of expertise.
+- Actively maintained and community-driven for continuous improvement and support.
+
+#### Future Direction:
+The Spark Engine is determined to embrace the latest advancements in the industry and aims to evolve into a modern ray tracing engine. With this vision, we strive to elevate our standing within the gaming industry, aspiring to reach the level of other renowned game engines like Unreal Engine and Godot.
+
+
+### Join us in our mission to revolutionize game development. Let's <span style="color:green;"> ignite </span> the <span style="color:red;">spark</span> of <span style="color:blue;">creativity</span> together !
 
 The engine is in it's pre-alpha state of developpement so there might be a lot of bugs and incomplete features.
 
