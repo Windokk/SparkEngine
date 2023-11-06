@@ -116,6 +116,5 @@ public:
 	bool showDetails = true;
 	bool showViewport = true;
 	bool showHierarchy = true;
-	bool showRenameDialog = false;
 	bool showCreditsWindow = false;
 };

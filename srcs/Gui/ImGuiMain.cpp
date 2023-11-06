@@ -147,9 +147,10 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 	float viewManipulateRight = io.DisplaySize.x;
 	float viewManipulateTop = 0;
 
+	ImGuiStyle& style = ImGui::GetStyle();
+
 	//Viewport
 	if (showViewport) {
-		ImGuiStyle& style = ImGui::GetStyle();
 		style.WindowPadding = ImVec2(0, 0);
 		ImGui::Begin(ICON_FA_CAMERA"  Viewport", &showViewport);
 
@@ -249,13 +250,14 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 	//Details
 	if(showDetails){
 		ImGui::Begin(ICON_FA_LIST"  Details",&showDetails);
-		std::string displayName = "Name : " + loader.parser.objects[selectedObjectID].name;
-		ImGui::Text(displayName.c_str());
-		if (ImGui::IsItemHovered()) {
-			if (io.MouseClicked[GLFW_MOUSE_BUTTON_RIGHT]) {
-				showRenameDialog = true;
-			}
-		}
+		ImGui::Text("Name : ");
+		ImGui::SameLine();
+		static char buffer[256];
+		strcpy(buffer, loader.parser.objects[selectedObjectID].name.c_str());
+		style.FrameRounding = 6.0f;
+		ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 5);
+		ImGui::InputText("##ObjectName", buffer, 600);
+		style.FrameRounding = 0.0f;
 		ImGui::Separator();
 		for (int a = 0; a < loader.parser.objects[selectedObjectID].components.size(); a++) {
 			if (std::holds_alternative<TransformComponent>(loader.parser.objects[selectedObjectID].components[a])) {
@@ -559,23 +561,6 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 		}
 
 		ImGui::End();
-	}
-
-	//Object Renaming Dialog
-	if(showRenameDialog) {
-		ImGui::OpenPopup("Rename Object");
-		if(ImGui::BeginPopupModal("Rename Object", &showRenameDialog, ImGuiWindowFlags_AlwaysAutoResize)) {
-			char buf[255]{};
-			ImGui::InputTextWithHint("##Rename", loader.parser.objects[selectedObjectID].name.c_str(), buf, sizeof(buf));
-			if (io.KeysDown[GLFW_KEY_ENTER]) {
-				showRenameDialog = false;
-				loader.parser.objects[selectedObjectID].name = buf;
-			}
-			if (io.MouseClicked[GLFW_MOUSE_BUTTON_LEFT] && not ImGui::IsItemHovered()) {
-				showRenameDialog = false;
-			}
-			ImGui::EndPopup();
-		}
 	}
 
 	//Content Browser
