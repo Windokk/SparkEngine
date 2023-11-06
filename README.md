@@ -72,7 +72,6 @@ The Spark Engine is determined to embrace the latest advancements in the industr
 |Outliner|Done 🟢|
 |Manipluation guizmos|Done 🟢|
 |Enhanced GUI|Done 🟢|
-|Bullet Physics Engine integration|Delayed 🟠|
 |Picking|Doing 🟠|
 |Scene Creation and Saving|To do 🔴|
 |Settings|To do 🔴|
@@ -92,7 +91,6 @@ The Spark Engine is determined to embrace the latest advancements in the industr
 - Open GL with Glad (OpenGL bindings and graphic card support) : [GLAD](https://glad.dav1d.de/)
 - GLM (mathemical functions and types) : [GLM](https://github.com/g-truc/glm)
 - Dear ImGUi (all UI) : [DEAR IMGUI](https://github.com/ocornut/imgui)
-- Bullet Physics (Physical interactions) : [BULLET PHYSICS](https://github.com/bulletphysics/bullet3)
 
 ## Authors
 
