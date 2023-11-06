@@ -32,14 +32,12 @@ Welcome to the Spark Engine project, The Spark Engine is a powerful, C++ and Ope
 #### Future Direction:
 The Spark Engine is determined to embrace the latest advancements in the industry and aims to evolve into a modern ray tracing engine. With this vision, we strive to elevate our standing within the gaming industry, aspiring to reach the level of other renowned game engines like Unreal Engine and Godot.
 
-<span style="color: red;">This text is red.</span>
+#### Join us in our mission to revolutionize game development. Let's ignite the spark of creativity together !
 
-### Join us in our mission to revolutionize game development. Let's <span style='color:green'> ignite 
-</span> the <span style='color:red'>spark</span> of <span style='color:blue'>creativity</span> together !
+> [!WARNING]
+> The engine is in it's pre-alpha state of developpement so there might be a lot of bugs and incomplete features.
 
-The engine is in it's pre-alpha state of developpement so there might be a lot of bugs and incomplete features.
-
-## API/Engine Documentation
+## Engine's code Documentation
 
 *Working on it*
 
