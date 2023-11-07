@@ -236,13 +236,14 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 	//Hierarchy
 	if (showHierarchy) {
 		ImGui::Begin(ICON_FA_CUBES"  Hierarchy", &showHierarchy);
-		if (ImGui::BeginListBox("##", ImVec2(200, 80))) {
-			for (int i = 0; i < loader.parser.objects.size(); i++) {
-				if (ImGui::Selectable((loader.parser.objects[i].name).c_str())) {
-					selectedObjectID = i;
-				}
+		for (int i = 0; i < loader.parser.objects.size(); i++) {
+			std::string spacing = "  ";
+			std::string iconString = ICON_FA_CUBE + spacing + loader.parser.objects[i].name;
+			if(ImGui::Selectable(iconString.c_str())) {
+				selectedObjectID = i;
+				
 			}
-			ImGui::EndListBox();
+			ImGui::Separator();
 		}
 		ImGui::End();
 	}
@@ -299,6 +300,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 				}
 				// Reapply the new transform to the selected Object transform
 				loader.objects_Transforms[selectedObjectID] = transform;
+				ImGui::Spacing();
 			}
 			else if (std::holds_alternative<ModelComponent>(loader.parser.objects[selectedObjectID].components[a])) {
 				if (ImGui::CollapsingHeader("Model")) {
@@ -610,6 +612,4 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-
 }
