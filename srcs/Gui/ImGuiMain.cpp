@@ -157,8 +157,26 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 	//Documentation
 	if (showDocumentation) {
 		ImGui::Begin("Documentation", &showDocumentation);
-		TextCentered("sxfe");
-		//system("start https://github.com/Windokk/SparkEngine/blob/master/docs/README.md");
+		auto windowWidth = ImGui::GetWindowSize().x;
+		auto textWidth = ImGui::CalcTextSize(std::string("Documentation for Developpers").c_str()).x;
+
+		ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
+		bool DevlinkSelected  = false;
+		ImGui::Selectable(std::string("Documentation for Developpers").c_str(), &DevlinkSelected, ImGuiSelectableFlags_None, ImVec2(textWidth, 0));
+		if(DevlinkSelected){
+			system("start https://github.com/Windokk/SparkEngine/blob/master/docs/README.md");
+		}
+
+		ImGui::NewLine();
+
+		auto textWidth2 = ImGui::CalcTextSize(std::string("Documentation for Games Creators").c_str()).x;
+		ImGui::SetCursorPosX((windowWidth - textWidth2) * 0.5f);
+		bool GamelinkSelected = false;
+		ImGui::Selectable(std::string("Documentation for Games Creators").c_str(), &GamelinkSelected, ImGuiSelectableFlags_None, ImVec2(textWidth2, 0));
+		if (GamelinkSelected) {
+			system("start https://github.com/Windokk/SparkEngine/wiki");
+		}
+		
 		ImGui::End();
 	}
 
