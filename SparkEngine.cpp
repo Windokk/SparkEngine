@@ -1,6 +1,6 @@
 #include <iostream>
-#include <windows.h>
 #include <glad/glad.h>
+#include <windows.h>
 #include<GLFW/glfw3.h>
 #include<stb/stb_image.h>
 #include<stb/stb_image_write.h>
@@ -10,12 +10,13 @@
 #include<glm/gtx/rotate_vector.hpp>
 #include<glm/gtx/vector_angle.hpp>
 
-#include "srcs/Libs/ImGui_Lib/imgui_internal.h"
-
+#include "srcs/Libraries/ImGui_Lib/imgui_internal.h"
+ 
 #include "srcs/Scene Management/SceneLoader.h"
 #include "srcs/Utils/Engine/EngineUtils.h"
 #include "srcs/Utils/Rendering/Line.h"
 #include "srcs/Utils/Inputs/InputsUtils.h"
+
 
 unsigned int width_ = 1280;
 unsigned int height_ = 720;
@@ -32,7 +33,8 @@ const char* current_scene = "./assets/defaults/scenes/scene_render.json";
 
 Camera cam = Camera(0, 0, glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
 
-int main() {
+//int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow) 
+int main(){
 	// Initialize GLFW
 	glfwInit();
 

@@ -48,10 +48,12 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
+    <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PublishSingleFile>true</PublishSingleFile>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -72,6 +74,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(ProjectDir)\libs\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)\libs\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(ProjectDir)\Libraries\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)\Libraries\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
@@ -106,37 +112,40 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>
-      </SDLCheck>
+      <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\elipt\Downloads\bullet3-3.25\examples\ThirdPartyLibs;C:\Users\elipt\Downloads\bullet3-3.25\examples\SharedMemory;C:\Users\elipt\Downloads\bullet3-3.25\src;C:\Users\elipt\Downloads\bullet3-3.25\examples\ExampleBrowser;C:\Users\elipt\Downloads\bullet3-3.25\examples\ThirdPartyLibs\glad;C:\Users\elipt\Downloads\bullet3-3.25\src\clew;$(ProjectDir)\Libraries\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <AdditionalIncludeDirectories>$(ProjectDir)\libs\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)\Libraries\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3_mt.lib;bullet\BulletExampleBrowserLib_vs2010_x64_debug.lib;bullet\gwen_vs2010_x64_debug.lib;bullet\OpenGL_Window_vs2010_x64_debug.lib;bullet\BulletSoftBody_vs2010_x64_debug.lib;bullet\BulletInverseDynamicsUtils_vs2010_x64_debug.lib;bullet\BulletInverseDynamics_vs2010_x64_debug.lib;bullet\BulletDynamics_vs2010_x64_debug.lib;bullet\BulletCollision_vs2010_x64_debug.lib;bullet\LinearMath_vs2010_x64_debug.lib;bullet\BussIK_vs2010_x64_debug.lib;bullet\Bullet3Common_vs2010_x64_debug.lib;bullet\Bullet3OpenCL_clew_vs2010_x64_debug.lib;bullet\Bullet3Dynamics_vs2010_x64_debug.lib;bullet\Bullet3Collision_vs2010_x64_debug.lib;bullet\Bullet3Geometry_vs2010_x64_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
+      <AdditionalLibraryDirectories>$(ProjectDir)\libs\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <EntryPointSymbol>
+      </EntryPointSymbol>
+      <AdditionalOptions>
+      </AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Libraries\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glfw3_mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)\Libraries\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -152,16 +161,16 @@
     <ClCompile Include="srcs\Basic Rendering\VBO\VBO.cpp" />
     <ClCompile Include="srcs\Gui\ImGuiMain.cpp" />
     <ClCompile Include="srcs\Gui\ImGuiUtils.cpp" />
-    <ClCompile Include="srcs\Libs\glad.c" />
-    <ClCompile Include="srcs\Libs\ImGui_Lib\imgui.cpp" />
-    <ClCompile Include="srcs\Libs\ImGui_Lib\ImGuizmo.cpp" />
-    <ClCompile Include="srcs\Libs\ImGui_Lib\imgui_demo.cpp" />
-    <ClCompile Include="srcs\Libs\ImGui_Lib\imgui_draw.cpp" />
-    <ClCompile Include="srcs\Libs\ImGui_Lib\imgui_impl_glfw.cpp" />
-    <ClCompile Include="srcs\Libs\ImGui_Lib\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="srcs\Libs\ImGui_Lib\imgui_tables.cpp" />
-    <ClCompile Include="srcs\Libs\ImGui_Lib\imgui_widgets.cpp" />
-    <ClCompile Include="srcs\Libs\stb.cpp" />
+    <ClCompile Include="srcs\Libraries\glad.c" />
+    <ClCompile Include="srcs\Libraries\ImGui_Lib\imgui.cpp" />
+    <ClCompile Include="srcs\Libraries\ImGui_Lib\ImGuizmo.cpp" />
+    <ClCompile Include="srcs\Libraries\ImGui_Lib\imgui_demo.cpp" />
+    <ClCompile Include="srcs\Libraries\ImGui_Lib\imgui_draw.cpp" />
+    <ClCompile Include="srcs\Libraries\ImGui_Lib\imgui_impl_glfw.cpp" />
+    <ClCompile Include="srcs\Libraries\ImGui_Lib\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="srcs\Libraries\ImGui_Lib\imgui_tables.cpp" />
+    <ClCompile Include="srcs\Libraries\ImGui_Lib\imgui_widgets.cpp" />
+    <ClCompile Include="srcs\Libraries\stb.cpp" />
     <ClCompile Include="srcs\Scene Management\Components.cpp" />
     <ClCompile Include="srcs\Scene Management\SceneLoader.cpp" />
     <ClCompile Include="srcs\Scene Management\SceneParser.cpp" />
@@ -252,17 +261,17 @@
     <ClInclude Include="srcs\Basic Rendering\VBO\VBO.h" />
     <ClInclude Include="srcs\Gui\ImGuiMain.h" />
     <ClInclude Include="srcs\Gui\ImGuiUtils.h" />
-    <ClInclude Include="srcs\Libs\ImGui_Lib\IconsFontAwesome5Pro.h" />
-    <ClInclude Include="srcs\Libs\ImGui_Lib\imconfig.h" />
-    <ClInclude Include="srcs\Libs\ImGui_Lib\imgui.h" />
-    <ClInclude Include="srcs\Libs\ImGui_Lib\ImGuizmo.h" />
-    <ClInclude Include="srcs\Libs\ImGui_Lib\imgui_impl_glfw.h" />
-    <ClInclude Include="srcs\Libs\ImGui_Lib\imgui_impl_opengl3.h" />
-    <ClInclude Include="srcs\Libs\ImGui_Lib\imgui_impl_opengl3_loader.h" />
-    <ClInclude Include="srcs\Libs\ImGui_Lib\imgui_internal.h" />
-    <ClInclude Include="srcs\Libs\ImGui_Lib\imstb_rectpack.h" />
-    <ClInclude Include="srcs\Libs\ImGui_Lib\imstb_textedit.h" />
-    <ClInclude Include="srcs\Libs\ImGui_Lib\imstb_truetype.h" />
+    <ClInclude Include="srcs\Libraries\ImGui_Lib\IconsFontAwesome5Pro.h" />
+    <ClInclude Include="srcs\Libraries\ImGui_Lib\imconfig.h" />
+    <ClInclude Include="srcs\Libraries\ImGui_Lib\imgui.h" />
+    <ClInclude Include="srcs\Libraries\ImGui_Lib\ImGuizmo.h" />
+    <ClInclude Include="srcs\Libraries\ImGui_Lib\imgui_impl_glfw.h" />
+    <ClInclude Include="srcs\Libraries\ImGui_Lib\imgui_impl_opengl3.h" />
+    <ClInclude Include="srcs\Libraries\ImGui_Lib\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="srcs\Libraries\ImGui_Lib\imgui_internal.h" />
+    <ClInclude Include="srcs\Libraries\ImGui_Lib\imstb_rectpack.h" />
+    <ClInclude Include="srcs\Libraries\ImGui_Lib\imstb_textedit.h" />
+    <ClInclude Include="srcs\Libraries\ImGui_Lib\imstb_truetype.h" />
     <ClInclude Include="srcs\Scene Management\Components.h" />
     <ClInclude Include="srcs\Scene Management\SceneLoader.h" />
     <ClInclude Include="srcs\Scene Management\SceneParser.h" />

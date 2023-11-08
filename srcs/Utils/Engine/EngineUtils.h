@@ -10,7 +10,7 @@
 #include <glad/glad.h>
 #include<stb/stb_image_write.h>
 #include <stb/stb_image.h>
-#include"../../Libs/ImGui_Lib/imgui.h"
+#include"../../Libraries/ImGui_Lib/imgui.h"
 #include<glm/gtc/matrix_transform.hpp>
 #include<glm/gtc/type_ptr.hpp>
 #include <iostream>

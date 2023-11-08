@@ -12,7 +12,7 @@
 
 #include "../../Utils/Engine/EngineUtils.h"
 #include"../Shader/Shader.h"
-#include "../../Libs/ImGui_Lib/imgui.h"
+#include "../../Libraries/ImGui_Lib/imgui.h"
 
 class Camera
 {

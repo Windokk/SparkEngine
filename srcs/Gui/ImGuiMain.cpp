@@ -37,14 +37,32 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 	ImGui::NewFrame();
 	ImGuizmo::BeginFrame();
 
+	ImGui::PushStyleColor(ImGuiCol_DockingPreview, ImVec4(0.06866955757141113f, 0.06866887211799622f, 0.06866887211799622f, 1.0f));
+
 
 	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
+	
+	static ImGuizmo::MODE currentGizmoMode(ImGuizmo::WORLD);
+	static ImGuizmo::OPERATION currentGizmoOperation(ImGuizmo::TRANSLATE);
+
+	static bool useSnap = false;
+	static float snap[3] = { 1.f, 1.f, 1.f };
+	static float bounds[] = { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f };
+	static float boundsSnap[] = { 0.1f, 0.1f, 0.1f };
+	static bool boundSizing = false;
+	static bool boundSizingSnap = false;
+
+	float viewManipulateRight = io.DisplaySize.x;
+	float viewManipulateTop = 0;
+
+	ImGuiStyle& style = ImGui::GetStyle();
 
 	//Teleports to selectedObject when pressing F
 	if (io.KeysDown[GLFW_KEY_F]) {
 		cam.Position = loader.objects_Transforms[selectedObjectID].Location;
 	}
 
+	//Main Menu Bar
 	if (ImGui::BeginMainMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
 			if (ImGui::MenuItem(ICON_FA_FILE_PLUS "  New", "Ctrl+N")) {
@@ -106,18 +124,19 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Build")) {
-			if (ImGui::MenuItem("Package Project")) {}
-			if (ImGui::MenuItem("Package Game")) {}
+			if (ImGui::MenuItem(ICON_FA_ARCHIVE "  Package Project")) {}
+			if (ImGui::MenuItem(ICON_FA_GAMEPAD "  Package Game")) {}
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Help")) {
 			if (ImGui::MenuItem(ICON_FA_QUESTION"  Wiki")) {
-				system("start https://github.com/Windokk/CrabEngine/wiki");
+				system("start https://github.com/Windokk/SparkEngine/wiki");
 			}
-			if (ImGui::MenuItem(ICON_FA_CODE"  Engine Source code")) { system("start https://github.com/Windokk/CrabEngine"); }
-			if (ImGui::MenuItem(ICON_FA_BOOK"  Engine Documentation"))
-			{
-				system("start https://github.com/Windokk/CrabEngine/blob/master/docs/README.md");
+			if (ImGui::MenuItem(ICON_FA_CODE"  Engine Source code")) { 
+				system("start https://github.com/Windokk/SparkEngine"); 
+			}
+			if (ImGui::MenuItem(ICON_FA_BOOK"  Engine Documentation")){
+				showDocumentation = true;
 			}
 			if (ImGui::MenuItem(ICON_FA_LIST"  Credits")) {
 				showCreditsWindow = true;
@@ -129,25 +148,19 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 		ImGui::EndMainMenuBar();
 	}
 
+	//Credits
 	if (showCreditsWindow) {
 		ImGui::Begin("Credits", &showCreditsWindow);
 		ImGui::End();
 	}
 
-	static ImGuizmo::MODE currentGizmoMode(ImGuizmo::WORLD);
-	static ImGuizmo::OPERATION currentGizmoOperation(ImGuizmo::TRANSLATE);
-
-	static bool useSnap = false;
-	static float snap[3] = { 1.f, 1.f, 1.f };
-	static float bounds[] = { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f };
-	static float boundsSnap[] = { 0.1f, 0.1f, 0.1f };
-	static bool boundSizing = false;
-	static bool boundSizingSnap = false;
-
-	float viewManipulateRight = io.DisplaySize.x;
-	float viewManipulateTop = 0;
-
-	ImGuiStyle& style = ImGui::GetStyle();
+	//Documentation
+	if (showDocumentation) {
+		ImGui::Begin("Documentation", &showDocumentation);
+		TextCentered("sxfe");
+		//system("start https://github.com/Windokk/SparkEngine/blob/master/docs/README.md");
+		ImGui::End();
+	}
 
 	//Viewport
 	if (showViewport) {
@@ -158,7 +171,44 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 		viewportPos = ImGui::GetWindowPos();
 		viewportSize = ImGui::GetWindowSize();
 
-		ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 5);
+		ImGuizmo::SetDrawlist();
+		ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y);
+		viewManipulateRight = ImGui::GetWindowPos().x + ImGui::GetContentRegionAvail().x;
+		viewManipulateTop = ImGui::GetWindowPos().y;
+
+		const float* cameraView = glm::value_ptr(cam.view);
+		const float* cameraProjection = glm::value_ptr(cam.projection);
+
+		ImGui::Image((void*)(intptr_t)loader.framebufferTexture, ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
+		isHoverViewport = (ImGui::IsItemHovered());
+
+		if (isHoverViewport && ImGui::IsWindowDocked() && !ImGuizmo::IsUsingAny()) {
+			cam.Inputs(window, 0.01F, 100.0f, ImVec2(ImGui::GetWindowPos().x + ImGui::GetWindowSize().x / 2, ImGui::GetWindowPos().y + ImGui::GetWindowSize().y / 2), ImGui::GetWindowSize());
+		}
+		if (!isHoverViewport) {
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+			io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange, ImGuiConfigFlags_DockingEnable;
+		}
+
+		TransformComponent& transform = loader.parser.objects[selectedObjectID].GetComponent<TransformComponent>();
+
+		glm::mat4 transformMat = glm::mat4(1.0f);
+		transformMat = glm::translate(glm::mat4(1.0f), loader.objects_Transforms[selectedObjectID].Location) * glm::toMat4(loader.objects_Transforms[selectedObjectID].Rotation) * glm::scale(glm::mat4(1.0f), glm::vec3(loader.objects_Transforms[selectedObjectID].Scale.x * 0.5, loader.objects_Transforms[selectedObjectID].Scale.y * 0.5, loader.objects_Transforms[selectedObjectID].Scale.z * 0.5));
+
+		ImGuizmo::Manipulate(cameraView, cameraProjection, currentGizmoOperation, currentGizmoMode, glm::value_ptr(transformMat), NULL, useSnap ? &snap[0] : NULL, boundSizing ? bounds : NULL, boundSizingSnap ? boundsSnap : NULL);
+
+		glm::vec3 skew;
+		glm::vec4 perspective;
+		glm::decompose(transformMat, transform.Scale, transform.Rotation, transform.Location, skew, perspective);
+
+		transform.Scale /= 0.5;
+
+		loader.objects_Transforms[selectedObjectID].Location = transform.Location;
+		loader.objects_Transforms[selectedObjectID].Rotation = transform.Rotation;
+		loader.objects_Transforms[selectedObjectID].Scale = transform.Scale;
+
+		ImGui::SetCursorPosY(30);
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 10);
 		ImGui::Button(ICON_FA_CUBE "  Perspective"); //TODO : Change "perspective" to the camera perspective value
 		ImGui::SameLine();
 		ImGui::SetCursorPosX(viewportSize.x / 2);
@@ -179,43 +229,6 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 		if (ImGui::IsItemClicked()) {
 			currentGizmoOperation = ImGuizmo::OPERATION::SCALE;
 		}
-
-		ImGuizmo::SetDrawlist();
-		ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y);
-		viewManipulateRight = ImGui::GetWindowPos().x + ImGui::GetContentRegionAvail().x;
-		viewManipulateTop = ImGui::GetWindowPos().y;
-
-		const float* cameraView = glm::value_ptr(cam.view);
-		const float* cameraProjection = glm::value_ptr(cam.projection);
-
-		ImGui::Image((void*)(intptr_t)loader.framebufferTexture, ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
-		isHoverViewport = (ImGui::IsItemHovered());
-
-		if (isHoverViewport && ImGui::IsWindowDocked() && !ImGuizmo::IsUsingAny()) {
-
-			cam.Inputs(window, 0.01F, 100.0f, ImVec2(ImGui::GetWindowPos().x + ImGui::GetWindowSize().x / 2, ImGui::GetWindowPos().y + ImGui::GetWindowSize().y / 2), ImGui::GetWindowSize());
-		}
-		if (!isHoverViewport) {
-
-		}
-
-		TransformComponent& transform = loader.parser.objects[selectedObjectID].GetComponent<TransformComponent>();
-
-		glm::mat4 transformMat = glm::mat4(1.0f);
-		transformMat = glm::translate(glm::mat4(1.0f), loader.objects_Transforms[selectedObjectID].Location) * glm::toMat4(loader.objects_Transforms[selectedObjectID].Rotation) * glm::scale(glm::mat4(1.0f), glm::vec3(loader.objects_Transforms[selectedObjectID].Scale.x * 0.5, loader.objects_Transforms[selectedObjectID].Scale.y * 0.5, loader.objects_Transforms[selectedObjectID].Scale.z * 0.5));
-
-		ImGuizmo::Manipulate(cameraView, cameraProjection, currentGizmoOperation, currentGizmoMode, glm::value_ptr(transformMat), NULL, useSnap ? &snap[0] : NULL, boundSizing ? bounds : NULL, boundSizingSnap ? boundsSnap : NULL);
-
-		glm::vec3 skew;
-		glm::vec4 perspective;
-		glm::decompose(transformMat, transform.Scale, transform.Rotation, transform.Location, skew, perspective);
-
-		transform.Scale /= 0.5;
-
-		loader.objects_Transforms[selectedObjectID].Location = transform.Location;
-		loader.objects_Transforms[selectedObjectID].Rotation = transform.Rotation;
-		loader.objects_Transforms[selectedObjectID].Scale = transform.Scale;
-
 
 		ImGui::End();
 		style.WindowPadding = ImVec2(8, 8);
@@ -254,7 +267,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 		ImGui::Text("Name : ");
 		ImGui::SameLine();
 		static char buffer[256];
-		strcpy(buffer, loader.parser.objects[selectedObjectID].name.c_str());
+		strcpy_s(buffer, loader.parser.objects[selectedObjectID].name.c_str());
 		style.FrameRounding = 6.0f;
 		ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 5);
 		ImGui::InputText("##ObjectName", buffer, 600);
@@ -280,22 +293,24 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 					glm::vec3 axis = glm::axis(transform.Rotation);
 					float angle = glm::angle(transform.Rotation);
 					// Modify the axis and angle values
-					static glm::vec3 axisAngle = axis * angle;
+					glm::vec3 axisAngle = axis * angle;
 					DrawVec3Control("Rotation", axisAngle);
-					ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX(), ImGui::GetCursorPosY() + 3.0f));
 					// Calculate the resulting vector from the modified axis and angle
 					glm::vec3 newAxis = glm::normalize(axisAngle);
 					float newAngle = glm::length(axisAngle);
 					// Convert the modified vector back to a quaternion
 					if (glm::length(newAxis) > 0) {
-						transform.Rotation = glm::angleAxis(glm::radians(newAngle), newAxis);
+						transform.Rotation = glm::angleAxis(newAngle, newAxis);
 					}
 					else {
 						transform.Rotation = glm::quat(1, 0, 0, 0); // Default to identity quaternion if the vector is zero
 					}
+
 					//////////////////////////////////////////////
-					///////////   SCALE   ////////////////////////
+					////////////////  SCALE   ////////////////////
 					//////////////////////////////////////////////
+
+					ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX(), ImGui::GetCursorPosY() + 3.0f));
 					DrawVec3Control("Scale", transform.Scale);
 				}
 				// Reapply the new transform to the selected Object transform
@@ -578,7 +593,6 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 			if (ImGui::MenuItem("Save All")) {
 			}
 			ImGui::Separator();
-			ImGui::PushStyleColor(ImGuiCol_MenuBarBg, ImVec4(0.8f, 0.2f, 0.2f, 1.0f));
 			if (ImGui::BeginMenu("Add +")) {
 				ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/icons/objects/scene.png"), ImVec2(16, 16));
 				ImGui::SameLine();
@@ -602,11 +616,12 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 				}
 				ImGui::EndMenu();
 			}
-			ImGui::PopStyleColor();
 			ImGui::EndMenuBar();
 		}
 		ImGui::End();
 	}
+
+	ImGui::PopStyleColor();
 
 	ImGui::EndFrame();
 

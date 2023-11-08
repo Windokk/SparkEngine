@@ -258,33 +258,6 @@
     <ClCompile Include="srcs\Gui\ImGuiMain.cpp">
       <Filter>Source Files\gui</Filter>
     </ClCompile>
-    <ClCompile Include="srcs\Libs\glad.c">
-      <Filter>Source Files\libs</Filter>
-    </ClCompile>
-    <ClCompile Include="srcs\Libs\stb.cpp">
-      <Filter>Source Files\libs</Filter>
-    </ClCompile>
-    <ClCompile Include="srcs\Libs\ImGui_Lib\imgui_widgets.cpp">
-      <Filter>Source Files\libs\imgui lib</Filter>
-    </ClCompile>
-    <ClCompile Include="srcs\Libs\ImGui_Lib\imgui_tables.cpp">
-      <Filter>Source Files\libs\imgui lib</Filter>
-    </ClCompile>
-    <ClCompile Include="srcs\Libs\ImGui_Lib\imgui_impl_opengl3.cpp">
-      <Filter>Source Files\libs\imgui lib</Filter>
-    </ClCompile>
-    <ClCompile Include="srcs\Libs\ImGui_Lib\imgui_impl_glfw.cpp">
-      <Filter>Source Files\libs\imgui lib</Filter>
-    </ClCompile>
-    <ClCompile Include="srcs\Libs\ImGui_Lib\imgui_draw.cpp">
-      <Filter>Source Files\libs\imgui lib</Filter>
-    </ClCompile>
-    <ClCompile Include="srcs\Libs\ImGui_Lib\imgui_demo.cpp">
-      <Filter>Source Files\libs\imgui lib</Filter>
-    </ClCompile>
-    <ClCompile Include="srcs\Libs\ImGui_Lib\imgui.cpp">
-      <Filter>Source Files\libs\imgui lib</Filter>
-    </ClCompile>
     <ClCompile Include="srcs\Scene Management\SceneParser.cpp">
       <Filter>Source Files\scene management</Filter>
     </ClCompile>
@@ -303,8 +276,35 @@
     <ClCompile Include="srcs\Basic Rendering\FBO\FrameBuffer.cpp">
       <Filter>Source Files\basic rendering\fbo</Filter>
     </ClCompile>
-    <ClCompile Include="srcs\Libs\ImGui_Lib\ImGuizmo.cpp">
+    <ClCompile Include="srcs\Libraries\ImGui_Lib\imgui_impl_glfw.cpp">
       <Filter>Source Files\libs\imgui lib</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\Libraries\ImGui_Lib\imgui_widgets.cpp">
+      <Filter>Source Files\libs\imgui lib</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\Libraries\ImGui_Lib\imgui_tables.cpp">
+      <Filter>Source Files\libs\imgui lib</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\Libraries\ImGui_Lib\imgui_impl_opengl3.cpp">
+      <Filter>Source Files\libs\imgui lib</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\Libraries\ImGui_Lib\imgui_draw.cpp">
+      <Filter>Source Files\libs\imgui lib</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\Libraries\ImGui_Lib\imgui_demo.cpp">
+      <Filter>Source Files\libs\imgui lib</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\Libraries\ImGui_Lib\imgui.cpp">
+      <Filter>Source Files\libs\imgui lib</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\Libraries\ImGui_Lib\ImGuizmo.cpp">
+      <Filter>Source Files\libs\imgui lib</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\Libraries\glad.c">
+      <Filter>Source Files\libs</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\Libraries\stb.cpp">
+      <Filter>Source Files\libs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -560,43 +560,43 @@
     <ClInclude Include="srcs\Utils\Rendering\Line.h">
       <Filter>Header Files\utils\rendering</Filter>
     </ClInclude>
-    <ClInclude Include="srcs\Libs\ImGui_Lib\imstb_truetype.h">
-      <Filter>Header Files\libs\imgui lib</Filter>
-    </ClInclude>
-    <ClInclude Include="srcs\Libs\ImGui_Lib\imstb_textedit.h">
-      <Filter>Header Files\libs\imgui lib</Filter>
-    </ClInclude>
-    <ClInclude Include="srcs\Libs\ImGui_Lib\imstb_rectpack.h">
-      <Filter>Header Files\libs\imgui lib</Filter>
-    </ClInclude>
-    <ClInclude Include="srcs\Libs\ImGui_Lib\imgui_internal.h">
-      <Filter>Header Files\libs\imgui lib</Filter>
-    </ClInclude>
-    <ClInclude Include="srcs\Libs\ImGui_Lib\imgui_impl_opengl3_loader.h">
-      <Filter>Header Files\libs\imgui lib</Filter>
-    </ClInclude>
-    <ClInclude Include="srcs\Libs\ImGui_Lib\imgui_impl_opengl3.h">
-      <Filter>Header Files\libs\imgui lib</Filter>
-    </ClInclude>
-    <ClInclude Include="srcs\Libs\ImGui_Lib\imgui_impl_glfw.h">
-      <Filter>Header Files\libs\imgui lib</Filter>
-    </ClInclude>
-    <ClInclude Include="srcs\Libs\ImGui_Lib\imgui.h">
-      <Filter>Header Files\libs\imgui lib</Filter>
-    </ClInclude>
-    <ClInclude Include="srcs\Libs\ImGui_Lib\imconfig.h">
-      <Filter>Header Files\libs\imgui lib</Filter>
-    </ClInclude>
     <ClInclude Include="srcs\Gui\ImGuiUtils.h">
       <Filter>Header Files\gui</Filter>
     </ClInclude>
     <ClInclude Include="srcs\Basic Rendering\FBO\FrameBuffer.h">
       <Filter>Header Files\basic rendering\fbo</Filter>
     </ClInclude>
-    <ClInclude Include="srcs\Libs\ImGui_Lib\ImGuizmo.h">
+    <ClInclude Include="srcs\Libraries\ImGui_Lib\IconsFontAwesome5Pro.h">
       <Filter>Header Files\libs\imgui lib</Filter>
     </ClInclude>
-    <ClInclude Include="srcs\Libs\ImGui_Lib\IconsFontAwesome5Pro.h">
+    <ClInclude Include="srcs\Libraries\ImGui_Lib\imstb_truetype.h">
+      <Filter>Header Files\libs\imgui lib</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\Libraries\ImGui_Lib\imstb_rectpack.h">
+      <Filter>Header Files\libs\imgui lib</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\Libraries\ImGui_Lib\imstb_textedit.h">
+      <Filter>Header Files\libs\imgui lib</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\Libraries\ImGui_Lib\imgui_internal.h">
+      <Filter>Header Files\libs\imgui lib</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\Libraries\ImGui_Lib\imgui_impl_opengl3_loader.h">
+      <Filter>Header Files\libs\imgui lib</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\Libraries\ImGui_Lib\imgui_impl_opengl3.h">
+      <Filter>Header Files\libs\imgui lib</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\Libraries\ImGui_Lib\imgui_impl_glfw.h">
+      <Filter>Header Files\libs\imgui lib</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\Libraries\ImGui_Lib\imgui.h">
+      <Filter>Header Files\libs\imgui lib</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\Libraries\ImGui_Lib\imconfig.h">
+      <Filter>Header Files\libs\imgui lib</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\Libraries\ImGui_Lib\ImGuizmo.h">
       <Filter>Header Files\libs\imgui lib</Filter>
     </ClInclude>
   </ItemGroup>
