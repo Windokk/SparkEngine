@@ -315,7 +315,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 			currentGizmoOperation = ImGuizmo::OPERATION::ROTATE;
 		}
 
-		if (io.KeysDown[GLFW_KEY_S]) {
+		if (io.KeysDown[GLFW_KEY_S] && !isHoverViewport) {
 			currentGizmoOperation = ImGuizmo::OPERATION::SCALE;
 		}
 	}
