@@ -154,6 +154,54 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 	//Credits
 	if (showCreditsWindow) {
 		ImGui::Begin("Credits", &showCreditsWindow);
+
+		ImGui::Text("Resources Used : ");
+		ImGui::NewLine();
+		ImGui::Text("Open GL with GLFW(context and window management) : ");
+		ImGui::SameLine();
+		if (ImGui::Button("GLFW")) {
+			system("start https://www.glfw.org/");
+		}
+		///////////
+		ImGui::Text("Open GL with Glad (OpenGL bindings and graphic card support) : ");
+		ImGui::SameLine();
+		if (ImGui::Button("GLAD")) {
+			system("start https://glad.dav1d.de/");
+		}
+		///////////
+		ImGui::Text("GLM (mathemical functions and types) : ");
+		ImGui::SameLine();
+		if (ImGui::Button("GLM")) {
+			system("start https://github.com/g-truc/glm");
+		}
+		///////////
+		ImGui::Text("Dear ImGui (all UI) : ");
+		ImGui::SameLine();
+		if (ImGui::Button("ImGui")) {
+			system("start https://github.com/ocornut/imgui");
+		}
+		///////////
+		ImGui::Text("STB Image (Image loading and management) : ");
+		ImGui::SameLine();
+		if (ImGui::Button("STB")) {
+			system("start https://github.com/nothings/stb");
+		}
+		///////////
+		ImGui::Text("ImGuizmo (3D Guizmos (Location, Rotation, Scale) : ");
+		ImGui::SameLine();
+		if (ImGui::Button("ImGuizmo")) {
+			system("start https://github.com/CedricGuillemet/ImGuizmo");
+		}
+
+		ImGui::NewLine();
+		ImGui::Text("Authors : ");
+		
+		ImGui::Text("Windokk : ");
+		ImGui::SameLine();
+		if (ImGui::Button("Windokk's Github Profile")) {
+			system("start https://github.com/Windokk/");
+		}
+
 		ImGui::End();
 	}
 

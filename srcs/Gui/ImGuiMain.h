@@ -82,7 +82,7 @@ public:
 		style.Colors[ImGuiCol_Separator] = ImVec4(0.1568627506494522f, 0.1843137294054031f, 0.250980406999588f, 1.0f);
 		style.Colors[ImGuiCol_SeparatorHovered] = ImVec4(0.1568627506494522f, 0.1843137294054031f, 0.250980406999588f, 1.0f);
 		style.Colors[ImGuiCol_SeparatorActive] = ImVec4(0.1568627506494522f, 0.1843137294054031f, 0.250980406999588f, 1.0f);
-		style.Colors[ImGuiCol_ResizeGrip] = ImVec4(0.0784313753247261f, 0.08627451211214066f, 0.1019607856869698f, 1.0f);
+		style.Colors[ImGuiCol_ResizeGrip] = ImVec4(0.04f, 0.04f, 0.04f, 1.0f);
 		style.Colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.1158786714076996f, 0.1158790588378906f, 0.1158798336982727f, 1.0f);
 		style.Colors[ImGuiCol_ResizeGripActive] = ImVec4(0.1158786714076996f, 0.1158790588378906f, 0.1158798336982727f, 1.0f);
 		style.Colors[ImGuiCol_TabHovered] = ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 1.0f);
