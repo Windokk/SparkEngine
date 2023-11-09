@@ -28,6 +28,9 @@ void ImGuiMain::Load(GLFWwindow* window, ImGuiIO& io)
 	icons_config.PixelSnapH = true;
 	solid = io.Fonts->AddFontFromFileTTF("assets/defaults/gui/engine/fonts/fa-solid-900.ttf", 13.0f,&icons_config, icons_ranges);
 	ImGuiMain::SetupImGuiStyle();
+
+	currentGizmoMode = ImGuizmo::WORLD;
+	currentGizmoOperation = ImGuizmo::TRANSLATE;
 }
 
 void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& selectedObjectID, ImGuiIO& io)
@@ -41,9 +44,6 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 
 
 	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
-	
-	static ImGuizmo::MODE currentGizmoMode(ImGuizmo::WORLD);
-	static ImGuizmo::OPERATION currentGizmoOperation(ImGuizmo::TRANSLATE);
 
 	static bool useSnap = false;
 	static float snap[3] = { 1.f, 1.f, 1.f };
@@ -121,6 +121,9 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Tools")) {
+			if (ImGui::MenuItem("Find item","Ctrl+F")) {
+
+			}
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Build")) {
@@ -156,10 +159,12 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 
 	//Documentation
 	if (showDocumentation) {
-		ImGui::Begin("Documentation", &showDocumentation);
+		ImGui::SetNextWindowSize(ImVec2(260, 110));
+		ImGui::Begin("Documentation", &showDocumentation, ImGuiWindowFlags_NoResize);
+
 		auto windowWidth = ImGui::GetWindowSize().x;
 		auto textWidth = ImGui::CalcTextSize(std::string("Documentation for Developpers").c_str()).x;
-
+		ImGui::Spacing();
 		ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
 		bool DevlinkSelected  = false;
 		ImGui::Selectable(std::string("Documentation for Developpers").c_str(), &DevlinkSelected, ImGuiSelectableFlags_None, ImVec2(textWidth, 0));
@@ -221,10 +226,13 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 
 		transform.Scale /= 0.5;
 
+
 		loader.objects_Transforms[selectedObjectID].Location = transform.Location;
 		loader.objects_Transforms[selectedObjectID].Rotation = transform.Rotation;
 		loader.objects_Transforms[selectedObjectID].Scale = transform.Scale;
 
+
+		/// Viewport Actions
 		ImGui::SetCursorPosY(30);
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 10);
 		ImGui::Button(ICON_FA_CUBE "  Perspective"); //TODO : Change "perspective" to the camera perspective value
@@ -308,17 +316,20 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 					//////////////////////////////////////////////
 
 					// Extract axis and angle from the quaternion
-					glm::vec3 axis = glm::axis(transform.Rotation);
-					float angle = glm::angle(transform.Rotation);
+
+					
+
+					glm::vec3 angle = glm::degrees(glm::eulerAngles(transform.Rotation));
 					// Modify the axis and angle values
-					glm::vec3 axisAngle = axis * angle;
+					glm::vec3 axisAngle = angle;
 					DrawVec3Control("Rotation", axisAngle);
 					// Calculate the resulting vector from the modified axis and angle
 					glm::vec3 newAxis = glm::normalize(axisAngle);
 					float newAngle = glm::length(axisAngle);
 					// Convert the modified vector back to a quaternion
 					if (glm::length(newAxis) > 0) {
-						transform.Rotation = glm::angleAxis(newAngle, newAxis);
+						
+						transform.Rotation = glm::angleAxis(glm::radians(newAngle), newAxis);
 					}
 					else {
 						transform.Rotation = glm::quat(1, 0, 0, 0); // Default to identity quaternion if the vector is zero
