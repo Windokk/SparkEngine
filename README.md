@@ -90,9 +90,9 @@ The Spark Engine is determined to embrace the latest advancements in the industr
 - Open GL with GLFW (context and window management) : [GLFW](https://www.glfw.org/)
 - Open GL with Glad (OpenGL bindings and graphic card support) : [GLAD](https://glad.dav1d.de/)
 - GLM (mathemical functions and types) : [GLM](https://github.com/g-truc/glm)
-- Dear ImGUi (all UI) : [DEAR IMGUI](https://github.com/ocornut/imgui)
+- Dear ImGui (all UI) : [DEAR IMGUI](https://github.com/ocornut/imgui)
 - STB Image (Image loading and management) : [STB](https://github.com/nothings/stb)
-- ImGuizmo (3D Guizmos (Location, Rotation, Scale) [ImGuizmo](https://github.com/CedricGuillemet/ImGuizmo)
+- ImGuizmo (3D Guizmos (Location, Rotation, Scale) : [ImGuizmo](https://github.com/CedricGuillemet/ImGuizmo)
 
 ## Authors
 
