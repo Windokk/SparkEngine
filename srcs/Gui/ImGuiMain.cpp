@@ -22,12 +22,16 @@ void ImGuiMain::Load(GLFWwindow* window, ImGuiIO& io)
 	ImGui_ImplOpenGL3_Init("#version 330");
 	io.ConfigFlags |= (ImGuiConfigFlags_NoMouseCursorChange, ImGuiConfigFlags_DockingEnable);
 	io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/defaults/gui/engine/fonts/OpenSans-Medium.ttf", 13);
-	static const ImWchar icons_ranges[] = { ICON_MIN_FA, ICON_MAX_16_FA, 0 };
-	ImFontConfig icons_config;
-	icons_config.MergeMode = true;
-	icons_config.PixelSnapH = true;
-	solid = io.Fonts->AddFontFromFileTTF("assets/defaults/gui/engine/fonts/fa-solid-900.ttf", 13.0f,&icons_config, icons_ranges);
 	ImGuiMain::SetupImGuiStyle();
+
+	// Initialize notify
+	ImGui::MergeIconsWithLatestFont();
+
+	ImFontConfig font_cfg;
+	font_cfg.FontDataOwnedByAtlas = false;
+	io.Fonts->AddFontFromMemoryTTF((void*)tahoma, sizeof(tahoma), 17.f, &font_cfg);
+
+	
 
 	currentGizmoMode = ImGuizmo::WORLD;
 	currentGizmoOperation = ImGuizmo::TRANSLATE;
@@ -66,6 +70,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 	if (ImGui::BeginMainMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
 			if (ImGui::MenuItem(ICON_FA_FILE_PLUS "  New", "Ctrl+N")) {
+				showNewDialog = true;
 			}
 			ImGui::Separator();
 			if (ImGui::BeginMenu(ICON_FA_FILE_UPLOAD "  Import to project")) {
@@ -145,10 +150,24 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 				showCreditsWindow = true;
 			}
 			if (ImGui::MenuItem(ICON_FA_CERTIFICATE"  License")) {
+				system("start https://github.com/Windokk/SparkEngine/blob/master/LICENSE");
 			}
 			ImGui::EndMenu();
 		}
 		ImGui::EndMainMenuBar();
+	}
+	
+	//New file Popup
+	if (showNewDialog) {
+		ImGui::OpenPopup("Action Menu");
+		if (ImGui::BeginPopupModal("Action Menu", &showNewDialog)) {
+			TextCentered("Create a new file :  ");
+			ImGui::Separator();
+			if(io.KeysDown[GLFW_KEY_ENTER]) {
+				showNewDialog = false;
+			}
+			ImGui::EndPopup();
+		}
 	}
 
 	//Credits
@@ -250,6 +269,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 		const float* cameraView = glm::value_ptr(cam.view);
 		const float* cameraProjection = glm::value_ptr(cam.projection);
 
+		viewportTextureSize = ImGui::GetContentRegionAvail();
 		ImGui::Image((void*)(intptr_t)loader.framebufferTexture, ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
 		isHoverViewport = (ImGui::IsItemHovered());
 
@@ -697,6 +717,8 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 		}
 		ImGui::End();
 	}
+
+	
 
 	ImGui::PopStyleColor();
 

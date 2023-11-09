@@ -9,7 +9,8 @@
 #include "../Libraries/ImGui_Lib/ImGuizmo.h"
 #include <glm/gtx/matrix_decompose.hpp>
 #include "../Libraries/ImGui_Lib/IconsFontAwesome5Pro.h"
-
+#include "../Libraries/ImGui_Lib/imgui_notify.h"
+#include "../Libraries/ImGui_Lib/tahoma.h"
 
 class ImGuiMain {
 public:
@@ -59,7 +60,7 @@ public:
 		style.Colors[ImGuiCol_PopupBg] = ImVec4(0.0784313753247261f, 0.08627451211214066f, 0.1019607856869698f, 1.0f);
 		style.Colors[ImGuiCol_Border] = ImVec4(0.0784313753247261f, 0.08627451211214066f, 0.1019607856869698f, 1.0f);
 		style.Colors[ImGuiCol_BorderShadow] = ImVec4(0.0784313753247261f, 0.08627451211214066f, 0.1019607856869698f, 1.0f);
-		style.Colors[ImGuiCol_FrameBg] = ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 1.0f);
+		style.Colors[ImGuiCol_FrameBg] = ImVec4(0.0470588244497776f, 0.05490196123719215f, 0.07058823853731155f, 1.0f);
 		style.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.1568627506494522f, 0.168627455830574f, 0.1921568661928177f, 1.0f);
 		style.Colors[ImGuiCol_FrameBgActive] = ImVec4(0.2352941185235977f, 0.2156862765550613f, 0.5960784554481506f, 1.0f);
 		style.Colors[ImGuiCol_TitleBg] = ImVec4(0.0470588244497776f, 0.05490196123719215f, 0.07058823853731155f, 1.0f);
@@ -76,13 +77,13 @@ public:
 		style.Colors[ImGuiCol_Button] = ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 0.8f);
 		style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.196078434586525f, 0.1764705926179886f, 0.5450980663299561f, 1.0f);
 		style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.2352941185235977f, 0.2156862765550613f, 0.5960784554481506f, 1.0f);
-		style.Colors[ImGuiCol_Header] = ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 1.0f);
+		style.Colors[ImGuiCol_Header] = ImVec4(0.0470588244497776f, 0.05490196123719215f, 0.07058823853731155f, 1.0f);
 		style.Colors[ImGuiCol_HeaderHovered] = ImVec4(0.196078434586525f, 0.1764705926179886f, 0.5450980663299561f, 1.0f);
 		style.Colors[ImGuiCol_HeaderActive] = ImVec4(0.2352941185235977f, 0.2156862765550613f, 0.5960784554481506f, 1.0f);
 		style.Colors[ImGuiCol_Separator] = ImVec4(0.1568627506494522f, 0.1843137294054031f, 0.250980406999588f, 1.0f);
 		style.Colors[ImGuiCol_SeparatorHovered] = ImVec4(0.1568627506494522f, 0.1843137294054031f, 0.250980406999588f, 1.0f);
 		style.Colors[ImGuiCol_SeparatorActive] = ImVec4(0.1568627506494522f, 0.1843137294054031f, 0.250980406999588f, 1.0f);
-		style.Colors[ImGuiCol_ResizeGrip] = ImVec4(0.04f, 0.04f, 0.04f, 1.0f);
+		style.Colors[ImGuiCol_ResizeGrip] = ImVec4(0.0470588244497776f, 0.05490196123719215f, 0.07058823853731155f, 1.0f);
 		style.Colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.1158786714076996f, 0.1158790588378906f, 0.1158798336982727f, 1.0f);
 		style.Colors[ImGuiCol_ResizeGripActive] = ImVec4(0.1158786714076996f, 0.1158790588378906f, 0.1158798336982727f, 1.0f);
 		style.Colors[ImGuiCol_TabHovered] = ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 1.0f);
@@ -110,6 +111,7 @@ public:
 	ImGuizmo::OPERATION currentGizmoOperation;
 	ImVec2 viewportSize;
 	ImVec2 viewportPos;
+	ImVec2 viewportTextureSize;
 	bool isHoverViewport;
 	bool showCloseButton;
 	ImFont* regular;
@@ -120,4 +122,5 @@ public:
 	bool showHierarchy = true;
 	bool showCreditsWindow = false;
 	bool showDocumentation = false;
+	bool showNewDialog = false;
 };

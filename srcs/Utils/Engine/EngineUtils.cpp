@@ -75,7 +75,7 @@ void SaveTextureToFile(GLuint textureId, int width, int height, const char* file
 	glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
 
 	// Save the image using stb_image_write
-	stbi_flip_vertically_on_write(1);  // Flip image vertically (OpenGL's origin is bottom-left)
+	stbi_flip_vertically_on_write(1);  // Flip image vertically
 	stbi_write_png(filename, width, height, 4, imageData, width * 4);
 
 	delete[] imageData;

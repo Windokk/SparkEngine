@@ -269,9 +269,11 @@
     <ClInclude Include="srcs\Libraries\ImGui_Lib\imgui_impl_opengl3.h" />
     <ClInclude Include="srcs\Libraries\ImGui_Lib\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="srcs\Libraries\ImGui_Lib\imgui_internal.h" />
+    <ClInclude Include="srcs\Libraries\ImGui_Lib\imgui_notify.h" />
     <ClInclude Include="srcs\Libraries\ImGui_Lib\imstb_rectpack.h" />
     <ClInclude Include="srcs\Libraries\ImGui_Lib\imstb_textedit.h" />
     <ClInclude Include="srcs\Libraries\ImGui_Lib\imstb_truetype.h" />
+    <ClInclude Include="srcs\Libraries\ImGui_Lib\tahoma.h" />
     <ClInclude Include="srcs\Scene Management\Components.h" />
     <ClInclude Include="srcs\Scene Management\SceneLoader.h" />
     <ClInclude Include="srcs\Scene Management\SceneParser.h" />

@@ -79,6 +79,7 @@ public:
 	unsigned int FBO;
 	unsigned int framebufferTexture;
 	unsigned int object_id_FBO;
+	unsigned int RBO;
 	Shader skyboxShader;
 	Shader framebufferProgram;
 

@@ -599,5 +599,11 @@
     <ClInclude Include="srcs\Libraries\ImGui_Lib\ImGuizmo.h">
       <Filter>Header Files\libs\imgui lib</Filter>
     </ClInclude>
+    <ClInclude Include="srcs\Libraries\ImGui_Lib\imgui_notify.h">
+      <Filter>Header Files\libs\imgui lib</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\Libraries\ImGui_Lib\tahoma.h">
+      <Filter>Header Files\libs\imgui lib</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

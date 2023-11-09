@@ -116,7 +116,6 @@ void SceneLoader::Load1(const char* loaded_file) {
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, framebufferTexture, 0);
 
 	// Create Render Buffer Object
-	unsigned int RBO;
 	glGenRenderbuffers(1, &RBO);
 	glBindRenderbuffer(GL_RENDERBUFFER, RBO);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width_, height_);
@@ -265,6 +264,8 @@ void SceneLoader::LoadNewScene(const char* scene) {
 	parser.objects.clear();
 	parser.shaders.clear();
 	parser.skybox = SceneParser::SkyboxData();
+	Unload();
+
 
 	SceneLoader::Load1(scene);
 

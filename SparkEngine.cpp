@@ -33,6 +33,95 @@ const char* current_scene = "./assets/defaults/scenes/scene_render.json";
 
 Camera cam = Camera(0, 0, glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
 
+void RenderAll() {
+	glBindFramebuffer(GL_FRAMEBUFFER, loader.FBO);
+
+	// Specify the color of the background
+	glClearColor(0.12f, 0.12f, 0.12f, 1.0f);
+	// Clean the back buffer and depth buffer
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	// Enable depth testing since it's disabled when drawing the framebuffer rectangle
+	glEnable(GL_DEPTH_TEST);
+
+	//Update the scene from the loader
+	loader.Update(cam);
+
+	glDepthFunc(GL_LEQUAL);
+
+	loader.skyboxShader.Activate();
+	glm::mat4 view = glm::mat3(cam.view);
+	glm::mat4 projection = cam.projection;
+	loader.skyboxShader.setMat4("view", view);
+	loader.skyboxShader.setMat4("projection", projection);
+
+	// Draws the cubemap as the last object so we can save a bit of performance by discarding all fragments
+	// where an object is present (a depth of 1.0f will always fail against any object's depth value)
+	glBindVertexArray(loader.skyboxVAO);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, loader.cubemapTexture);
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
+	// Switch back to the normal depth function
+	glDepthFunc(GL_LESS);
+
+	// Bind the default framebuffer
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	// Draw the framebuffer rectangle
+	loader.framebufferProgram.Activate();
+	glBindVertexArray(loader.rectVAO);
+	glDisable(GL_DEPTH_TEST); // prevents framebuffer rectangle from being discarded
+	glBindTexture(GL_TEXTURE_2D, loader.framebufferTexture);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+}
+
+void TakeScreenShot() {
+	// Create Frame Buffer Object
+	glGenFramebuffers(1, &loader.FBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, loader.FBO);
+
+	// Create Framebuffer Texture
+	glGenTextures(1, &loader.framebufferTexture);
+	glBindTexture(GL_TEXTURE_2D, loader.framebufferTexture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, gui.viewportTextureSize.x, gui.viewportTextureSize.y, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // Prevents edge bleeding
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // Prevents edge bleeding
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, loader.framebufferTexture, 0);
+
+	glGenRenderbuffers(1, &loader.RBO);
+	glBindRenderbuffer(GL_RENDERBUFFER, loader.RBO);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, gui.viewportTextureSize.x, gui.viewportTextureSize.y);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, loader.RBO);
+	RenderAll();
+	SaveTextureToFile(loader.framebufferTexture, gui.viewportTextureSize.x, gui.viewportTextureSize.y, "assets/generated/screenshots/texture.png");
+	// Create Frame Buffer Object
+	glGenFramebuffers(1, &loader.FBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, loader.FBO);
+
+	// Create Framebuffer Texture
+	glGenTextures(1, &loader.framebufferTexture);
+	glBindTexture(GL_TEXTURE_2D, loader.framebufferTexture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, loader.width_, loader.height_, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // Prevents edge bleeding
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // Prevents edge bleeding
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, loader.framebufferTexture, 0);
+
+	glGenRenderbuffers(1, &loader.RBO);
+	glBindRenderbuffer(GL_RENDERBUFFER, loader.RBO);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, loader.width_, loader.height_);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, loader.RBO);
+}
+
+
+
+
+
+
 //int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow) 
 int main(){
 	// Initialize GLFW
@@ -112,46 +201,7 @@ int main(){
 			counter = 0;
 		}
 
-		glBindFramebuffer(GL_FRAMEBUFFER, loader.FBO);
-
-		// Specify the color of the background
-		glClearColor(0.12f, 0.12f, 0.12f, 1.0f);
-		// Clean the back buffer and depth buffer
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-		// Enable depth testing since it's disabled when drawing the framebuffer rectangle
-		glEnable(GL_DEPTH_TEST);
-
-		//Update the scene from the loader
-		loader.Update(cam);
-
-		glDepthFunc(GL_LEQUAL);
-
-		loader.skyboxShader.Activate();
-		glm::mat4 view = glm::mat3(cam.view);
-		glm::mat4 projection = cam.projection;
-		loader.skyboxShader.setMat4("view", view);
-		loader.skyboxShader.setMat4("projection", projection);
-
-		// Draws the cubemap as the last object so we can save a bit of performance by discarding all fragments
-		// where an object is present (a depth of 1.0f will always fail against any object's depth value)
-		glBindVertexArray(loader.skyboxVAO);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, loader.cubemapTexture);
-		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-		glBindVertexArray(0);
-		// Switch back to the normal depth function
-		glDepthFunc(GL_LESS);
-
-		// Bind the default framebuffer
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		// Draw the framebuffer rectangle
-		loader.framebufferProgram.Activate();
-		glBindVertexArray(loader.rectVAO);
-		glDisable(GL_DEPTH_TEST); // prevents framebuffer rectangle from being discarded
-		glBindTexture(GL_TEXTURE_2D, loader.framebufferTexture);
-		glDrawArrays(GL_TRIANGLES, 0, 6);
-
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+		RenderAll();
 		
 		//We draw the ImGui interface
 		gui.Draw(window, cam, loader, selectedObjectID, io);
@@ -165,12 +215,7 @@ int main(){
 		
 		//Screenshots
 		if (io.KeysDown[GLFW_KEY_F9]) {
-			SaveTextureToFile(loader.framebufferTexture, width_, height_, "assets/generated/screenshots/texture.png");
-		}
-
-		//Teleports to selectedObject when pressing F
-		if (io.KeysDown[GLFW_KEY_F]) {
-			cam.Position = loader.objects_Transforms[selectedObjectID].Location;
+			TakeScreenShot();
 		}
 
 		// Updates and exports the camera matrix to the Vertex Shader
