@@ -33,7 +33,7 @@ const char* current_scene = "./assets/defaults/scenes/scene_render.json";
 
 Camera cam = Camera(0, 0, glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
 
-void RenderAll() {
+void RenderScene() {
 	glBindFramebuffer(GL_FRAMEBUFFER, loader.FBO);
 
 	// Specify the color of the background
@@ -77,50 +77,10 @@ void RenderAll() {
 }
 
 void TakeScreenShot() {
-	// Create Frame Buffer Object
-	glGenFramebuffers(1, &loader.FBO);
-	glBindFramebuffer(GL_FRAMEBUFFER, loader.FBO);
-
-	// Create Framebuffer Texture
-	glGenTextures(1, &loader.framebufferTexture);
-	glBindTexture(GL_TEXTURE_2D, loader.framebufferTexture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, gui.viewportTextureSize.x, gui.viewportTextureSize.y, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // Prevents edge bleeding
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // Prevents edge bleeding
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, loader.framebufferTexture, 0);
-
-	glGenRenderbuffers(1, &loader.RBO);
-	glBindRenderbuffer(GL_RENDERBUFFER, loader.RBO);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, gui.viewportTextureSize.x, gui.viewportTextureSize.y);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, loader.RBO);
-	RenderAll();
-	SaveTextureToFile(loader.framebufferTexture, gui.viewportTextureSize.x, gui.viewportTextureSize.y, "assets/generated/screenshots/texture.png");
-	// Create Frame Buffer Object
-	glGenFramebuffers(1, &loader.FBO);
-	glBindFramebuffer(GL_FRAMEBUFFER, loader.FBO);
-
-	// Create Framebuffer Texture
-	glGenTextures(1, &loader.framebufferTexture);
-	glBindTexture(GL_TEXTURE_2D, loader.framebufferTexture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, loader.width_, loader.height_, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // Prevents edge bleeding
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // Prevents edge bleeding
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, loader.framebufferTexture, 0);
-
-	glGenRenderbuffers(1, &loader.RBO);
-	glBindRenderbuffer(GL_RENDERBUFFER, loader.RBO);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, loader.width_, loader.height_);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, loader.RBO);
+	
+	SaveTextureToFile(loader.framebufferTexture, width_, height_, "assets/generated/screenshots/texture.png");
+	
 }
-
-
-
-
-
 
 //int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow) 
 int main(){
@@ -201,7 +161,7 @@ int main(){
 			counter = 0;
 		}
 
-		RenderAll();
+		RenderScene();
 		
 		//We draw the ImGui interface
 		gui.Draw(window, cam, loader, selectedObjectID, io);
@@ -209,6 +169,7 @@ int main(){
 		if (gui.viewportSize.x != cam.width || gui.viewportSize.y != cam.height) {
 			cam.updateSize(gui.viewportSize.x, gui.viewportSize.y);
 		}
+		
 		//////////////////////////////////////////////////
 		//////////////   SHORTCUTS   /////////////////////
 		//////////////////////////////////////////////////

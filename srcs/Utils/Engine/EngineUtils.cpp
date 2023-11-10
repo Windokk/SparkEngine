@@ -70,15 +70,16 @@ void SetTextureAlphaToOne(GLuint texture)
 
 void SaveTextureToFile(GLuint textureId, int width, int height, const char* filename) {
 	glBindTexture(GL_TEXTURE_2D, textureId);
-
+	
 	unsigned char* imageData = new unsigned char[width * height * 4];
 	glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
-
+	
 	// Save the image using stb_image_write
 	stbi_flip_vertically_on_write(1);  // Flip image vertically
 	stbi_write_png(filename, width, height, 4, imageData, width * 4);
 
 	delete[] imageData;
+
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
