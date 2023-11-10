@@ -79,9 +79,8 @@ void LoadSceneFromFile(SceneLoader& loader) {
 	if (file != "") {
 		file = replaceCharacters(file, '\\', '/');
 		std::string file_relative;
-		file_relative = make_relative(file, file_relative);
-		std::cout << file_relative;
-		loader.LoadNewScene(file.c_str());
+		file_relative = make_relative_filepath(file, get_solution_path());
+		loader.LoadNewScene(file_relative.c_str());
 	}
 }
 
@@ -152,8 +151,16 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 				}
 				ImGui::EndMenu();
 			}
+			if (ImGui::MenuItem(ICON_FA_SAVE "  Save  file...", "Ctrl+S")) {
 
-			if (ImGui::MenuItem(ICON_FA_SAVE "  Save", "Ctrl+S")) {
+			}
+			if (ImGui::MenuItem(ICON_FA_SAVE "  Save  scene", "Ctrl+Maj+S")) {
+				if (current_file != -1) {
+					writer.WriteSceneToFile(manager.files[current_file].filepath, loader);
+				}
+				else {
+					showSaveScene = true;
+				}
 			}
 			if (ImGui::MenuItem(ICON_FA_FILE_EDIT "  Open", "Ctrl+O"))
 			{
@@ -228,8 +235,8 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 	
 	//New file Popup
 	if (showNewDialog) {
-		ImGui::OpenPopup("Action Menu");
-		if (ImGui::BeginPopupModal("Action Menu", &showNewDialog)) {
+		ImGui::OpenPopup("Create a new file :  ");
+		if (ImGui::BeginPopupModal("Create a new file :  ", &showNewDialog)) {
 			TextCentered("Create a new file :  ");
 			ImGui::Separator();
 			if(io.KeysDown[GLFW_KEY_ENTER]) {
@@ -238,6 +245,44 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 			ImGui::EndPopup();
 		}
 	}
+
+	//Save Scene Popup
+	if(showSaveScene)
+		
+		ImGui::OpenPopup("Save Scene");
+		if (ImGui::BeginPopupModal("Save Scene", &showSaveScene)) {
+			
+			ImGui::InputTextWithHint("Scene Name", "Enter the scene's name", scene_File_Name, sizeof(scene_File_Name));
+			ImGui::Spacing();
+			ImGui::InputTextWithHint("Scene Path","Enter the scene file's path", scene_File_Path, sizeof(scene_File_Path));
+			ImGui::SameLine();
+			ImGui::Button(ICON_FA_SEARCH " Browse");
+			if (ImGui::IsItemClicked()) {
+				std::string folder = OpenFolderDialog();
+				if (folder != "") {
+					std::string folder_relative;
+					folder_relative = make_relative_folderpath(folder, get_solution_path());
+					folder_relative = replaceCharacters(folder_relative, '\\', '/');
+					folder_relative += "/";
+					strcpy_s(scene_File_Path, folder_relative.c_str());
+				}
+			}
+			ImGui::Spacing();
+			ImGui::Button(ICON_FA_PLUS "  Create and Save");
+			if(scene_File_Name != "" && scene_File_Path != "")
+				if (io.KeysDown[GLFW_KEY_ENTER] || ImGui::IsItemClicked()) {
+					File new_scene = File();
+					new_scene.name = scene_File_Name;
+					new_scene.filepath = scene_File_Path;
+					new_scene.type = SCENE;
+					manager.files.push_back(new_scene);
+					current_file = manager.files.size() - 1;
+					std::string full_path = std::string(manager.files[current_file].filepath) + manager.files[current_file].name + ".json";
+					writer.WriteSceneToFile(full_path.c_str(), loader);
+					showSaveScene = false;
+				}
+			ImGui::EndPopup();
+		}
 
 	//Credits
 	if (showCreditsWindow) {

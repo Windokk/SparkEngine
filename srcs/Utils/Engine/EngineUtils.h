@@ -16,19 +16,22 @@
 #include <GLFW/glfw3.h>
 #include <GL/gl.h>
 #include <filesystem>
-
+#include <Shobjidl.h>
 
 
 bool to_bool(std::string str);
 float randf();
 std::string OpenWindowsFileDialog(LPCWSTR filters);
+std::string OpenFolderDialog();
 std::string replaceCharacters(const std::string& input, char targetChar, char replacementChar);
 void SetTextureAlphaToOne(GLuint texture);
 bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_width, int* out_height);
 GLuint LoadImageTexture(const char* path);
 unsigned int LoadTexture(char const* path);
 std::string substr(const std::string& mainString, const std::string& subString);
-std::string make_relative(const std::string& absolute_path, const std::string& base_path);
+std::string make_relative_filepath(const std::string& absolute_path, const std::string& base_path);
+std::string make_relative_folderpath(const std::string& absolute_path, const std::string& base_path);
+std::string get_solution_path();
 #ifndef LIGHT_STRUCT_H
 #define LIGHT_STRUCT_H
 
@@ -55,3 +58,31 @@ struct light_Infos {
 };
 
 #endif // LIGHT_STRUCT_H
+
+#ifndef FILE_STRUCT_H
+#define FILE_STRUCT_H
+
+enum fileType {
+	EMPTY,
+	MODEL,
+	MATERIAL,
+	SHADER,
+	TEXT,
+	TEXTURE,
+	FONT,
+	UI,
+	SCENE
+};
+
+struct File {
+	const char* name;
+	const char* filepath;
+	fileType type;
+	File() {
+		name = "Untitled";
+		filepath = "";
+		type = EMPTY;
+	}
+};
+
+#endif // FILE_STRUCT_H

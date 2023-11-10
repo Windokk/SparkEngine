@@ -303,6 +303,12 @@
     <ClCompile Include="srcs\Libraries\glad.c">
       <Filter>Source Files\libs</Filter>
     </ClCompile>
+    <ClCompile Include="srcs\Scene Management\SceneWriter.cpp">
+      <Filter>Source Files\scene management</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\FilesManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\defaults\models\sword\scene.bin">
@@ -601,6 +607,12 @@
     </ClInclude>
     <ClInclude Include="srcs\Libraries\ImGui_Lib\tahoma.h">
       <Filter>Header Files\libs\imgui lib</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\Scene Management\SceneWriter.h">
+      <Filter>Header Files\scene management</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\FilesManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

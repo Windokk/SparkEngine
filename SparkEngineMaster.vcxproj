@@ -159,6 +159,7 @@
     <ClCompile Include="srcs\Basic Rendering\Texture\Texture.cpp" />
     <ClCompile Include="srcs\Basic Rendering\VAO\VAO.cpp" />
     <ClCompile Include="srcs\Basic Rendering\VBO\VBO.cpp" />
+    <ClCompile Include="srcs\FilesManager.cpp" />
     <ClCompile Include="srcs\Gui\ImGuiMain.cpp" />
     <ClCompile Include="srcs\Gui\ImGuiUtils.cpp" />
     <ClCompile Include="srcs\Libraries\glad.c" />
@@ -173,6 +174,7 @@
     <ClCompile Include="srcs\Scene Management\Components.cpp" />
     <ClCompile Include="srcs\Scene Management\SceneLoader.cpp" />
     <ClCompile Include="srcs\Scene Management\SceneParser.cpp" />
+    <ClCompile Include="srcs\Scene Management\SceneWriter.cpp" />
     <ClCompile Include="srcs\Utils\Engine\EngineUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -258,6 +260,7 @@
     <ClInclude Include="srcs\Basic Rendering\Texture\Texture.h" />
     <ClInclude Include="srcs\Basic Rendering\VAO\VAO.h" />
     <ClInclude Include="srcs\Basic Rendering\VBO\VBO.h" />
+    <ClInclude Include="srcs\FilesManager.h" />
     <ClInclude Include="srcs\Gui\ImGuiMain.h" />
     <ClInclude Include="srcs\Gui\ImGuiUtils.h" />
     <ClInclude Include="srcs\Libraries\ImGui_Lib\IconsFontAwesome5Pro.h" />
@@ -276,6 +279,7 @@
     <ClInclude Include="srcs\Scene Management\Components.h" />
     <ClInclude Include="srcs\Scene Management\SceneLoader.h" />
     <ClInclude Include="srcs\Scene Management\SceneParser.h" />
+    <ClInclude Include="srcs\Scene Management\SceneWriter.h" />
     <ClInclude Include="srcs\Utils\Engine\EngineUtils.h" />
     <ClInclude Include="srcs\Utils\Inputs\InputsUtils.h" />
     <ClInclude Include="srcs\Utils\Rendering\Line.h" />

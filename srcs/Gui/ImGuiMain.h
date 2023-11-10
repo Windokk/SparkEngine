@@ -17,6 +17,8 @@
 #include "../Basic Rendering/Camera/Camera.h"
 #include "../Scene Management/SceneLoader.h"
 #include "ImGuiUtils.h"
+#include "../Scene Management/SceneWriter.h"
+#include "../FilesManager.h"
 
 
 
@@ -115,6 +117,15 @@ public:
 		style.Colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.196078434586525f, 0.1764705926179886f, 0.5450980663299561f, 0.501960813999176f);
 	}
 
+
+	int current_file = -1;
+
+	FilesManager manager = FilesManager();
+	SceneWriter writer = SceneWriter();
+
+	char scene_File_Name[500] = "";
+	char scene_File_Path[500] = "";
+
 	ImGuizmo::MODE currentGizmoMode;
 	ImGuizmo::OPERATION currentGizmoOperation;
 	ImVec2 viewportSize;
@@ -131,6 +142,7 @@ public:
 	bool showCreditsWindow = false;
 	bool showDocumentation = false;
 	bool showNewDialog = false;
+	bool showSaveScene = false;
 };
 
 void SaveTextureToFile(GLuint textureId, int width, int height, const char* filename, ImGuiMain& gui);

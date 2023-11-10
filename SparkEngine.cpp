@@ -16,7 +16,6 @@
 
 #include "srcs/Gui/ImGuiMain.h"
 
-
 unsigned int width_ = 1280;
 unsigned int height_ = 720;
 
@@ -162,10 +161,6 @@ int main(){
 		if (gui.viewportSize.x != cam.width || gui.viewportSize.y != cam.height) {
 			cam.updateSize(gui.viewportSize.x, gui.viewportSize.y);
 		}
-		
-		//////////////////////////////////////////////////
-		//////////////   SHORTCUTS   /////////////////////
-		//////////////////////////////////////////////////
 		
 		//Screenshots
 		if (io.KeysDown[GLFW_KEY_F9]) {

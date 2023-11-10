@@ -48,6 +48,60 @@ std::string OpenWindowsFileDialog(LPCWSTR filters)
 	return "";
 }
 
+std::string OpenFolderDialog()
+{
+	IFileDialog* pfd;
+	HRESULT hr = CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&pfd));
+
+	if (SUCCEEDED(hr))
+	{
+		// Set options for the folder dialog
+		DWORD dwOptions;
+		hr = pfd->GetOptions(&dwOptions);
+
+		if (SUCCEEDED(hr))
+		{
+			hr = pfd->SetOptions(dwOptions | FOS_PICKFOLDERS);
+
+			if (SUCCEEDED(hr))
+			{
+				// Show the folder dialog
+				hr = pfd->Show(NULL);
+
+				if (SUCCEEDED(hr))
+				{
+					// Get the result (selected folder)
+					IShellItem* psi;
+					hr = pfd->GetResult(&psi);
+
+					if (SUCCEEDED(hr))
+					{
+						PWSTR pszPath;
+						hr = psi->GetDisplayName(SIGDN_FILESYSPATH, &pszPath);
+
+						if (SUCCEEDED(hr))
+						{
+							int size_needed = WideCharToMultiByte(CP_UTF8, 0, pszPath, -1, NULL, 0, NULL, NULL);
+							std::string selectedFolder(size_needed, 0);
+							WideCharToMultiByte(CP_UTF8, 0, pszPath, -1, &selectedFolder[0], size_needed, NULL, NULL);
+
+							CoTaskMemFree(pszPath);
+							psi->Release();
+							pfd->Release();
+							return selectedFolder;
+						}
+					}
+				}
+			}
+		}
+
+		pfd->Release();
+	}
+
+	// Return an empty string if something goes wrong
+	return "";
+}
+
 std::string replaceCharacters(const std::string& input, char targetChar, char replacementChar) {
     std::string result = input;
     for (char& c : result) {
@@ -70,8 +124,6 @@ void SetTextureAlphaToOne(GLuint texture)
 	// Unbind the texture
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
-
-
 
 bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_width, int* out_height)
 {
@@ -166,10 +218,26 @@ std::string substr(const std::string& mainString, const std::string& subString) 
 
 namespace fs = std::filesystem;
 
-std::string make_relative(const std::string& absolute_path, const std::string& base_path) {
+std::string make_relative_filepath(const std::string& absolute_path, const std::string& base_path) {
 	fs::path absPath(absolute_path);
 	fs::path basePath(base_path);
 
 	fs::path relativePath = fs::relative(absPath, basePath);
 	return relativePath.string();
+}
+std::string make_relative_folderpath(const std::string& absolute_folder_path, const std::string& base_folder_path) {
+	fs::path absPath(absolute_folder_path);
+	fs::path basePath(base_folder_path);
+
+	fs::path relativePath = fs::relative(absPath, basePath);
+	return relativePath.string();
+}
+
+std::string get_solution_path() {
+	char buffer[MAX_PATH];
+	GetModuleFileNameA(nullptr, buffer, MAX_PATH);
+	std::string path(buffer);
+	path = replaceCharacters(path, '\\', '/');
+	path = substr(path, "x64/Debug/SparkEngineMaster.exe");
+	return path;
 }
