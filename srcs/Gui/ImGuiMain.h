@@ -1,16 +1,24 @@
+#ifndef GUI_MAIN_H
+#define GUI_MAIN_H
+
+
+#include <glm/gtx/matrix_decompose.hpp>
+
 #include "../Libraries/ImGui_Lib/imgui.h"
 #include "../Libraries/ImGui_Lib/imgui_impl_glfw.h"
 #include "../Libraries/ImGui_Lib/imgui_impl_opengl3.h"
+#include "../Libraries/ImGui_Lib/IconsFontAwesome5Pro.h"
+#include "../Libraries/ImGui_Lib/imgui_notify.h"
+#include "../Libraries/ImGui_Lib/tahoma.h"
+#include "../Libraries/ImGui_Lib/ImGuizmo.h"
+
 
 #include "../Utils/Engine/EngineUtils.h"
 #include "../Basic Rendering/Camera/Camera.h"
 #include "../Scene Management/SceneLoader.h"
 #include "ImGuiUtils.h"
-#include "../Libraries/ImGui_Lib/ImGuizmo.h"
-#include <glm/gtx/matrix_decompose.hpp>
-#include "../Libraries/ImGui_Lib/IconsFontAwesome5Pro.h"
-#include "../Libraries/ImGui_Lib/imgui_notify.h"
-#include "../Libraries/ImGui_Lib/tahoma.h"
+
+
 
 class ImGuiMain {
 public:
@@ -124,3 +132,7 @@ public:
 	bool showDocumentation = false;
 	bool showNewDialog = false;
 };
+
+void SaveTextureToFile(GLuint textureId, int width, int height, const char* filename, ImGuiMain& gui);
+
+#endif

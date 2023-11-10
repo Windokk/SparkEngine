@@ -1,8 +1,77 @@
 #include "ImGuiMain.h"
 
+#ifndef STB_IMAGE_RESIZE_IMPLEMENTATION
+#define STB_IMAGE_RESIZE_IMPLEMENTATION
+#include <stb/stb_image_resize.h>
+#endif
+
+#ifndef STB_IMAGE_WRITE_IMPLEMENTATION
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include<stb/stb_image_write.h>
+#endif
+
+#ifndef STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb/stb_image.h>
+#endif
+
 
 ImGuiMain::ImGuiMain()
 {
+}
+
+void resizeImage(const char* inputPath, const char* outputPath, double targetAspectRatio) {
+	// Load the image using stb_image
+	int width, height, channels;
+	unsigned char* imgData = stbi_load(inputPath, &width, &height, &channels, 0);
+
+	if (imgData == nullptr) {
+		std::cerr << "Error: Could not load the image." << std::endl;
+		return;
+	}
+
+	// Get the current aspect ratio
+	double currentAspectRatio = static_cast<double>(width) / static_cast<double>(height);
+
+	// Calculate the new dimensions to match the target aspect ratio
+	int newWidth, newHeight;
+	if (currentAspectRatio > targetAspectRatio) {
+		// Image is wider than the target aspect ratio, reduce its width
+		newWidth = static_cast<int>(height * targetAspectRatio);
+		newHeight = height;
+	}
+	else {
+		// Image is taller than the target aspect ratio, reduce its height
+		newWidth = width;
+		newHeight = static_cast<int>(width / targetAspectRatio);
+	}
+
+	// Resize the image using stb_image_resize
+	unsigned char* resizedImgData = new unsigned char[newWidth * newHeight * channels];
+	stbir_resize_uint8(imgData, width, height, 0, resizedImgData, newWidth, newHeight, 0, channels);
+	
+	
+	// Save the resized image using stb_image_write
+	stbi_write_png(outputPath, newWidth, newHeight, channels, resizedImgData, newWidth * channels);
+
+	// Free allocated memory
+	stbi_image_free(imgData);
+	delete[] resizedImgData;
+}
+
+void SaveTextureToFile(GLuint textureId, int width, int height, const char* filename, ImGuiMain& gui) {
+	glBindTexture(GL_TEXTURE_2D, textureId);
+
+	unsigned char* imageData = new unsigned char[width * height * 4];
+	glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
+	stbi_flip_vertically_on_write(true);
+	stbi_write_png(filename, width, height, 4, imageData, width * 4);
+	stbi_flip_vertically_on_write(false);
+	resizeImage(filename, filename, gui.viewportTextureSize.x / gui.viewportTextureSize.y);
+
+	delete[] imageData;
+
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void LoadSceneFromFile(SceneLoader& loader) {

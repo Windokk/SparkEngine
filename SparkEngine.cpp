@@ -13,9 +13,8 @@
 #include "srcs/Libraries/ImGui_Lib/imgui_internal.h"
  
 #include "srcs/Scene Management/SceneLoader.h"
-#include "srcs/Utils/Engine/EngineUtils.h"
-#include "srcs/Utils/Rendering/Line.h"
-#include "srcs/Utils/Inputs/InputsUtils.h"
+
+#include "srcs/Gui/ImGuiMain.h"
 
 
 unsigned int width_ = 1280;
@@ -74,12 +73,6 @@ void RenderScene() {
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-}
-
-void TakeScreenShot() {
-	
-	SaveTextureToFile(loader.framebufferTexture, width_, height_, "assets/generated/screenshots/texture.png");
-	
 }
 
 //int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow) 
@@ -176,7 +169,7 @@ int main(){
 		
 		//Screenshots
 		if (io.KeysDown[GLFW_KEY_F9]) {
-			TakeScreenShot();
+			SaveTextureToFile(loader.framebufferTexture, width_, height_, "assets/generated/screenshots/texture.png", gui);
 		}
 
 		// Updates and exports the camera matrix to the Vertex Shader

@@ -170,7 +170,6 @@
     <ClCompile Include="srcs\Libraries\ImGui_Lib\imgui_impl_opengl3.cpp" />
     <ClCompile Include="srcs\Libraries\ImGui_Lib\imgui_tables.cpp" />
     <ClCompile Include="srcs\Libraries\ImGui_Lib\imgui_widgets.cpp" />
-    <ClCompile Include="srcs\Libraries\stb.cpp" />
     <ClCompile Include="srcs\Scene Management\Components.cpp" />
     <ClCompile Include="srcs\Scene Management\SceneLoader.cpp" />
     <ClCompile Include="srcs\Scene Management\SceneParser.cpp" />

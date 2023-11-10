@@ -303,9 +303,6 @@
     <ClCompile Include="srcs\Libraries\glad.c">
       <Filter>Source Files\libs</Filter>
     </ClCompile>
-    <ClCompile Include="srcs\Libraries\stb.cpp">
-      <Filter>Source Files\libs</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\defaults\models\sword\scene.bin">
