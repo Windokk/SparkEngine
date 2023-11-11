@@ -162,6 +162,10 @@
     <ClCompile Include="srcs\FilesManager.cpp" />
     <ClCompile Include="srcs\Gui\ImGuiMain.cpp" />
     <ClCompile Include="srcs\Gui\ImGuiUtils.cpp" />
+    <ClCompile Include="srcs\Level Management\Components.cpp" />
+    <ClCompile Include="srcs\Level Management\LevelLoader.cpp" />
+    <ClCompile Include="srcs\Level Management\LevelParser.cpp" />
+    <ClCompile Include="srcs\Level Management\LevelWriter.cpp" />
     <ClCompile Include="srcs\Libraries\glad.c" />
     <ClCompile Include="srcs\Libraries\ImGui_Lib\imgui.cpp" />
     <ClCompile Include="srcs\Libraries\ImGui_Lib\ImGuizmo.cpp" />
@@ -171,10 +175,6 @@
     <ClCompile Include="srcs\Libraries\ImGui_Lib\imgui_impl_opengl3.cpp" />
     <ClCompile Include="srcs\Libraries\ImGui_Lib\imgui_tables.cpp" />
     <ClCompile Include="srcs\Libraries\ImGui_Lib\imgui_widgets.cpp" />
-    <ClCompile Include="srcs\Scene Management\Components.cpp" />
-    <ClCompile Include="srcs\Scene Management\LevelLoader.cpp" />
-    <ClCompile Include="srcs\Scene Management\LevelParser.cpp" />
-    <ClCompile Include="srcs\Scene Management\LevelWriter.cpp" />
     <ClCompile Include="srcs\Utils\Engine\EngineUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -192,8 +192,8 @@
     <None Include="assets\defaults\models\spitfire\scene.gltf" />
     <None Include="assets\defaults\models\sword\scene.bin" />
     <None Include="assets\defaults\models\sword\scene.gltf" />
-    <None Include="assets\defaults\scenes\scene_render.json" />
-    <None Include="assets\defaults\scenes\test_simple_light.json" />
+    <None Include="assets\defaults\scenes\level_render.sl" />
+    <None Include="assets\defaults\scenes\test_simple_light.sl" />
     <None Include="srcs\Shaders\Defaults\Engine\default.frag" />
     <None Include="srcs\Shaders\Defaults\Engine\default.vert" />
     <None Include="srcs\Shaders\Defaults\Engine\Framebuffer\framebuffer.frag" />
@@ -260,6 +260,10 @@
     <ClInclude Include="srcs\FilesManager.h" />
     <ClInclude Include="srcs\Gui\ImGuiMain.h" />
     <ClInclude Include="srcs\Gui\ImGuiUtils.h" />
+    <ClInclude Include="srcs\Level Management\Components.h" />
+    <ClInclude Include="srcs\Level Management\LevelLoader.h" />
+    <ClInclude Include="srcs\Level Management\LevelParser.h" />
+    <ClInclude Include="srcs\Level Management\LevelWriter.h" />
     <ClInclude Include="srcs\Libraries\ImGui_Lib\IconsFontAwesome5Pro.h" />
     <ClInclude Include="srcs\Libraries\ImGui_Lib\imconfig.h" />
     <ClInclude Include="srcs\Libraries\ImGui_Lib\imgui.h" />
@@ -273,10 +277,6 @@
     <ClInclude Include="srcs\Libraries\ImGui_Lib\imstb_textedit.h" />
     <ClInclude Include="srcs\Libraries\ImGui_Lib\imstb_truetype.h" />
     <ClInclude Include="srcs\Libraries\ImGui_Lib\tahoma.h" />
-    <ClInclude Include="srcs\Scene Management\Components.h" />
-    <ClInclude Include="srcs\Scene Management\LevelLoader.h" />
-    <ClInclude Include="srcs\Scene Management\LevelParser.h" />
-    <ClInclude Include="srcs\Scene Management\LevelWriter.h" />
     <ClInclude Include="srcs\Utils\Engine\EngineUtils.h" />
     <ClInclude Include="srcs\Utils\Inputs\InputsUtils.h" />
     <ClInclude Include="srcs\Utils\Rendering\Line.h" />

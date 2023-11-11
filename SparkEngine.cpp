@@ -12,7 +12,7 @@
 
 #include "srcs/Libraries/ImGui_Lib/imgui_internal.h"
  
-#include "srcs/Scene Management/LevelLoader.h"
+#include "srcs/Level Management/LevelLoader.h"
 
 #include "srcs/Gui/ImGuiMain.h"
 
@@ -25,13 +25,15 @@ int selectedObjectID = -1;
 
 LevelLoader loader;
 
+int file_refresh_timer = 0;
+
 ImGuiMain gui = ImGuiMain();
 
-const char* current_scene = "./assets/defaults/scenes/scene_render.json";
+const char* current_level = "./assets/defaults/levels/level_render.sl";
 
 Camera cam = Camera(0, 0, glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
 
-void RenderScene() {
+void RenderLevel() {
 	glBindFramebuffer(GL_FRAMEBUFFER, loader.FBO);
 
 	// Specify the color of the background
@@ -41,7 +43,7 @@ void RenderScene() {
 	// Enable depth testing since it's disabled when drawing the framebuffer rectangle
 	glEnable(GL_DEPTH_TEST);
 
-	//Update the scene from the loader
+	//Update the level from the loader
 	loader.Update(cam);
 
 	glDepthFunc(GL_LEQUAL);
@@ -110,7 +112,7 @@ int main(){
 	//Load GLAD so it configures OpenGL
 	gladLoadGL();
 
-	//Creates a loader object to load scenes
+	//Creates a loader object to load levels
 	loader.width_ = width_;
 	loader.height_ = height_;
 	loader.anti_aliasing_samples = anti_aliasing_samples;
@@ -131,7 +133,7 @@ int main(){
 	ImGuiIO& io = ImGui::GetIO();
 	gui.Load(window, io);
 
-	loader.LoadNewScene(current_scene);
+	loader.LoadNewLevel(current_level);
 
 	while (!glfwWindowShouldClose(window)) {
 		// Updates counter and times
@@ -153,10 +155,20 @@ int main(){
 			counter = 0;
 		}
 
-		RenderScene();
+		RenderLevel();
 		
 		//We draw the ImGui interface
 		gui.Draw(window, cam, loader, selectedObjectID, io);
+
+		file_refresh_timer++;
+
+		if (file_refresh_timer / 200 == 1) {
+			file_refresh_timer = 0;
+
+			gui.manager.files = ListFiles((char*)gui.current_dir);
+			
+		}
+		
 
 		if (gui.viewportSize.x != cam.width || gui.viewportSize.y != cam.height) {
 			cam.updateSize(gui.viewportSize.x, gui.viewportSize.y);

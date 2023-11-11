@@ -241,3 +241,62 @@ std::string get_solution_path() {
 	path = substr(path, "x64/Debug/SparkEngineMaster.exe");
 	return path;
 }
+
+std::vector<std::variant<File, Folder>> ListFiles(char* directory)
+{
+	std::vector<std::variant<File, Folder>> files;
+	
+	for (auto& file : std::filesystem::directory_iterator(directory)) {
+		
+		if (file.is_directory()) {
+			Folder new_folder;
+			std::string name = file.path().filename().string();
+			new_folder.name = _strdup(name.c_str());
+			std::string path = file.path().string();
+			path = replaceCharacters(path, '\\', '/');
+			new_folder.filepath = _strdup(path.c_str());
+			files.push_back(new_folder);
+		}
+		else {
+			File new_file;
+			std::string name = file.path().filename().string();
+			new_file.name = _strdup(name.c_str());
+			std::string path = file.path().string();
+			path = replaceCharacters(path, '\\', '/');
+			new_file.filepath = _strdup(path.c_str());
+			if (file.path().extension().string() == ".sl") {
+				new_file.type = LEVEL;
+			}
+			new_file.id = files.size();
+			files.push_back(new_file);
+		}
+		
+	}
+
+	return files;
+}
+
+char* extractPath(const char* path) {
+	// Find the last occurrence of '/'
+	const char* lastSlash = std::strrchr(path, '/');
+
+	if (lastSlash != nullptr) {
+		// Calculate the length of the substring up to the last '/'
+		std::size_t length = lastSlash - path + 1;
+
+		// Create a new char array to store the substring
+		char* newPath = new char[length];
+
+		// Copy the substring to the new char array using memcpy
+		std::memcpy(newPath, path, length);
+
+		// Null-terminate the new char array
+		newPath[length - 1] = '\0';
+
+		return newPath;
+	}
+
+
+	// Return a copy of the original path if '/' is not found
+	return _strdup(path);
+}

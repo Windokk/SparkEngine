@@ -17,6 +17,7 @@
 #include <GL/gl.h>
 #include <filesystem>
 #include <Shobjidl.h>
+#include <variant>
 
 
 bool to_bool(std::string str);
@@ -32,6 +33,7 @@ std::string substr(const std::string& mainString, const std::string& subString);
 std::string make_relative_filepath(const std::string& absolute_path, const std::string& base_path);
 std::string make_relative_folderpath(const std::string& absolute_path, const std::string& base_path);
 std::string get_solution_path();
+
 #ifndef LIGHT_STRUCT_H
 #define LIGHT_STRUCT_H
 
@@ -64,20 +66,24 @@ struct light_Infos {
 
 enum fileType {
 	EMPTY,
+	FOLDER,
+	FONT,
+	LEVEL,
 	MODEL,
 	MATERIAL,
 	SHADER,
 	TEXT,
 	TEXTURE,
-	FONT,
-	UI,
-	SCENE
+	UI
+	
+	
 };
 
 struct File {
 	const char* name;
 	const char* filepath;
 	fileType type;
+	int id;
 	File() {
 		name = "Untitled";
 		filepath = "";
@@ -85,4 +91,12 @@ struct File {
 	}
 };
 
+struct Folder {
+	const char* name;
+	const char* filepath;
+};
+
 #endif // FILE_STRUCT_H
+
+std::vector<std::variant<File, Folder>> ListFiles(char* directory);
+char* extractPath(const char* path);

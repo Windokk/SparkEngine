@@ -22,9 +22,6 @@
     <Filter Include="Resource Files\assets\defaults">
       <UniqueIdentifier>{2c3a5ed4-ab2e-4317-b6d9-e35a49ad75b7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\assets\defaults\scenes">
-      <UniqueIdentifier>{4a31ebdf-c735-4669-8afb-dd8499374a77}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\assets\defaults\logos">
       <UniqueIdentifier>{220a97d7-a9ea-491c-a8fd-c7acb6cca3c9}</UniqueIdentifier>
     </Filter>
@@ -223,6 +220,9 @@
     <Filter Include="Source Files\level management">
       <UniqueIdentifier>{1964bdc8-bd79-4f64-b2c3-909683f8c3b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\assets\defaults\levels">
+      <UniqueIdentifier>{4a31ebdf-c735-4669-8afb-dd8499374a77}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SparkEngine.cpp">
@@ -254,15 +254,6 @@
     </ClCompile>
     <ClCompile Include="srcs\Gui\ImGuiMain.cpp">
       <Filter>Source Files\gui</Filter>
-    </ClCompile>
-    <ClCompile Include="srcs\Scene Management\LevelParser.cpp">
-      <Filter>Source Files\level management</Filter>
-    </ClCompile>
-    <ClCompile Include="srcs\Scene Management\LevelLoader.cpp">
-      <Filter>Source Files\level management</Filter>
-    </ClCompile>
-    <ClCompile Include="srcs\Scene Management\Components.cpp">
-      <Filter>Source Files\level management</Filter>
     </ClCompile>
     <ClCompile Include="srcs\Utils\Engine\EngineUtils.cpp">
       <Filter>Source Files\utils\engine</Filter>
@@ -300,11 +291,20 @@
     <ClCompile Include="srcs\Libraries\glad.c">
       <Filter>Source Files\libs</Filter>
     </ClCompile>
-    <ClCompile Include="srcs\Scene Management\LevelWriter.cpp">
-      <Filter>Source Files\level management</Filter>
-    </ClCompile>
     <ClCompile Include="srcs\FilesManager.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\Level Management\Components.cpp">
+      <Filter>Source Files\level management</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\Level Management\LevelLoader.cpp">
+      <Filter>Source Files\level management</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\Level Management\LevelParser.cpp">
+      <Filter>Source Files\level management</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\Level Management\LevelWriter.cpp">
+      <Filter>Source Files\level management</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -344,8 +344,8 @@
     <None Include="assets\defaults\models\cube\scene.gltf">
       <Filter>Resource Files\assets\defaults\models\cube</Filter>
     </None>
-    <None Include="assets\defaults\scenes\test_simple_light.json">
-      <Filter>Resource Files\assets\defaults\scenes</Filter>
+    <None Include="assets\defaults\scenes\test_simple_light.sl">
+      <Filter>Resource Files\assets\defaults\levels</Filter>
     </None>
     <None Include="srcs\Shaders\Defaults\Engine\default.frag">
       <Filter>Resource Files\shaders\defalults\engine</Filter>
@@ -392,8 +392,8 @@
     <None Include="assets\defaults\models\flying_island\scene.gltf">
       <Filter>Resource Files\assets\defaults\models\flying_island</Filter>
     </None>
-    <None Include="assets\defaults\scenes\scene_render.json">
-      <Filter>Resource Files\assets\defaults\scenes</Filter>
+    <None Include="assets\defaults\scenes\level_render.sl">
+      <Filter>Resource Files\assets\defaults\levels</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -533,15 +533,6 @@
     <ClInclude Include="srcs\Gui\ImGuiMain.h">
       <Filter>Header Files\gui</Filter>
     </ClInclude>
-    <ClInclude Include="srcs\Scene Management\LevelLoader.h">
-      <Filter>Header Files\level management</Filter>
-    </ClInclude>
-    <ClInclude Include="srcs\Scene Management\LevelParser.h">
-      <Filter>Header Files\level management</Filter>
-    </ClInclude>
-    <ClInclude Include="srcs\Scene Management\Components.h">
-      <Filter>Header Files\level management</Filter>
-    </ClInclude>
     <ClInclude Include="srcs\Utils\Engine\EngineUtils.h">
       <Filter>Header Files\utils\engine</Filter>
     </ClInclude>
@@ -596,11 +587,20 @@
     <ClInclude Include="srcs\Libraries\ImGui_Lib\tahoma.h">
       <Filter>Header Files\libs\imgui lib</Filter>
     </ClInclude>
-    <ClInclude Include="srcs\Scene Management\LevelWriter.h">
-      <Filter>Header Files\level management</Filter>
-    </ClInclude>
     <ClInclude Include="srcs\FilesManager.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\Level Management\Components.h">
+      <Filter>Header Files\level management</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\Level Management\LevelLoader.h">
+      <Filter>Header Files\level management</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\Level Management\LevelParser.h">
+      <Filter>Header Files\level management</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\Level Management\LevelWriter.h">
+      <Filter>Header Files\level management</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

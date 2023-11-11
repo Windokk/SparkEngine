@@ -46,7 +46,7 @@ public:
 	void Load2();
 	void Unload();
 	void Update(Camera cam);
-	void LoadNewScene(const char* scene);
+	void LoadNewLevel(const char* scene);
 	void CreateLights();
 	void SetLightValues(int objectID, int componentID);
 	void SetShadersValues();

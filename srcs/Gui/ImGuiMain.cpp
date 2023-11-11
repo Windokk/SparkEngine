@@ -75,12 +75,12 @@ void SaveTextureToFile(GLuint textureId, int width, int height, const char* file
 }
 
 void LoadLevelFromFile(LevelLoader& loader) {
-	std::string file = OpenWindowsFileDialog(L"Scene file (.json)\0*.json\0");
+	std::string file = OpenWindowsFileDialog(L"Spark Level file (.sl)\0*.sl\0");
 	if (file != "") {
 		file = replaceCharacters(file, '\\', '/');
 		std::string file_relative;
 		file_relative = make_relative_filepath(file, get_solution_path());
-		loader.LoadNewScene(file_relative.c_str());
+		loader.LoadNewLevel(file_relative.c_str());
 	}
 }
 
@@ -129,7 +129,9 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 
 	//Teleports to selectedObject when pressing F
 	if (io.KeysDown[GLFW_KEY_F]) {
-		cam.Position = loader.objects_Transforms[selectedObjectID].Location;
+		if (selectedObjectID != -1) {
+			cam.Position = loader.objects_Transforms[selectedObjectID].Location;
+		}
 	}
 
 	//Main Menu Bar
@@ -154,7 +156,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 			}
 			if (ImGui::MenuItem(ICON_FA_SAVE "  Save  scene", "Ctrl+Maj+S")) {
 				if (current_file != -1) {
-					std::string full_path = std::string(manager.files[current_file].filepath) + manager.files[current_file].name + ".json";
+					std::string full_path = std::string(std::get<File>(manager.files[current_file]).filepath) + std::get<File>(manager.files[current_file]).name + ".sl";
 					writer.WriteLevelToFile(full_path.c_str(), loader);
 				}
 				else {
@@ -278,10 +280,11 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 					File new_scene = File();
 					new_scene.name = scene_File_Name;
 					new_scene.filepath = scene_File_Path;
-					new_scene.type = SCENE;
+					new_scene.type = LEVEL;
+					new_scene.id = manager.files.size() - 1;
+					current_file = new_scene.id;
 					manager.files.push_back(new_scene);
-					current_file = manager.files.size() - 1;
-					std::string full_path = std::string(manager.files[current_file].filepath) + manager.files[current_file].name + ".json";
+					std::string full_path = std::string(std::get<File>(manager.files[current_file]).filepath) + std::get<File>(manager.files[current_file]).name + ".sl";
 					writer.WriteEmptyLevelToFile(full_path.c_str());
 					showNewScene = false;
 				}
@@ -316,10 +319,11 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 					File new_scene = File();
 					new_scene.name = scene_File_Name;
 					new_scene.filepath = scene_File_Path;
-					new_scene.type = SCENE;
+					new_scene.type = LEVEL;
+					new_scene.id = manager.files.size();
+					current_file = new_scene.id;
 					manager.files.push_back(new_scene);
-					current_file = manager.files.size() - 1;
-					std::string full_path = std::string(manager.files[current_file].filepath) + manager.files[current_file].name + ".json";
+					std::string full_path = std::string(std::get<File>(manager.files[current_file]).filepath) + std::get<File>(manager.files[current_file]).name + ".sl";
 					writer.WriteLevelToFile(full_path.c_str(), loader);
 					showSaveScene = false;
 				}
@@ -855,8 +859,9 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 			ImGui::Separator();
 			if (ImGui::BeginMenu("Add +")) {
 				if (ImGui::MenuItem(ICON_FA_CLAPPERBOARD"  Scene")) {}
+				if (ImGui::MenuItem(ICON_FA_FOLDER_PLUS "  Folder")){}
 				if (ImGui::BeginMenu(ICON_FA_CUBES "  Object")) {
-					if (ImGui::MenuItem(ICON_FA_LIGHTBULB "  Light")) {}
+					if (ImGui::MenuItem(ICON_FA_LIGHTBULB "  Light")) {} 
 					if (ImGui::MenuItem(ICON_FA_CUBE "  Model")) {}
 					if (ImGui::MenuItem(ICON_FA_CRYSTALBALL "  Shader")) {}
 					if (ImGui::MenuItem(ICON_FA_CODE "  Script")) {}
@@ -866,7 +871,26 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 			}
 			ImGui::EndMenuBar();
 		}
+
+		if (std::strlen(current_dir) > std::strlen(project_dir)) {
+			if (ImGui::Button("..")) {
+				current_dir = extractPath(current_dir);
+			}
+
+		}
 		
+		for (auto& file : manager.files) {
+			if (auto file_ = std::get_if<File>(&file)) {
+				if (ImGui::Button(file_->name)) {
+					current_file = file_->id;
+				}
+			}
+			if (auto folder_ = std::get_if<Folder>(&file)) {
+				if (ImGui::Button(folder_->name)) {
+					current_dir = folder_->filepath;
+				}
+			}
+		}
 
 		ImGui::End();
 	}

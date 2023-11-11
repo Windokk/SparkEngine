@@ -255,7 +255,7 @@ void LevelLoader::Update(Camera cam)
 	}
 }
 
-void LevelLoader::LoadNewScene(const char* scene) {
+void LevelLoader::LoadNewLevel(const char* scene) {
 
 	objects_Transforms.clear();
 	models.clear();

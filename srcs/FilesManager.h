@@ -4,6 +4,6 @@ class FilesManager {
 public :
 	FilesManager();
 
-	std::vector<File> files;
+	std::vector<std::variant<File, Folder>> files;
 
 };

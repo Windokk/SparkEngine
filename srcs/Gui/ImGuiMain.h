@@ -15,9 +15,9 @@
 
 #include "../Utils/Engine/EngineUtils.h"
 #include "../Basic Rendering/Camera/Camera.h"
-#include "../Scene Management/LevelLoader.h"
+#include "../Level Management/LevelLoader.h"
 #include "ImGuiUtils.h"
-#include "../Scene Management/LevelWriter.h"
+#include "../Level Management/LevelWriter.h"
 #include "../FilesManager.h"
 
 
@@ -121,6 +121,10 @@ public:
 
 
 	int current_file = -1;
+	
+	const char* project_dir = "assets/generated/test_project";
+	const char* current_dir = project_dir;
+
 
 	FilesManager manager = FilesManager();
 	LevelWriter writer = LevelWriter();

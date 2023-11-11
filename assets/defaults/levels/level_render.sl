@@ -1,5 +1,3 @@
-//Level
-
 {
   "shaders": [
     {
