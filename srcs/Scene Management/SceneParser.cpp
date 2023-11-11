@@ -40,49 +40,48 @@ SceneParser::SceneParser(const char* file)
 				}
 			}
 			//We load the skybox
-			for (auto& x : JSON["skybox"][0].items()) {
-				if (x.value() != NULL) {
-					std::string shader{};
-					std::string right{};
-					std::string left{};
-					std::string top{};
-					std::string bottom{};
-					std::string front{};
-					std::string back{};
+			std::string shader{};
+			std::string right{};
+			std::string left{};
+			std::string top{};
+			std::string bottom{};
+			std::string front{};
+			std::string back{};
 
-					for (auto& y : JSON["skybox"][0][x.key()][0].items()) {
-						shader = ((std::string)y.value());
-					}
-					for (auto& y : JSON["skybox"][0][x.key()][1].items()) {
-						right = (std::string)y.value();
-					}
-					for (auto& y : JSON["skybox"][0][x.key()][2].items()) {
-						left = (std::string)y.value();
-					}
-					for (auto& y : JSON["skybox"][0][x.key()][3].items()) {
-						top = (std::string)y.value();
-					}
-					for (auto& y : JSON["skybox"][0][x.key()][4].items()) {
-						bottom = (std::string)y.value();
-					}
-					for (auto& y : JSON["skybox"][0][x.key()][5].items()) {
-						front = (std::string)y.value();
-					}
-					for (auto& y : JSON["skybox"][0][x.key()][6].items()) {
-						back = (std::string)y.value();
-					}
-
-					SkyboxData skybox_data;
-					skybox_data.shader = shader;
-					skybox_data.right = right;
-					skybox_data.left = left;
-					skybox_data.top = top;
-					skybox_data.bottom = bottom;
-					skybox_data.front = front;
-					skybox_data.back = back;
-					skybox = skybox_data;
-				}
+			for (auto& y : JSON["skybox"][0].items()) {
+				shader = ((std::string)y.value());
 			}
+			for (auto& y : JSON["skybox"][1].items()) {
+				right = (std::string)y.value();
+			}
+			for (auto& y : JSON["skybox"][2].items()) {
+				left = (std::string)y.value();
+			}
+			for (auto& y : JSON["skybox"][3].items()) {
+				top = (std::string)y.value();
+			}
+			for (auto& y : JSON["skybox"][4].items()) {
+				bottom = (std::string)y.value();
+			}
+			for (auto& y : JSON["skybox"][5].items()) {
+				front = (std::string)y.value();
+			}
+			for (auto& y : JSON["skybox"][6].items()) {
+				back = (std::string)y.value();
+			}
+
+				SkyboxData skybox_data;
+				skybox_data.shader = shader;
+				skybox_data.right = right;
+				skybox_data.left = left;
+				skybox_data.top = top;
+				skybox_data.bottom = bottom;
+				skybox_data.front = front;
+				skybox_data.back = back;
+				skybox = skybox_data;
+				
+				
+			
 			//We load the objects
 			for (unsigned int i = 0; i < JSON["objects"].size(); i++) {
 				// i = the object id

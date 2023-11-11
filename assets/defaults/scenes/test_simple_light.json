@@ -24,17 +24,13 @@
 
 	],
 	"skybox": [
-		{
-			"skybox1": [
-				{ "shader": "skyboxShader" },
-				{ "right": "./assets/defaults/textures/skyboxes/bluesky/right.jpg" },
-				{ "left": "./assets/defaults/textures/skyboxes/bluesky/left.jpg" },
-				{ "top": "./assets/defaults/textures/skyboxes/bluesky/top.jpg" },
-				{ "bottom": "./assets/defaults/textures/skyboxes/bluesky/bottom.jpg" },
-				{ "front": "./assets/defaults/textures/skyboxes/bluesky/front.jpg" },
-				{ "back": "./assets/defaults/textures/skyboxes/bluesky/back.jpg" }
-			]
-		}
+		{ "shader": "skyboxShader" },
+		{ "right": "./assets/defaults/textures/skyboxes/bluesky/right.jpg" },
+		{ "left": "./assets/defaults/textures/skyboxes/bluesky/left.jpg" },
+		{ "top": "./assets/defaults/textures/skyboxes/bluesky/top.jpg" },
+		{ "bottom": "./assets/defaults/textures/skyboxes/bluesky/bottom.jpg" },
+		{ "front": "./assets/defaults/textures/skyboxes/bluesky/front.jpg" },
+		{ "back": "./assets/defaults/textures/skyboxes/bluesky/back.jpg" }
 	],
 	"objects": [
 		{
