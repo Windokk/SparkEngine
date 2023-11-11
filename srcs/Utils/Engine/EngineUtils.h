@@ -27,7 +27,6 @@ std::string OpenFolderDialog();
 std::string replaceCharacters(const std::string& input, char targetChar, char replacementChar);
 void SetTextureAlphaToOne(GLuint texture);
 bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_width, int* out_height);
-GLuint LoadImageTexture(const char* path);
 unsigned int LoadTexture(char const* path);
 std::string substr(const std::string& mainString, const std::string& subString);
 std::string make_relative_filepath(const std::string& absolute_path, const std::string& base_path);

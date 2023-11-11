@@ -89,21 +89,30 @@ void ImGuiMain::Load(GLFWwindow* window, ImGuiIO& io)
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
 	io.ConfigFlags |= (ImGuiConfigFlags_NoMouseCursorChange, ImGuiConfigFlags_DockingEnable);
-	io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/defaults/gui/engine/fonts/OpenSans-Medium.ttf", 13);
 	ImGuiMain::SetupImGuiStyle();
+	io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/defaults/gui/engine/fonts/OpenSans-Medium.ttf", 13);
+	static const ImWchar icons_ranges[] = { ICON_MIN_FA, ICON_MAX_16_FA, 0 };
+	ImFontConfig icons_config;
+	icons_config.MergeMode = true;
+	icons_config.PixelSnapH = true;
+	solid = io.Fonts->AddFontFromFileTTF("assets/defaults/gui/engine/fonts/fa-solid-900.ttf", 13.0f, &icons_config, icons_ranges);
 
-	// Initialize notify
-	ImGui::MergeIconsWithLatestFont();
 
 	ImFontConfig font_cfg;
 	font_cfg.FontDataOwnedByAtlas = false;
-	io.Fonts->AddFontFromMemoryTTF((void*)tahoma, sizeof(tahoma), 17.f, &font_cfg);
+	//io.Fonts->AddFontFromMemoryTTF((void*)tahoma, sizeof(tahoma), 17.f, &font_cfg);
 
-	
+	LoadTextureFromFile("assets/defaults/gui/engine/icons/file-regular.png", &FileIconID, &width, &height);
+	LoadTextureFromFile("assets/defaults/gui/engine/icons/folder-regular.png", &FolderIconID, &width, &height);
+	LoadTextureFromFile("assets/defaults/gui/engine/icons/folder-arrow-up-regular.png", &FolderUpIconID, &width, &height);
 
 	currentGizmoMode = ImGuizmo::WORLD;
 	currentGizmoOperation = ImGuizmo::TRANSLATE;
+	
+	
 }
+
+
 
 void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& selectedObjectID, ImGuiIO& io)
 {
@@ -872,25 +881,64 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 			ImGui::EndMenuBar();
 		}
 
+		static float padding = 37.0f;
+		static float thumbnailSize = 60.0f;
+		float cellSize = thumbnailSize + padding;
+
+		float panelWidth = ImGui::GetContentRegionAvail().x;
+		int columnCount = (int)(panelWidth / cellSize);
+		if (columnCount < 1)
+			columnCount = 1;
+
+		ImGui::Columns(columnCount, 0, false);
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.8, 0.8, 0.8, 0.1));
+		ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 8);
+
+
 		if (std::strlen(current_dir) > std::strlen(project_dir)) {
-			if (ImGui::Button("..")) {
+			if (ImGui::ImageButton((void*)(intptr_t)FolderUpIconID, { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 })) {
 				current_dir = extractPath(current_dir);
 			}
+			ImGui::TextWrapped("..");
 
 		}
 		
 		for (auto& file : manager.files) {
 			if (auto file_ = std::get_if<File>(&file)) {
-				if (ImGui::Button(file_->name)) {
+				
+				ImGui::PushID(file_->name);
+
+				
+				if (ImGui::ImageButton((void*)(intptr_t)FileIconID, { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 })) {
 					current_file = file_->id;
 				}
+				ImGui::SetCursorPosX(ImGui::GetCursorPosX());
+				ImGui::TextWrapped(file_->name);
+
+				ImGui::NextColumn();
+
+				ImGui::PopID();
 			}
 			if (auto folder_ = std::get_if<Folder>(&file)) {
-				if (ImGui::Button(folder_->name)) {
+
+				ImGui::PushID(folder_->name);
+
+				
+				if (ImGui::ImageButton((void*)(intptr_t)FolderIconID, { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 })) {
 					current_dir = folder_->filepath;
 				}
+
+				ImGui::SetCursorPosX(ImGui::GetCursorPosX());
+				ImGui::TextWrapped(folder_->name);
+
+				ImGui::NextColumn();
+
+				ImGui::PopID();
 			}
 		}
+		ImGui::PopStyleVar();
+		ImGui::PopStyleColor();
 
 		ImGui::End();
 	}

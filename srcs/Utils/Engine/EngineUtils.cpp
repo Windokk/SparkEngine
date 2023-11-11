@@ -127,12 +127,16 @@ void SetTextureAlphaToOne(GLuint texture)
 
 bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_width, int* out_height)
 {
+	stbi_set_flip_vertically_on_load(true);
+
 	// Load from file
 	int image_width = 0;
 	int image_height = 0;
 	unsigned char* image_data = stbi_load(filename, &image_width, &image_height, NULL, 4);
 	if (image_data == NULL)
 		return false;
+
+	stbi_set_flip_vertically_on_load(false);
 
 	// Create a OpenGL texture identifier
 	GLuint image_texture;
@@ -157,15 +161,6 @@ bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_wid
 	*out_height = image_height;
 
 	return true;
-}
-
-GLuint LoadImageTexture(const char* path) {
-	int my_image_width = 0;
-	int my_image_height = 0;
-	GLuint my_image_texture = 0;
-	bool ret = LoadTextureFromFile(path, &my_image_texture, &my_image_width, &my_image_height);
-	IM_ASSERT(ret);
-	return my_image_texture;
 }
 
 unsigned int LoadTexture(char const* path)

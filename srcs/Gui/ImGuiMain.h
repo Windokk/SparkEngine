@@ -119,12 +119,18 @@ public:
 		style.Colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.06866955757141113f, 0.06866887211799622f, 0.06866887211799622f, 0.7f);
 	}
 
+	
 
 	int current_file = -1;
 	
 	const char* project_dir = "assets/generated/test_project";
 	const char* current_dir = project_dir;
 
+	GLuint FileIconID;
+	GLuint FolderIconID;
+	GLuint FolderUpIconID;
+	int width;
+	int height;
 
 	FilesManager manager = FilesManager();
 	LevelWriter writer = LevelWriter();
@@ -139,8 +145,8 @@ public:
 	ImVec2 viewportTextureSize;
 	bool isHoverViewport;
 	bool showCloseButton;
-	ImFont* regular;
 	ImFont* solid;
+	ImFont* opensans;
 	bool showContentBrowser = true;
 	bool showDetails = true;
 	bool showViewport = true;
