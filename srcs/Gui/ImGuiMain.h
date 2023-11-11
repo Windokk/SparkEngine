@@ -15,9 +15,9 @@
 
 #include "../Utils/Engine/EngineUtils.h"
 #include "../Basic Rendering/Camera/Camera.h"
-#include "../Scene Management/SceneLoader.h"
+#include "../Scene Management/LevelLoader.h"
 #include "ImGuiUtils.h"
-#include "../Scene Management/SceneWriter.h"
+#include "../Scene Management/LevelWriter.h"
 #include "../FilesManager.h"
 
 
@@ -26,7 +26,7 @@ class ImGuiMain {
 public:
 	ImGuiMain();
 	void Load(GLFWwindow* window, ImGuiIO& io);
-	void Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& selectedObjectID, ImGuiIO& io);
+	void Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& selectedObjectID, ImGuiIO& io);
 	void SetupImGuiStyle()
 	{
 		// Future Dark style by rewrking from ImThemes
@@ -98,6 +98,7 @@ public:
 		style.Colors[ImGuiCol_ResizeGripActive] = ImVec4(0.1158786714076996f, 0.1158790588378906f, 0.1158798336982727f, 1.0f);
 		style.Colors[ImGuiCol_TabHovered] = ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 1.0f);
 		style.Colors[ImGuiCol_TabActive] = ImVec4(0.09803921729326248f, 0.105882354080677f, 0.1215686276555061f, 1.0f);
+		style.Colors[ImGuiCol_Tab] = ImVec4(0.0470588244497776f, 0.05490196123719215f, 0.07058823853731155f, 1.0f);
 		style.Colors[ImGuiCol_TabUnfocused] = ImVec4(0.0470588244497776f, 0.05490196123719215f, 0.07058823853731155f, 1.0f);
 		style.Colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.0784313753247261f, 0.08627451211214066f, 0.1019607856869698f, 1.0f);
 		style.Colors[ImGuiCol_PlotLines] = ImVec4(0.5215686559677124f, 0.6000000238418579f, 0.7019608020782471f, 1.0f);
@@ -110,18 +111,19 @@ public:
 		style.Colors[ImGuiCol_TableRowBg] = ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 1.0f);
 		style.Colors[ImGuiCol_TableRowBgAlt] = ImVec4(0.09803921729326248f, 0.105882354080677f, 0.1215686276555061f, 1.0f);
 		style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.2352941185235977f, 0.2156862765550613f, 0.5960784554481506f, 1.0f);
-		style.Colors[ImGuiCol_DragDropTarget] = ImVec4(0.4980392158031464f, 0.5137255191802979f, 1.0f, 1.0f);
-		style.Colors[ImGuiCol_NavHighlight] = ImVec4(0.4980392158031464f, 0.5137255191802979f, 1.0f, 1.0f);
-		style.Colors[ImGuiCol_NavWindowingHighlight] = ImVec4(0.4980392158031464f, 0.5137255191802979f, 1.0f, 1.0f);
-		style.Colors[ImGuiCol_NavWindowingDimBg] = ImVec4(0.196078434586525f, 0.1764705926179886f, 0.5450980663299561f, 0.501960813999176f);
-		style.Colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.196078434586525f, 0.1764705926179886f, 0.5450980663299561f, 0.501960813999176f);
+		style.Colors[ImGuiCol_DragDropTarget] = ImVec4(1, 0.5137255191802979f, 1.0f, 1.0f);
+		style.Colors[ImGuiCol_DockingPreview] = ImVec4(0.02866955757141113f, 0.02866887211799622f, 0.02866887211799622f, 1.0f);
+		style.Colors[ImGuiCol_DockingEmptyBg] = ImVec4(0.06866955757141113f, 0.06866887211799622f, 0.06866887211799622f, 1.0f);
+		style.Colors[ImGuiCol_NavWindowingHighlight] = ImVec4(0.7866955757141113f, 0.7866887211799622f, 0.7866887211799622f, 0.8f);
+		style.Colors[ImGuiCol_NavWindowingDimBg] = ImVec4(0.06866955757141113f, 0.06866887211799622f, 0.06866887211799622f, 0.7f);
+		style.Colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.06866955757141113f, 0.06866887211799622f, 0.06866887211799622f, 0.7f);
 	}
 
 
 	int current_file = -1;
 
 	FilesManager manager = FilesManager();
-	SceneWriter writer = SceneWriter();
+	LevelWriter writer = LevelWriter();
 
 	char scene_File_Name[500] = "";
 	char scene_File_Path[500] = "";

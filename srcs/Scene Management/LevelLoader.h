@@ -2,7 +2,7 @@
 #define SceneLoader_CLASS_H
 
 #include "../Basic Rendering/Model/Model.h"
-#include "SceneParser.h"
+#include "LevelParser.h"
 #include "../Utils/Engine/EngineUtils.h"
 
 #include <variant>
@@ -38,10 +38,10 @@ struct Light_Object_Infos {
 
 };
 
-class SceneLoader 
+class LevelLoader 
 {
 public:
-	SceneLoader();
+	LevelLoader();
 	void Load1(const char* loaded_file);
 	void Load2();
 	void Unload();
@@ -51,7 +51,7 @@ public:
 	void SetLightValues(int objectID, int componentID);
 	void SetShadersValues();
 
-	SceneParser parser = SceneParser("");
+	LevelParser parser = LevelParser("");
 	int anti_aliasing_samples;
 	int height_;
 	int width_;

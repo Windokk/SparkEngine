@@ -1,4 +1,4 @@
-#include"SceneLoader.h"
+#include"LevelLoader.h"
 
 float rectangleVertices[] = {
 	//  Coords   // texCoords
@@ -45,12 +45,12 @@ unsigned int skyboxIndices[] = {
 	6, 2, 3
 };
 
-SceneLoader::SceneLoader() {
+LevelLoader::LevelLoader() {
 }
 
-void SceneLoader::Load1(const char* loaded_file) {
+void LevelLoader::Load1(const char* loaded_file) {
 	file = loaded_file;
-	parser = SceneParser(file);
+	parser = LevelParser(file);
 
 	Shader_Infos infos;
 	//Shaders loading
@@ -133,7 +133,7 @@ void SceneLoader::Load1(const char* loaded_file) {
 	
 }
 
-void SceneLoader::Load2() {
+void LevelLoader::Load2() {
 
 	//We load the skybox
 	glGenVertexArrays(1, &skyboxVAO);
@@ -208,13 +208,13 @@ void SceneLoader::Load2() {
 	glFrontFace(GL_CW);*/
 }
 
-void SceneLoader::Unload() {
+void LevelLoader::Unload() {
 	for (int i = 0; i < shaders.size(); i++) {
 		shaders[i].shader.Delete();
 	}
 }
 
-void SceneLoader::Update(Camera cam)
+void LevelLoader::Update(Camera cam)
 {
 	for (int i = 0; i < parser.objects.size(); i++) {
 		for (int a = 0; a < parser.objects[i].components.size(); a++) {
@@ -255,7 +255,7 @@ void SceneLoader::Update(Camera cam)
 	}
 }
 
-void SceneLoader::LoadNewScene(const char* scene) {
+void LevelLoader::LoadNewScene(const char* scene) {
 
 	objects_Transforms.clear();
 	models.clear();
@@ -263,11 +263,11 @@ void SceneLoader::LoadNewScene(const char* scene) {
 	shaders.clear();
 	parser.objects.clear();
 	parser.shaders.clear();
-	parser.skybox = SceneParser::SkyboxData();
+	parser.skybox = LevelParser::SkyboxData();
 	Unload();
 
 
-	SceneLoader::Load1(scene);
+	LevelLoader::Load1(scene);
 
 	glEnable(GL_DEPTH_TEST);
 
@@ -277,10 +277,10 @@ void SceneLoader::LoadNewScene(const char* scene) {
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	SceneLoader::Load2();
+	LevelLoader::Load2();
 }
 
-void SceneLoader::CreateLights() {
+void LevelLoader::CreateLights() {
 	for (int i = 0; i < parser.objects.size();i++) {
 		for (int a = 0; a < parser.objects[i].components.size(); a++) {
 			if (std::holds_alternative<LightComponent>(parser.objects[i].components[a])) {
@@ -309,7 +309,7 @@ void SceneLoader::CreateLights() {
 
 }
 
-void SceneLoader::SetLightValues(int objectID, int componentID){
+void LevelLoader::SetLightValues(int objectID, int componentID){
 	LightComponent lightComponent = std::get<LightComponent>(parser.objects[objectID].components[componentID]);
 	Light_Object_Infos infos;
 	infos.lightColor = lightComponent.color;
@@ -325,7 +325,7 @@ void SceneLoader::SetLightValues(int objectID, int componentID){
 	}
 }
 
-void SceneLoader::SetShadersValues() {
+void LevelLoader::SetShadersValues() {
 	
 	glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 

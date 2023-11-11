@@ -1,13 +1,13 @@
-#include"SceneParser.h"
+#include"LevelParser.h"
 
-SceneParser::SceneParser(const char* file)
+LevelParser::LevelParser(const char* file)
 {
 	if (file != "") {
 		// Make a JSON object
 		std::string text = get_file_contents(file);
 		JSON = json::parse(text);
 
-		SceneParser::loaded_file = file;
+		LevelParser::loaded_file = file;
 
 		//We load every element
 		if (JSON != NULL)

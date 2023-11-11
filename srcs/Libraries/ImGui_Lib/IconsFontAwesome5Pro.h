@@ -1867,3 +1867,4 @@
 //Font awesome 6 Pro
 
 #define ICON_FA_CLAPPERBOARD "\xee\x84\xb1" // U+e131
+#define ICON_FA_CRYSTALBALL "\xee\x8d\xa2" // U+e362

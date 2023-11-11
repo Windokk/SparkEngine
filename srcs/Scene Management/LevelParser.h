@@ -64,10 +64,10 @@ struct Object {
     }
 };
 
-class SceneParser
+class LevelParser
 {
 public:
-	SceneParser(const char* file);
+	LevelParser(const char* file);
 
 	//Shaders data
 	std::vector<ShaderData> shaders;

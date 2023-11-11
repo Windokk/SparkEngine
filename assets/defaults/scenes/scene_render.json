@@ -1,3 +1,5 @@
+//Level
+
 {
   "shaders": [
     {
@@ -23,14 +25,14 @@
     }
 
   ],
-  "skybox":[
-      { "shader": "skyboxShader" },
-      { "right": "./assets/defaults/textures/skyboxes/base/blue.png" },
-      { "left": "./assets/defaults/textures/skyboxes/base/blue.png" },
-      { "top": "./assets/defaults/textures/skyboxes/base/blue.png" },
-      { "bottom": "./assets/defaults/textures/skyboxes/base/blue.png" },
-      { "front": "./assets/defaults/textures/skyboxes/base/blue.png" },
-      { "back": "./assets/defaults/textures/skyboxes/base/blue.png" }
+  "skybox": [
+    { "shader": "skyboxShader" },
+    { "right": "./assets/defaults/textures/skyboxes/base/blue.png" },
+    { "left": "./assets/defaults/textures/skyboxes/base/blue.png" },
+    { "top": "./assets/defaults/textures/skyboxes/base/blue.png" },
+    { "bottom": "./assets/defaults/textures/skyboxes/base/blue.png" },
+    { "front": "./assets/defaults/textures/skyboxes/base/blue.png" },
+    { "back": "./assets/defaults/textures/skyboxes/base/blue.png" }
   ],
   "objects": [
     {

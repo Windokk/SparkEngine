@@ -12,7 +12,7 @@
 
 #include "srcs/Libraries/ImGui_Lib/imgui_internal.h"
  
-#include "srcs/Scene Management/SceneLoader.h"
+#include "srcs/Scene Management/LevelLoader.h"
 
 #include "srcs/Gui/ImGuiMain.h"
 
@@ -23,7 +23,7 @@ unsigned int anti_aliasing_samples = 8;
 
 int selectedObjectID = -1;
 
-SceneLoader loader;
+LevelLoader loader;
 
 ImGuiMain gui = ImGuiMain();
 

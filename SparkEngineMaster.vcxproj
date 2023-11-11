@@ -172,9 +172,9 @@
     <ClCompile Include="srcs\Libraries\ImGui_Lib\imgui_tables.cpp" />
     <ClCompile Include="srcs\Libraries\ImGui_Lib\imgui_widgets.cpp" />
     <ClCompile Include="srcs\Scene Management\Components.cpp" />
-    <ClCompile Include="srcs\Scene Management\SceneLoader.cpp" />
-    <ClCompile Include="srcs\Scene Management\SceneParser.cpp" />
-    <ClCompile Include="srcs\Scene Management\SceneWriter.cpp" />
+    <ClCompile Include="srcs\Scene Management\LevelLoader.cpp" />
+    <ClCompile Include="srcs\Scene Management\LevelParser.cpp" />
+    <ClCompile Include="srcs\Scene Management\LevelWriter.cpp" />
     <ClCompile Include="srcs\Utils\Engine\EngineUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -209,11 +209,6 @@
     <None Include="srcs\Shaders\Defaults\Engine\Translucency\windows.frag" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="assets\defaults\gui\engine\menus\help\book.png" />
-    <Image Include="assets\defaults\gui\engine\menus\help\certificate.png" />
-    <Image Include="assets\defaults\gui\engine\menus\help\code.png" />
-    <Image Include="assets\defaults\gui\engine\menus\help\list.png" />
-    <Image Include="assets\defaults\gui\engine\menus\help\question.png" />
     <Image Include="assets\defaults\logos\.scene_file_icon.png" />
     <Image Include="assets\defaults\logos\icon - white.png" />
     <Image Include="assets\defaults\logos\icon.ico" />
@@ -247,6 +242,7 @@
     <Image Include="assets\defaults\textures\skyboxes\space\left.png" />
     <Image Include="assets\defaults\textures\skyboxes\space\right.png" />
     <Image Include="assets\defaults\textures\skyboxes\space\top.png" />
+    <Image Include="assets\generated\screenshots\texture.png" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\defaults\texts\credits&amp;licence\credits.txt" />
@@ -278,9 +274,9 @@
     <ClInclude Include="srcs\Libraries\ImGui_Lib\imstb_truetype.h" />
     <ClInclude Include="srcs\Libraries\ImGui_Lib\tahoma.h" />
     <ClInclude Include="srcs\Scene Management\Components.h" />
-    <ClInclude Include="srcs\Scene Management\SceneLoader.h" />
-    <ClInclude Include="srcs\Scene Management\SceneParser.h" />
-    <ClInclude Include="srcs\Scene Management\SceneWriter.h" />
+    <ClInclude Include="srcs\Scene Management\LevelLoader.h" />
+    <ClInclude Include="srcs\Scene Management\LevelParser.h" />
+    <ClInclude Include="srcs\Scene Management\LevelWriter.h" />
     <ClInclude Include="srcs\Utils\Engine\EngineUtils.h" />
     <ClInclude Include="srcs\Utils\Inputs\InputsUtils.h" />
     <ClInclude Include="srcs\Utils\Rendering\Line.h" />

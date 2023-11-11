@@ -74,7 +74,7 @@ void SaveTextureToFile(GLuint textureId, int width, int height, const char* file
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void LoadSceneFromFile(SceneLoader& loader) {
+void LoadLevelFromFile(LevelLoader& loader) {
 	std::string file = OpenWindowsFileDialog(L"Scene file (.json)\0*.json\0");
 	if (file != "") {
 		file = replaceCharacters(file, '\\', '/');
@@ -105,14 +105,12 @@ void ImGuiMain::Load(GLFWwindow* window, ImGuiIO& io)
 	currentGizmoOperation = ImGuizmo::TRANSLATE;
 }
 
-void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& selectedObjectID, ImGuiIO& io)
+void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& selectedObjectID, ImGuiIO& io)
 {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 	ImGuizmo::BeginFrame();
-
-	ImGui::PushStyleColor(ImGuiCol_DockingPreview, ImVec4(0.06866955757141113f, 0.06866887211799622f, 0.06866887211799622f, 1.0f));
 
 
 	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
@@ -143,7 +141,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 			ImGui::Separator();
 			if (ImGui::BeginMenu(ICON_FA_FILE_UPLOAD "  Import to project")) {
 				if (ImGui::MenuItem(ICON_FA_CLAPPERBOARD "  Scene")) {
-					LoadSceneFromFile(loader);
+					LoadLevelFromFile(loader);
 				}
 				if (ImGui::MenuItem(ICON_FA_CUBE "  Model")) {
 				}
@@ -157,7 +155,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 			if (ImGui::MenuItem(ICON_FA_SAVE "  Save  scene", "Ctrl+Maj+S")) {
 				if (current_file != -1) {
 					std::string full_path = std::string(manager.files[current_file].filepath) + manager.files[current_file].name + ".json";
-					writer.WriteSceneToFile(full_path.c_str(), loader);
+					writer.WriteLevelToFile(full_path.c_str(), loader);
 				}
 				else {
 					showSaveScene = true;
@@ -284,7 +282,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 					manager.files.push_back(new_scene);
 					current_file = manager.files.size() - 1;
 					std::string full_path = std::string(manager.files[current_file].filepath) + manager.files[current_file].name + ".json";
-					writer.WriteEmptySceneToFile(full_path.c_str());
+					writer.WriteEmptyLevelToFile(full_path.c_str());
 					showNewScene = false;
 				}
 			ImGui::EndPopup();
@@ -322,7 +320,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 					manager.files.push_back(new_scene);
 					current_file = manager.files.size() - 1;
 					std::string full_path = std::string(manager.files[current_file].filepath) + manager.files[current_file].name + ".json";
-					writer.WriteSceneToFile(full_path.c_str(), loader);
+					writer.WriteLevelToFile(full_path.c_str(), loader);
 					showSaveScene = false;
 				}
 			ImGui::EndPopup();
@@ -844,6 +842,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 	//Content Browser
 	if (showContentBrowser) {
 		ImGui::Begin(ICON_FA_FILE"  Content Browser", &showContentBrowser, (ImGuiWindowFlags_MenuBar));
+		//Menu bar
 		if (ImGui::BeginMenuBar()) {
 			if (ImGui::BeginMenu(ICON_FA_FILTER"  Filters")) {
 				ImGui::MenuItem(ICON_FA_FILTER "  Select filter(s) :", NULL, false, false);
@@ -851,40 +850,29 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, SceneLoader& loader, int& 
 				ImGui::EndMenu();
 			}
 			ImGui::Separator();
-			if (ImGui::MenuItem("Save All")) {
+			if (ImGui::MenuItem(ICON_FA_SAVE "  Save All")) {
 			}
 			ImGui::Separator();
 			if (ImGui::BeginMenu("Add +")) {
-				ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/icons/objects/scene.png"), ImVec2(16, 16));
-				ImGui::SameLine();
-				if (ImGui::MenuItem("Scene")) {}
-				ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/icons/objects/cube.png"), ImVec2(16, 16));
-				ImGui::SameLine();
-				if (ImGui::BeginMenu("Object")) {
-					ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/icons/objects/light.png"), ImVec2(16, 16));
-					ImGui::SameLine();
-					if (ImGui::MenuItem("Light")) {}
-					ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/icons/objects/cube.png"), ImVec2(16, 16));
-					ImGui::SameLine();
-					if (ImGui::MenuItem("Model")) {}
-					ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/icons/objects/material.png"), ImVec2(16, 16));
-					ImGui::SameLine();
-					if (ImGui::MenuItem("Shader")) {}
-					ImGui::Image((void*)(intptr_t)LoadImageTexture("assets/defaults/gui/engine/icons/objects/script.png"), ImVec2(16, 16));
-					ImGui::SameLine();
-					if (ImGui::MenuItem("Script")) {}
+				if (ImGui::MenuItem(ICON_FA_CLAPPERBOARD"  Scene")) {}
+				if (ImGui::BeginMenu(ICON_FA_CUBES "  Object")) {
+					if (ImGui::MenuItem(ICON_FA_LIGHTBULB "  Light")) {}
+					if (ImGui::MenuItem(ICON_FA_CUBE "  Model")) {}
+					if (ImGui::MenuItem(ICON_FA_CRYSTALBALL "  Shader")) {}
+					if (ImGui::MenuItem(ICON_FA_CODE "  Script")) {}
 					ImGui::EndMenu();
 				}
 				ImGui::EndMenu();
 			}
 			ImGui::EndMenuBar();
 		}
+		
+
 		ImGui::End();
 	}
 
 	
 
-	ImGui::PopStyleColor();
 
 	ImGui::EndFrame();
 

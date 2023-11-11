@@ -1,10 +1,10 @@
-#include "SceneWriter.h"
+#include "LevelWriter.h"
 
-SceneWriter::SceneWriter() {
+LevelWriter::LevelWriter() {
 
 }
 
-void SceneWriter::WriteEmptySceneToFile(const char* filename)
+void LevelWriter::WriteEmptyLevelToFile(const char* filename)
 {
 	// We initialize the json data
 	json data;
@@ -43,7 +43,7 @@ void SceneWriter::WriteEmptySceneToFile(const char* filename)
 	outputFile.close();
 }
 
-void SceneWriter::WriteSceneToFile(const char* filename, SceneLoader& loader)
+void LevelWriter::WriteLevelToFile(const char* filename, LevelLoader& loader)
 {
 	// We initialize the json data
 	json data;
