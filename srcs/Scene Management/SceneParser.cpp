@@ -70,18 +70,16 @@ SceneParser::SceneParser(const char* file)
 				back = (std::string)y.value();
 			}
 
-				SkyboxData skybox_data;
-				skybox_data.shader = shader;
-				skybox_data.right = right;
-				skybox_data.left = left;
-				skybox_data.top = top;
-				skybox_data.bottom = bottom;
-				skybox_data.front = front;
-				skybox_data.back = back;
-				skybox = skybox_data;
+			SkyboxData skybox_data;
+			skybox_data.shader = shader;
+			skybox_data.right = right;
+			skybox_data.left = left;
+			skybox_data.top = top;
+			skybox_data.bottom = bottom;
+			skybox_data.front = front;
+			skybox_data.back = back;
+			skybox = skybox_data;
 				
-				
-			
 			//We load the objects
 			for (unsigned int i = 0; i < JSON["objects"].size(); i++) {
 				// i = the object id

@@ -159,10 +159,10 @@ void SceneWriter::WriteSceneToFile(const char* filename, SceneLoader& loader)
 						data["objects"][i][loader.parser.objects[i].name][x]["light"][7]["quadratic"] = std::to_string(loader.parser.objects[i].GetComponent<LightComponent>().quadratic);
 						
 						//CutOff
-						data["objects"][i][loader.parser.objects[i].name][x]["light"][8]["cutOff"] = std::to_string(loader.parser.objects[i].GetComponent<LightComponent>().cutOff);
+						data["objects"][i][loader.parser.objects[i].name][x]["light"][8]["cutOff"] = std::to_string(glm::degrees(glm::acos(loader.parser.objects[i].GetComponent<LightComponent>().cutOff)));
 
 						//OuterCutOff
-						data["objects"][i][loader.parser.objects[i].name][x]["light"][9]["outerCutOff"] = std::to_string(loader.parser.objects[i].GetComponent<LightComponent>().outerCutOff);
+						data["objects"][i][loader.parser.objects[i].name][x]["light"][9]["outerCutOff"] = std::to_string(glm::degrees(glm::acos(loader.parser.objects[i].GetComponent<LightComponent>().outerCutOff)));
 
 						//Intensity
 						data["objects"][i][loader.parser.objects[i].name][x]["light"][10]["intensity"] = std::to_string(loader.parser.objects[i].GetComponent<LightComponent>().intensity);

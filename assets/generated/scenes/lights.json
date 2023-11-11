@@ -269,10 +269,10 @@
                             "quadratic": "0.032000"
                         },
                         {
-                            "cutOff": "0.976296"
+                            "cutOff": "12.500000"
                         },
                         {
-                            "outerCutOff": "0.965926"
+                            "outerCutOff": "15.000004"
                         },
                         {
                             "intensity": "10.000000"
