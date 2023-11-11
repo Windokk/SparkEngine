@@ -511,6 +511,9 @@
     <Image Include="assets\defaults\logos\icon.png">
       <Filter>Resource Files\assets\defaults\logos</Filter>
     </Image>
+    <Image Include="assets\defaults\textures\skyboxes\base\blue.png">
+      <Filter>Resource Files\assets\defaults\textures\skyboxes\base</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\defaults\texts\credits&amp;licence\credits.txt">

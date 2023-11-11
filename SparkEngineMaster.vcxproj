@@ -234,6 +234,7 @@
     <Image Include="assets\defaults\textures\brick.png" />
     <Image Include="assets\defaults\textures\planks.png" />
     <Image Include="assets\defaults\textures\planksSpec.png" />
+    <Image Include="assets\defaults\textures\skyboxes\base\blue.png" />
     <Image Include="assets\defaults\textures\skyboxes\bluesky\back.jpg" />
     <Image Include="assets\defaults\textures\skyboxes\bluesky\bottom.jpg" />
     <Image Include="assets\defaults\textures\skyboxes\bluesky\front.jpg" />

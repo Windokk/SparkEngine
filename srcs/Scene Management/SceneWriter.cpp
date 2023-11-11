@@ -4,6 +4,45 @@ SceneWriter::SceneWriter() {
 
 }
 
+void SceneWriter::WriteEmptySceneToFile(const char* filename)
+{
+	// We initialize the json data
+	json data;
+
+	// We fill the json data
+	data["shaders"];
+
+	data["shaders"][0]["defaultShader"][0]["vert"] = "./srcs/Shaders/Defaults/Engine/default.vert";
+	data["shaders"][0]["defaultShader"][1]["frag"] = "./srcs/Shaders/Defaults/Engine/default.frag";
+	data["shaders"][0]["defaultShader"][2]["geom"] = "";
+
+	data["shaders"][1]["skyboxShader"][0]["vert"] = "./srcs/Shaders/Defaults/Engine/Skyboxes/skybox.vert";
+	data["shaders"][1]["skyboxShader"][1]["frag"] = "./srcs/Shaders/Defaults/Engine/Skyboxes/skybox.frag";
+	data["shaders"][1]["skyboxShader"][2]["geom"] = "";
+
+	data["shaders"][2]["framebufferShader"][0]["vert"] = "./srcs/Shaders/Defaults/Engine/Framebuffer/framebuffer.vert";
+	data["shaders"][2]["framebufferShader"][1]["frag"] = "./srcs/Shaders/Defaults/Engine/Framebuffer/framebuffer.frag";
+	data["shaders"][2]["framebufferShader"][2]["geom"] = "";
+
+	data["skybox"][0]["shader"] = "skyboxShader";
+	data["skybox"][1]["right"] = "./assets/defaults/textures/skyboxes/base/blue.png";
+	data["skybox"][2]["left"] = "./assets/defaults/textures/skyboxes/base/blue.png";
+	data["skybox"][3]["top"] = "./assets/defaults/textures/skyboxes/base/blue.png";
+	data["skybox"][4]["bottom"] = "./assets/defaults/textures/skyboxes/base/blue.png";
+	data["skybox"][5]["front"] = "./assets/defaults/textures/skyboxes/base/blue.png";
+	data["skybox"][6]["back"] = "./assets/defaults/textures/skyboxes/base/blue.png";
+	
+
+	// We write the data and export the file
+	std::string jsonString = data.dump(4);
+
+	std::ofstream outputFile;
+
+	outputFile.open(filename);
+	outputFile << jsonString;
+	outputFile.close();
+}
+
 void SceneWriter::WriteSceneToFile(const char* filename, SceneLoader& loader)
 {
 	// We initialize the json data

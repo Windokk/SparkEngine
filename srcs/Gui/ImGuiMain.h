@@ -143,6 +143,7 @@ public:
 	bool showDocumentation = false;
 	bool showNewDialog = false;
 	bool showSaveScene = false;
+	bool showNewScene = false;
 };
 
 void SaveTextureToFile(GLuint textureId, int width, int height, const char* filename, ImGuiMain& gui);

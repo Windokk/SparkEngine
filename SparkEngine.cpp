@@ -21,7 +21,7 @@ unsigned int height_ = 720;
 
 unsigned int anti_aliasing_samples = 8;
 
-int selectedObjectID;
+int selectedObjectID = -1;
 
 SceneLoader loader;
 

@@ -10,4 +10,5 @@ class SceneWriter {
 public:
 	SceneWriter();
 	void WriteSceneToFile(const char* filename, SceneLoader& loader);
+	void WriteEmptySceneToFile(const char* filename);
 };
