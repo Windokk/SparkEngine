@@ -161,7 +161,6 @@ int main(){
 		gui.Draw(window, cam, loader, selectedObjectID, io);
 
 		file_refresh_timer++;
-
 		if (file_refresh_timer / 200 == 1) {
 			file_refresh_timer = 0;
 

@@ -41,10 +41,10 @@ public:
 		style.WindowTitleAlign = ImVec2(0.5f, 0.5f);
 		style.WindowMenuButtonPosition = ImGuiDir_None;
 		style.ChildRounding = 0.0f;
-		style.ChildBorderSize = 1.0f;
+		style.ChildBorderSize = 0.0f;
 		style.PopupRounding = 0.0f;
 		style.PopupBorderSize = 1.0f;
-		style.FramePadding = ImVec2(6.0f, 6.0f);
+		style.FramePadding = ImVec2(6.0f,6.0f);
 		style.FrameRounding = 0.0f;
 		style.FrameBorderSize = 0.0f;
 		style.ItemSpacing = ImVec2(12.0f, 6.0f);
@@ -68,7 +68,7 @@ public:
 		style.Colors[ImGuiCol_WindowBg] = ImVec4(0.0784313753247261f, 0.08627451211214066f, 0.1019607856869698f, 1.0f);
 		style.Colors[ImGuiCol_ChildBg] = ImVec4(0.0784313753247261f, 0.08627451211214066f, 0.1019607856869698f, 1.0f);
 		style.Colors[ImGuiCol_PopupBg] = ImVec4(0.0784313753247261f, 0.08627451211214066f, 0.1019607856869698f, 1.0f);
-		style.Colors[ImGuiCol_Border] = ImVec4(0.0784313753247261f, 0.08627451211214066f, 0.1019607856869698f, 1.0f);
+		style.Colors[ImGuiCol_Border] = ImVec4(0.0384313753247261f, 0.03627451211214066f, 0.0319607856869698f, 1.0f);
 		style.Colors[ImGuiCol_BorderShadow] = ImVec4(0.0784313753247261f, 0.08627451211214066f, 0.1019607856869698f, 1.0f);
 		style.Colors[ImGuiCol_FrameBg] = ImVec4(0.0470588244497776f, 0.05490196123719215f, 0.07058823853731155f, 1.0f);
 		style.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.1568627506494522f, 0.168627455830574f, 0.1921568661928177f, 1.0f);
@@ -76,7 +76,7 @@ public:
 		style.Colors[ImGuiCol_TitleBg] = ImVec4(0.0470588244497776f, 0.05490196123719215f, 0.07058823853731155f, 1.0f);
 		style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.0470588244497776f, 0.05490196123719215f, 0.07058823853731155f, 1.0f);
 		style.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.0784313753247261f, 0.08627451211214066f, 0.1019607856869698f, 1.0f);
-		style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.06866955757141113f, 0.06866887211799622f, 0.06866887211799622f, 1.0f);
+		style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 0.8f);
 		style.Colors[ImGuiCol_ScrollbarBg] = ImVec4(0.0470588244497776f, 0.05490196123719215f, 0.07058823853731155f, 1.0f);
 		style.Colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 1.0f);
 		style.Colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.1568627506494522f, 0.168627455830574f, 0.1921568661928177f, 1.0f);
@@ -147,6 +147,8 @@ public:
 	bool showCloseButton;
 	ImFont* solid;
 	ImFont* opensans;
+	ImFont* solidBig;
+	ImFont* opensansBig;
 	bool showContentBrowser = true;
 	bool showDetails = true;
 	bool showViewport = true;

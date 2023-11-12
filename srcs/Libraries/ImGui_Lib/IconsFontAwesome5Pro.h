@@ -16,7 +16,6 @@
 #define ICON_FA_ADDRESS_BOOK "\xef\x8a\xb9"	// U+f2b9
 #define ICON_FA_ADDRESS_CARD "\xef\x8a\xbb"	// U+f2bb
 #define ICON_FA_ADJUST "\xef\x81\x82"	// U+f042
-#define ICON_FA_AIR_CONDITIONER "\xef\xa3\xb4"	// U+f8f4
 #define ICON_FA_AIR_FRESHENER "\xef\x97\x90"	// U+f5d0
 #define ICON_FA_ALARM_CLOCK "\xef\x8d\x8e"	// U+f34e
 #define ICON_FA_ALARM_EXCLAMATION "\xef\xa1\x83"	// U+f843
@@ -153,8 +152,6 @@
 #define ICON_FA_BATTERY_SLASH "\xef\x8d\xb7"	// U+f377
 #define ICON_FA_BATTERY_THREE_QUARTERS "\xef\x89\x81"	// U+f241
 #define ICON_FA_BED "\xef\x88\xb6"	// U+f236
-#define ICON_FA_BED_ALT "\xef\xa3\xb7"	// U+f8f7
-#define ICON_FA_BED_BUNK "\xef\xa3\xb8"	// U+f8f8
 #define ICON_FA_BED_EMPTY "\xef\xa3\xb9"	// U+f8f9
 #define ICON_FA_BEER "\xef\x83\xbc"	// U+f0fc
 #define ICON_FA_BELL "\xef\x83\xb3"	// U+f0f3
@@ -178,8 +175,6 @@
 #define ICON_FA_BLENDER "\xef\x94\x97"	// U+f517
 #define ICON_FA_BLENDER_PHONE "\xef\x9a\xb6"	// U+f6b6
 #define ICON_FA_BLIND "\xef\x8a\x9d"	// U+f29d
-#define ICON_FA_BLINDS "\xef\xa3\xbb"	// U+f8fb
-#define ICON_FA_BLINDS_OPEN "\xef\xa3\xbc"	// U+f8fc
 #define ICON_FA_BLINDS_RAISED "\xef\xa3\xbd"	// U+f8fd
 #define ICON_FA_BLOG "\xef\x9e\x81"	// U+f781
 #define ICON_FA_BOLD "\xef\x80\xb2"	// U+f032
@@ -300,7 +295,6 @@
 #define ICON_FA_CAR_SIDE "\xef\x97\xa4"	// U+f5e4
 #define ICON_FA_CAR_TILT "\xef\x97\xa5"	// U+f5e5
 #define ICON_FA_CAR_WASH "\xef\x97\xa6"	// U+f5e6
-#define ICON_FA_CARAVAN "\xef\xa3\xbf"	// U+f8ff
 #define ICON_FA_CARAVAN_ALT "\xee\x80\x80"	// U+e000
 #define ICON_FA_CARET_CIRCLE_DOWN "\xef\x8c\xad"	// U+f32d
 #define ICON_FA_CARET_CIRCLE_LEFT "\xef\x8c\xae"	// U+f32e
@@ -1118,7 +1112,6 @@
 #define ICON_FA_MUG "\xef\xa1\xb4"	// U+f874
 #define ICON_FA_MUG_HOT "\xef\x9e\xb6"	// U+f7b6
 #define ICON_FA_MUG_MARSHMALLOWS "\xef\x9e\xb7"	// U+f7b7
-#define ICON_FA_MUG_TEA "\xef\xa1\xb5"	// U+f875
 #define ICON_FA_MUSIC "\xef\x80\x81"	// U+f001
 #define ICON_FA_MUSIC_ALT "\xef\xa3\x8f"	// U+f8cf
 #define ICON_FA_MUSIC_ALT_SLASH "\xef\xa3\x90"	// U+f8d0
@@ -1868,3 +1861,14 @@
 
 #define ICON_FA_CLAPPERBOARD "\xee\x84\xb1" // U+e131
 #define ICON_FA_CRYSTALBALL "\xee\x8d\xa2" // U+e362
+
+//Custom Symbols
+
+#define ICON_FA_LEVEL_FILE "\xef\xa1\xb5" // U+f875
+#define ICON_FA_MODEL_FILE "\xef\xa3\xb7" // U+f8f7
+#define ICON_FA_SHADER_FILE "\xef\xa3\xbb" // U+f8fb
+#define ICON_FA_MATERIAL_FILE "\xef\xa3\xb4" // U+f8f4
+#define ICON_FA_CODE_FILE "\xef\xa3\xbf" // U+f8ff
+#define ICON_FA_CPP_FILE "\xef\xa3\xbc"	// U+f8fc
+#define ICON_FA_H_FILE "\xef\xa3\xb8" // U+f8f8
+//

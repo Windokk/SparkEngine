@@ -90,13 +90,17 @@ void ImGuiMain::Load(GLFWwindow* window, ImGuiIO& io)
 	ImGui_ImplOpenGL3_Init("#version 330");
 	io.ConfigFlags |= (ImGuiConfigFlags_NoMouseCursorChange, ImGuiConfigFlags_DockingEnable);
 	ImGuiMain::SetupImGuiStyle();
-	io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/defaults/gui/engine/fonts/OpenSans-Medium.ttf", 13);
+
 	static const ImWchar icons_ranges[] = { ICON_MIN_FA, ICON_MAX_16_FA, 0 };
 	ImFontConfig icons_config;
 	icons_config.MergeMode = true;
 	icons_config.PixelSnapH = true;
-	solid = io.Fonts->AddFontFromFileTTF("assets/defaults/gui/engine/fonts/fa-solid-900.ttf", 13.0f, &icons_config, icons_ranges);
 
+	opensansBig = io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/defaults/gui/engine/fonts/OpenSans-Medium.ttf", 15.0f);
+	solidBig = io.Fonts->AddFontFromFileTTF("assets/defaults/gui/engine/fonts/fa-solid-900.ttf", 34.0f, &icons_config, icons_ranges);
+
+	opensans = io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/defaults/gui/engine/fonts/OpenSans-Medium.ttf", 13);
+	solid = io.Fonts->AddFontFromFileTTF("assets/defaults/gui/engine/fonts/fa-solid-900.ttf", 13.0f, &icons_config, icons_ranges);
 
 	ImFontConfig font_cfg;
 	font_cfg.FontDataOwnedByAtlas = false;
@@ -166,6 +170,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 			if (ImGui::MenuItem(ICON_FA_SAVE "  Save  scene", "Ctrl+Maj+S")) {
 				if (current_file != -1) {
 					std::string full_path = std::string(std::get<File>(manager.files[current_file]).filepath) + std::get<File>(manager.files[current_file]).name + ".sl";
+
 					writer.WriteLevelToFile(full_path.c_str(), loader);
 				}
 				else {
@@ -872,6 +877,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 				if (ImGui::BeginMenu(ICON_FA_CUBES "  Object")) {
 					if (ImGui::MenuItem(ICON_FA_LIGHTBULB "  Light")) {} 
 					if (ImGui::MenuItem(ICON_FA_CUBE "  Model")) {}
+					if (ImGui::MenuItem(ICON_FA_TINT "  Material")) {}
 					if (ImGui::MenuItem(ICON_FA_CRYSTALBALL "  Shader")) {}
 					if (ImGui::MenuItem(ICON_FA_CODE "  Script")) {}
 					ImGui::EndMenu();
@@ -889,7 +895,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 		int columnCount = (int)(panelWidth / cellSize);
 		if (columnCount < 1)
 			columnCount = 1;
-
+		
 		ImGui::Columns(columnCount, 0, false);
 
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.8, 0.8, 0.8, 0.1));
@@ -897,40 +903,56 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 
 
 		if (std::strlen(current_dir) > std::strlen(project_dir)) {
-			if (ImGui::ImageButton((void*)(intptr_t)FolderUpIconID, { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 })) {
+
+			ImGui::PushFont(solidBig);
+			ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.5, 0.7));
+			if (ImGui::Button(ICON_FA_FOLDER_UPLOAD, ImVec2(thumbnailSize, thumbnailSize))) {
 				current_dir = extractPath(current_dir);
 			}
+			ImGui::PopStyleVar();
+
 			ImGui::TextWrapped("..");
+			ImGui::PopFont();
+			ImGui::NextColumn();
 
 		}
-		
+		 
 		for (auto& file : manager.files) {
-			if (auto file_ = std::get_if<File>(&file)) {
-				
-				ImGui::PushID(file_->name);
+			if (auto folder_ = std::get_if<Folder>(&file)) {
 
-				
-				if (ImGui::ImageButton((void*)(intptr_t)FileIconID, { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 })) {
-					current_file = file_->id;
+				ImGui::PushID(folder_->name);
+
+				ImGui::PushFont(solidBig);
+				ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.5, 0.7));
+				if (ImGui::Button(ICON_FA_FOLDER, ImVec2(thumbnailSize, thumbnailSize))) {
+					current_dir = folder_->filepath;
 				}
+				ImGui::PopStyleVar();
+
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX());
-				ImGui::TextWrapped(file_->name);
+				ImGui::TextWrapped(folder_->name);
+				ImGui::PopFont();
 
 				ImGui::NextColumn();
 
 				ImGui::PopID();
 			}
-			if (auto folder_ = std::get_if<Folder>(&file)) {
-
-				ImGui::PushID(folder_->name);
-
+			if (auto file_ = std::get_if<File>(&file)) {
 				
-				if (ImGui::ImageButton((void*)(intptr_t)FolderIconID, { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 })) {
-					current_dir = folder_->filepath;
+				ImGui::PushID(file_->name);
+
+				ImGui::PushFont(solidBig);
+				ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.5,0.7));
+				if (ImGui::Button(ICON_FA_LEVEL_FILE, ImVec2(thumbnailSize, thumbnailSize))) {
+					current_file = file_->id;
 				}
+				
+				ImGui::PopStyleVar();
 
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX());
-				ImGui::TextWrapped(folder_->name);
+				ImGui::TextWrapped(file_->name);
+				ImGui::PopFont();
+
 
 				ImGui::NextColumn();
 
@@ -939,7 +961,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 		}
 		ImGui::PopStyleVar();
 		ImGui::PopStyleColor();
-
+		
 		ImGui::End();
 	}
 

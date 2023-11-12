@@ -254,10 +254,12 @@ std::vector<std::variant<File, Folder>> ListFiles(char* directory)
 		}
 		else {
 			File new_file;
-			std::string name = file.path().filename().string();
-			new_file.name = _strdup(name.c_str());
+			new_file.name = _strdup(file.path().filename().string().c_str());
+			const char* extension = _strdup(file.path().extension().string().c_str());
+			new_file.name = _strdup(substr(new_file.name,(std::string)extension).c_str());
 			std::string path = file.path().string();
 			path = replaceCharacters(path, '\\', '/');
+			path = substr(path, new_file.name+ (std::string)extension);
 			new_file.filepath = _strdup(path.c_str());
 			if (file.path().extension().string() == ".sl") {
 				new_file.type = LEVEL;
