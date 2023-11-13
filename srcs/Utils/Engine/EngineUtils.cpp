@@ -5,6 +5,7 @@
 #include <stb/stb_image.h>
 
 
+
 bool to_bool(std::string str) {
     bool b = true;
     if (str=="false") {
@@ -210,9 +211,7 @@ std::string substr(const std::string& mainString, const std::string& subString) 
 
 	return result;
 }
-
 namespace fs = std::filesystem;
-
 std::string make_relative_filepath(const std::string& absolute_path, const std::string& base_path) {
 	fs::path absPath(absolute_path);
 	fs::path basePath(base_path);
@@ -227,7 +226,6 @@ std::string make_relative_folderpath(const std::string& absolute_folder_path, co
 	fs::path relativePath = fs::relative(absPath, basePath);
 	return relativePath.string();
 }
-
 std::string get_solution_path() {
 	char buffer[MAX_PATH];
 	GetModuleFileNameA(nullptr, buffer, MAX_PATH);
@@ -240,9 +238,9 @@ std::string get_solution_path() {
 std::vector<std::variant<File, Folder>> ListFiles(char* directory)
 {
 	std::vector<std::variant<File, Folder>> files;
-	
+
 	for (auto& file : std::filesystem::directory_iterator(directory)) {
-		
+
 		if (file.is_directory()) {
 			Folder new_folder;
 			std::string name = file.path().filename().string();
@@ -256,13 +254,24 @@ std::vector<std::variant<File, Folder>> ListFiles(char* directory)
 			File new_file;
 			new_file.name = _strdup(file.path().filename().string().c_str());
 			const char* extension = _strdup(file.path().extension().string().c_str());
-			new_file.name = _strdup(substr(new_file.name,(std::string)extension).c_str());
+			new_file.name = _strdup(substr(new_file.name, (std::string)extension).c_str());
 			std::string path = file.path().string();
 			path = replaceCharacters(path, '\\', '/');
-			path = substr(path, new_file.name+ (std::string)extension);
+			path = substr(path, new_file.name + (std::string)extension);
 			new_file.filepath = _strdup(path.c_str());
 			if (file.path().extension().string() == ".sl") {
 				new_file.type = LEVEL;
+			}
+			if (file.path().extension().string() == ".txt") {
+				new_file.type = TEXT;
+			}
+			std::unordered_set<std::string> validCodeFormat = { ".scode", ".sc" };
+			if (validCodeFormat.count(file.path().extension().string()) > 0) {
+				new_file.type = CODE;
+			}
+			std::unordered_set<std::string> validImageFormat = { ".png", ".jpg" };
+			if (validImageFormat.count(file.path().extension().string()) > 0) {
+				new_file.type = TEXTURE;
 			}
 			new_file.id = files.size();
 			files.push_back(new_file);

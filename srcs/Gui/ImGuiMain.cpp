@@ -116,8 +116,6 @@ void ImGuiMain::Load(GLFWwindow* window, ImGuiIO& io)
 	
 }
 
-
-
 void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& selectedObjectID, ImGuiIO& io)
 {
 	ImGui_ImplOpenGL3_NewFrame();
@@ -938,12 +936,35 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 				ImGui::PopID();
 			}
 			if (auto file_ = std::get_if<File>(&file)) {
-				
 				ImGui::PushID(file_->name);
 
 				ImGui::PushFont(solidBig);
 				ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.5,0.7));
-				if (ImGui::Button(ICON_FA_LEVEL_FILE, ImVec2(thumbnailSize, thumbnailSize))) {
+				const char* ICON = ICON_FA_FILE;
+				switch (file_->type) {
+				case LEVEL:
+					ICON = ICON_FA_LEVEL_FILE;
+					break;
+				case TEXTURE:
+					ICON = ICON_FA_FILE_IMAGE;
+					break;
+				case TEXT:
+					ICON = ICON_FA_FILE_ALT;
+					break;
+				case SHADER:
+					ICON = ICON_FA_SHADER_FILE;
+					break;
+				case MATERIAL:
+					ICON = ICON_FA_MATERIAL_FILE;
+					break;
+				case CPP:
+					break;
+				case H:
+					break;
+				case CODE:
+					break;
+				}
+				if (ImGui::Button(ICON, ImVec2(thumbnailSize, thumbnailSize))) {
 					current_file = file_->id;
 				}
 				

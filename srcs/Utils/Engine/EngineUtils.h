@@ -18,7 +18,7 @@
 #include <filesystem>
 #include <Shobjidl.h>
 #include <variant>
-
+#include <unordered_set>
 
 bool to_bool(std::string str);
 float randf();
@@ -69,6 +69,9 @@ enum fileType {
 	FONT,
 	LEVEL,
 	MODEL,
+	CODE,
+	CPP,
+	H,
 	MATERIAL,
 	SHADER,
 	TEXT,
