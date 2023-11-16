@@ -17,6 +17,17 @@ A 3D Game Engine In C++ created using Open GL
 <a href="https://github.com/users/Windokk/projects/1">Github Project</a>&nbsp;&nbsp;
 <a href="https://trello.com/b/WwJhhFQv/spark-engine">Trello</a>
 
+
+
+## Screenshots
+
+<img src="https://github.com/Windokk/SparkEngine/blob/master/screenshot1.png" width="130"/>
+<br>
+<img src="https://github.com/Windokk/SparkEngine/blob/master/texture.png" width="130"/>
+<br>
+<img src="https://github.com/Windokk/SparkEngine/blob/master/texture2.png" width="130"/>
+<br>
+
 </div>
 
 ## Description
