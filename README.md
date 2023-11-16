@@ -21,11 +21,11 @@ A 3D Game Engine In C++ created using Open GL
 
 ## Screenshots
 
-<img src="https://github.com/Windokk/SparkEngine/blob/master/screenshot1.png" width="330"/>
+<img src="https://github.com/Windokk/SparkEngine/blob/master/screenshot1.png" width="1030"/>
 <br>
-<img src="https://github.com/Windokk/SparkEngine/blob/master/texture.png" width="330"/>
+<img src="https://github.com/Windokk/SparkEngine/blob/master/texture.png" width="1030"/>
 <br>
-<img src="https://github.com/Windokk/SparkEngine/blob/master/texture2.png" width="330"/>
+<img src="https://github.com/Windokk/SparkEngine/blob/master/texture2.png" width="1030"/>
 <br>
 
 </div>
