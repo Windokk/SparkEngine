@@ -83,7 +83,7 @@ The Spark Engine is determined to embrace the latest advancements in the industr
 |Outliner|Done 🟢|
 |Manipluation guizmos|Done 🟢|
 |Enhanced GUI|Done 🟢|
-|Picking|Doing 🟠|
+|Picking|Doing 🔴|
 |Scene Creation and Saving|To do 🔴|
 |Settings|To do 🔴|
 |Project launcher|To do 🔴|
