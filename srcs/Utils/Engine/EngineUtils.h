@@ -86,6 +86,7 @@ struct File {
 	const char* filepath;
 	fileType type;
 	int id;
+	std::string extension;
 	File() {
 		name = "Untitled";
 		filepath = "";

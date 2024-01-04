@@ -272,7 +272,6 @@
 #define ICON_FA_CAMCORDER "\xef\xa2\xa8"	// U+f8a8
 #define ICON_FA_CAMERA "\xef\x80\xb0"	// U+f030
 #define ICON_FA_CAMERA_ALT "\xef\x8c\xb2"	// U+f332
-#define ICON_FA_CAMERA_HOME "\xef\xa3\xbe"	// U+f8fe
 #define ICON_FA_CAMERA_MOVIE "\xef\xa2\xa9"	// U+f8a9
 #define ICON_FA_CAMERA_POLAROID "\xef\xa2\xaa"	// U+f8aa
 #define ICON_FA_CAMERA_RETRO "\xef\x82\x83"	// U+f083
@@ -1864,6 +1863,7 @@
 
 //Custom Symbols
 
+#define ICON_FA_TEXTURE_FILE "\xef\xa3\xbe"	// U+f8fe
 #define ICON_FA_LEVEL_FILE "\xef\xa1\xb5" // U+f875
 #define ICON_FA_MODEL_FILE "\xef\xa3\xb7" // U+f8f7
 #define ICON_FA_SHADER_FILE "\xef\xa3\xbb" // U+f8fb

@@ -164,10 +164,7 @@ int main(){
 		if (file_refresh_timer / 200 == 1) {
 			file_refresh_timer = 0;
 			gui.manager.files = ListFiles((char*)gui.current_dir);
-			
-			
 		}
-		
 
 		if (gui.viewportSize.x != cam.width || gui.viewportSize.y != cam.height) {
 			cam.updateSize(gui.viewportSize.x, gui.viewportSize.y);

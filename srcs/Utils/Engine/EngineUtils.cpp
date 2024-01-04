@@ -255,6 +255,9 @@ std::vector<std::variant<File, Folder>> ListFiles(char* directory)
 			new_file.name = _strdup(file.path().filename().string().c_str());
 			const char* extension = _strdup(file.path().extension().string().c_str());
 			new_file.name = _strdup(substr(new_file.name, (std::string)extension).c_str());
+
+			new_file.extension = file.path().extension().string();
+
 			std::string path = file.path().string();
 			path = replaceCharacters(path, '\\', '/');
 			path = substr(path, new_file.name + (std::string)extension);
@@ -272,6 +275,20 @@ std::vector<std::variant<File, Folder>> ListFiles(char* directory)
 			std::unordered_set<std::string> validImageFormat = { ".png", ".jpg" };
 			if (validImageFormat.count(file.path().extension().string()) > 0) {
 				new_file.type = TEXTURE;
+			}
+			std::unordered_set<std::string> validCPPFormat = { ".cpp", ".c++" };
+			if (validCPPFormat.count(file.path().extension().string()) > 0) {
+				new_file.type = CPP;
+			}
+			if (file.path().extension().string() == ".h") {
+				new_file.type = H;
+			}
+			if (file.path().extension().string() == ".mat") {
+				new_file.type = MATERIAL;
+			}
+			std::unordered_set<std::string> validShaderFormat = { ".frag", ".vert" };
+			if (validShaderFormat.count(file.path().extension().string()) > 0) {
+				new_file.type = SHADER;
 			}
 			new_file.id = files.size();
 			files.push_back(new_file);

@@ -903,13 +903,14 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 			
 			ImGui::PushFont(solidBig);
 			ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.5, 0.7));
-			if (ImGui::Button(ICON_FA_FOLDER_UPLOAD, ImVec2(thumbnailSize, thumbnailSize))) {
+			ImGui::Button(ICON_FA_FOLDER_UPLOAD, ImVec2(thumbnailSize, thumbnailSize));
+			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0)) {
 				current_dir = extractPath(current_dir);
 				changed_dir = true;
 			}
 			ImGui::PopStyleVar();
 
-			ImGui::TextWrapped("..");
+			ImGui::TextWrapped("..", thumbnailSize + 5);
 			ImGui::PopFont();
 			ImGui::NextColumn();
 
@@ -922,14 +923,18 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 
 				ImGui::PushFont(solidBig);
 				ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.5, 0.7));
-				if (ImGui::Button(ICON_FA_FOLDER, ImVec2(thumbnailSize, thumbnailSize))) {
+				ImGui::Button(ICON_FA_FOLDER, ImVec2(thumbnailSize, thumbnailSize));
+				if (ImGui::IsItemClicked) {
+
+				}
+				if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0)) {
 					current_dir = folder_->filepath;
 					changed_dir = true;
 				}
 				ImGui::PopStyleVar();
 
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX());
-				ImGui::TextWrapped(folder_->name);
+				ImGui::TextWrapped(folder_->name, thumbnailSize + 5);
 				ImGui::PopFont();
 
 				ImGui::NextColumn();
@@ -944,10 +949,10 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 				const char* ICON = ICON_FA_FILE;
 				switch (file_->type) {
 				case LEVEL:
-					ICON = ICON_FA_LEVEL_FILE;
+					ICON = ICON_FA_FILE_IMAGE;
 					break;
 				case TEXTURE:
-					ICON = ICON_FA_FILE_IMAGE;
+					ICON = ICON_FA_TEXTURE_FILE;
 					break;
 				case TEXT:
 					ICON = ICON_FA_FILE_ALT;
@@ -959,10 +964,13 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 					ICON = ICON_FA_MATERIAL_FILE;
 					break;
 				case CPP:
+					ICON = ICON_FA_CPP_FILE;
 					break;
 				case H:
+					ICON = ICON_FA_H_FILE;
 					break;
 				case CODE:
+					ICON = ICON_FA_CODE_FILE;
 					break;
 				}
 				if (ImGui::Button(ICON, ImVec2(thumbnailSize, thumbnailSize))) {
@@ -972,7 +980,10 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 				ImGui::PopStyleVar();
 
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX());
-				ImGui::TextWrapped(file_->name);
+				std::string label = file_->name;
+				label = label.append(file_->extension);
+
+				ImGui::TextWrapped(label.c_str(), thumbnailSize + 5);
 				ImGui::PopFont();
 
 

@@ -143,7 +143,7 @@ static ImVec2           InputTextCalcTextSizeW(ImGuiContext* ctx, const ImWchar*
 // - BulletTextV()
 //-------------------------------------------------------------------------
 
-void ImGui::TextEx(const char* text, const char* text_end, ImGuiTextFlags flags)
+void ImGui::TextEx(const char* text, const char* text_end, ImGuiTextFlags flags, int wrapped_width)
 {
     ImGuiWindow* window = GetCurrentWindow();
     if (window->SkipItems)
@@ -174,7 +174,7 @@ void ImGui::TextEx(const char* text, const char* text_end, ImGuiTextFlags flags)
             return;
 
         // Render (we don't hide text after ## in this end-user function)
-        RenderTextWrapped(bb.Min, text_begin, text_end, wrap_width);
+        RenderTextWrapped(bb.Min, text_begin, text_end, wrapped_width);
     }
     else
     {
@@ -264,7 +264,7 @@ void ImGui::Text(const char* fmt, ...)
     va_end(args);
 }
 
-void ImGui::TextV(const char* fmt, va_list args)
+void ImGui::TextV(const char* fmt, va_list args, int wrapped_width)
 {
     ImGuiWindow* window = GetCurrentWindow();
     if (window->SkipItems)
@@ -272,7 +272,7 @@ void ImGui::TextV(const char* fmt, va_list args)
 
     const char* text, *text_end;
     ImFormatStringToTempBufferV(&text, &text_end, fmt, args);
-    TextEx(text, text_end, ImGuiTextFlags_NoWidthForLargeClippedText);
+    TextEx(text, text_end, ImGuiTextFlags_NoWidthForLargeClippedText, wrapped_width);
 }
 
 void ImGui::TextColored(const ImVec4& col, const char* fmt, ...)
@@ -306,21 +306,21 @@ void ImGui::TextDisabledV(const char* fmt, va_list args)
     PopStyleColor();
 }
 
-void ImGui::TextWrapped(const char* fmt, ...)
+void ImGui::TextWrapped(const char* fmt, int wrapped_width, ...)
 {
     va_list args;
     va_start(args, fmt);
-    TextWrappedV(fmt, args);
+    TextWrappedV(fmt, args, wrapped_width);
     va_end(args);
 }
 
-void ImGui::TextWrappedV(const char* fmt, va_list args)
+void ImGui::TextWrappedV(const char* fmt, va_list args, int wrapped_width)
 {
     ImGuiContext& g = *GImGui;
     const bool need_backup = (g.CurrentWindow->DC.TextWrapPos < 0.0f);  // Keep existing wrap position if one is already set
     if (need_backup)
         PushTextWrapPos(0.0f);
-    TextV(fmt, args);
+    TextV(fmt, args, wrapped_width);
     if (need_backup)
         PopTextWrapPos();
 }
