@@ -14,7 +14,6 @@ A 3D Game Engine In C++ created using Open GL
 <a href="https://github.com/Windokk/SparkEngine/wiki/">Wiki</a>&nbsp;&nbsp;
 <a href="https://github.com/Windokk/SparkEngine/wiki/Getting-Started">Getting Started</a>&nbsp;&nbsp;
 <a href="https://windokk.github.io/SparkEngineWeb/">Website</a>&nbsp;&nbsp;
-<a href="https://github.com/users/Windokk/projects/1">Github Project</a>&nbsp;&nbsp;
 <a href="https://trello.com/b/WwJhhFQv/spark-engine">Trello</a>
 
 
@@ -52,9 +51,15 @@ The Spark Engine is determined to embrace the latest advancements in the industr
 
 ## Engine's code Documentation
 
-*Working on it*
+*In Progress*
 
 *Will be in the "docs" folder*
+
+## User documentation
+
+*In Progress*
+
+*Is in the wiki tab*
 
 ## To Do list (Alpha 0.0.1)
 
@@ -83,10 +88,11 @@ The Spark Engine is determined to embrace the latest advancements in the industr
 |Outliner|Done 🟢|
 |Manipluation guizmos|Done 🟢|
 |Enhanced GUI|Done 🟢|
-|Picking|Doing 🔴|
-|Scene Creation and Saving|To do 🔴|
-|Settings|To do 🔴|
-|Project launcher|To do 🔴|
+|Scene Creation and Saving|Done 🟢|
+|File/Folder Manipulation|Done 🟢|
+|Project Settings|To do 🔴|
+|Editor preferences|To do 🔴|
+|Project creation|To do 🔴|
 |Shadow maps|To do 🔴|
 |Normal maps|To do 🔴|
 |Bloom|To do 🔴|
