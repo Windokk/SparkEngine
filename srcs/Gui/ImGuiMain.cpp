@@ -899,13 +899,13 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.8, 0.8, 0.8, 0.1));
 		ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 8);
 
-
 		if (std::strlen(current_dir) > std::strlen(project_dir)) {
-
+			
 			ImGui::PushFont(solidBig);
 			ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.5, 0.7));
 			if (ImGui::Button(ICON_FA_FOLDER_UPLOAD, ImVec2(thumbnailSize, thumbnailSize))) {
 				current_dir = extractPath(current_dir);
+				changed_dir = true;
 			}
 			ImGui::PopStyleVar();
 
@@ -914,7 +914,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 			ImGui::NextColumn();
 
 		}
-		 
+		
 		for (auto& file : manager.files) {
 			if (auto folder_ = std::get_if<Folder>(&file)) {
 
@@ -924,6 +924,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 				ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.5, 0.7));
 				if (ImGui::Button(ICON_FA_FOLDER, ImVec2(thumbnailSize, thumbnailSize))) {
 					current_dir = folder_->filepath;
+					changed_dir = true;
 				}
 				ImGui::PopStyleVar();
 
@@ -980,6 +981,12 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 				ImGui::PopID();
 			}
 		}
+
+		if (changed_dir) {
+			manager.files = ListFiles((char*)current_dir);
+			changed_dir = false;
+		}
+
 		ImGui::PopStyleVar();
 		ImGui::PopStyleColor();
 		

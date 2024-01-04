@@ -163,8 +163,8 @@ int main(){
 		file_refresh_timer++;
 		if (file_refresh_timer / 200 == 1) {
 			file_refresh_timer = 0;
-
 			gui.manager.files = ListFiles((char*)gui.current_dir);
+			
 			
 		}
 		

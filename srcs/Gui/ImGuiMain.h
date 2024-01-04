@@ -125,6 +125,7 @@ public:
 	
 	const char* project_dir = "assets/generated/test_project";
 	const char* current_dir = project_dir;
+	bool changed_dir = false;
 
 	GLuint FileIconID;
 	GLuint FolderIconID;
