@@ -48,7 +48,7 @@ The Spark Engine is determined to embrace the latest advancements in the industr
 #### Join us in our mission to revolutionize game development. Let's ignite the spark of creativity together !
 
 > [!WARNING]
-> The engine is in it's pre-alpha state of developpement so there might be a lot of bugs and incomplete features.
+> The engine is in its alpha state of developpement so there might be a lot of bugs and incomplete features.
 
 ## Engine's code Documentation
 
