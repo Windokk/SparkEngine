@@ -51,9 +51,15 @@ The Spark Engine is determined to embrace the latest advancements in the industr
 
 ## Engine's code Documentation
 
-*Working on it*
+*In Progress*
 
 *Will be in the "docs" folder*
+
+## User documentation
+
+*In Progress*
+
+*Is in the wiki tab*
 
 ## To Do list (Alpha 0.0.1)
 
