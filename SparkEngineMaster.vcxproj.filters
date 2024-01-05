@@ -291,9 +291,6 @@
     <ClCompile Include="srcs\Libraries\glad.c">
       <Filter>Source Files\libs</Filter>
     </ClCompile>
-    <ClCompile Include="srcs\FilesManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="srcs\Level Management\Components.cpp">
       <Filter>Source Files\level management</Filter>
     </ClCompile>
@@ -305,6 +302,9 @@
     </ClCompile>
     <ClCompile Include="srcs\Level Management\LevelWriter.cpp">
       <Filter>Source Files\level management</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\Utils\Engine\FilesManager.cpp">
+      <Filter>Source Files\utils\engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -587,9 +587,6 @@
     <ClInclude Include="srcs\Libraries\ImGui_Lib\tahoma.h">
       <Filter>Header Files\libs\imgui lib</Filter>
     </ClInclude>
-    <ClInclude Include="srcs\FilesManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="srcs\Level Management\Components.h">
       <Filter>Header Files\level management</Filter>
     </ClInclude>
@@ -601,6 +598,9 @@
     </ClInclude>
     <ClInclude Include="srcs\Level Management\LevelWriter.h">
       <Filter>Header Files\level management</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\Utils\Engine\FilesManager.h">
+      <Filter>Header Files\utils\engine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

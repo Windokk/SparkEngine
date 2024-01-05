@@ -195,7 +195,10 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 			if (ImGui::MenuItem("Delete", "Suppr")) {}
 			ImGui::Separator();
 			if (ImGui::MenuItem("Editor Preferences")) {}
-			if (ImGui::MenuItem("Project Settings")) {}
+			if (ImGui::MenuItem("Project Settings")) 
+			{
+				showSettings = true;
+			}
 
 			ImGui::EndMenu();
 		}
@@ -246,6 +249,28 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 		ImGui::EndMainMenuBar();
 	}
 	
+	//Settings Window
+	if (showSettings) {
+		ImGui::Begin("Project Settings", &showSettings);
+		ImGui::BeginChild(1, ImVec2(250, 630), true);
+		bool about = false;
+		ImGui::Selectable("About", &about);
+		bool publishing = false;
+		ImGui::Selectable("Publishing", &publishing);
+		bool legal = false;
+		ImGui::Selectable("Legal", &legal);
+		bool display = false;
+		ImGui::Selectable("Display", &display);
+		bool rules = false;
+		ImGui::Selectable("Rules", &rules);
+		ImGui::Separator();
+		bool gameplay = false;
+		ImGui::Selectable("Gameplay", &gameplay);
+		
+		ImGui::EndChild();
+		ImGui::End();
+	}
+
 	//New file Popup
 	if (showNewDialog) {
 		ImGui::OpenPopup("Create a new file :  ");
@@ -520,10 +545,16 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 		ImGui::Begin(ICON_FA_CUBES"  Hierarchy", &showHierarchy);
 		for (int i = 0; i < loader.parser.objects.size(); i++) {
 			std::string spacing = "  ";
-			std::string iconString = ICON_FA_CUBE + spacing + loader.parser.objects[i].name;
+			std::string iconString;
+			if (loader.parser.objects[i].HasComponent<LightComponent>()) {
+				iconString = ICON_FA_LIGHTBULB + spacing + loader.parser.objects[i].name;
+			}
+			if (loader.parser.objects[i].HasComponent<ModelComponent>()) {
+				iconString = ICON_FA_CUBE + spacing + loader.parser.objects[i].name;
+			}
+			
 			if(ImGui::Selectable(iconString.c_str())) {
 				selectedObjectID = i;
-				
 			}
 			ImGui::Separator();
 		}

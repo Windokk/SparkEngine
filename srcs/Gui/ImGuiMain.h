@@ -3,6 +3,7 @@
 
 
 #include <glm/gtx/matrix_decompose.hpp>
+#include <typeinfo>
 
 #include "../Libraries/ImGui_Lib/imgui.h"
 #include "../Libraries/ImGui_Lib/imgui_impl_glfw.h"
@@ -18,7 +19,7 @@
 #include "../Level Management/LevelLoader.h"
 #include "ImGuiUtils.h"
 #include "../Level Management/LevelWriter.h"
-#include "../FilesManager.h"
+#include "../Utils/Engine/FilesManager.h"
 
 
 
@@ -159,6 +160,7 @@ public:
 	bool showNewDialog = false;
 	bool showSaveScene = false;
 	bool showNewScene = false;
+	bool showSettings = false;
 };
 
 void SaveTextureToFile(GLuint textureId, int width, int height, const char* filename, ImGuiMain& gui);

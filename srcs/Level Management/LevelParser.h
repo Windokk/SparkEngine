@@ -26,8 +26,17 @@ struct ShaderData {
 struct Object {
 	std::string name;
 	std::vector<std::variant<TransformComponent,ModelComponent,LightComponent>> components;
-	
-	
+
+    template <typename T>
+    bool HasComponent() {
+        for (const auto& variant : components) {
+            if (std::holds_alternative<T>(variant)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     template <typename T>
     T& GetComponent() {
         return *std::get_if<T>(&components[0]);

@@ -159,7 +159,6 @@
     <ClCompile Include="srcs\Basic Rendering\Texture\Texture.cpp" />
     <ClCompile Include="srcs\Basic Rendering\VAO\VAO.cpp" />
     <ClCompile Include="srcs\Basic Rendering\VBO\VBO.cpp" />
-    <ClCompile Include="srcs\FilesManager.cpp" />
     <ClCompile Include="srcs\Gui\ImGuiMain.cpp" />
     <ClCompile Include="srcs\Gui\ImGuiUtils.cpp" />
     <ClCompile Include="srcs\Level Management\Components.cpp" />
@@ -176,6 +175,7 @@
     <ClCompile Include="srcs\Libraries\ImGui_Lib\imgui_tables.cpp" />
     <ClCompile Include="srcs\Libraries\ImGui_Lib\imgui_widgets.cpp" />
     <ClCompile Include="srcs\Utils\Engine\EngineUtils.cpp" />
+    <ClCompile Include="srcs\Utils\Engine\FilesManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\defaults\models\asteroid\scene.bin" />
@@ -257,7 +257,6 @@
     <ClInclude Include="srcs\Basic Rendering\Texture\Texture.h" />
     <ClInclude Include="srcs\Basic Rendering\VAO\VAO.h" />
     <ClInclude Include="srcs\Basic Rendering\VBO\VBO.h" />
-    <ClInclude Include="srcs\FilesManager.h" />
     <ClInclude Include="srcs\Gui\ImGuiMain.h" />
     <ClInclude Include="srcs\Gui\ImGuiUtils.h" />
     <ClInclude Include="srcs\Level Management\Components.h" />
@@ -278,6 +277,7 @@
     <ClInclude Include="srcs\Libraries\ImGui_Lib\imstb_truetype.h" />
     <ClInclude Include="srcs\Libraries\ImGui_Lib\tahoma.h" />
     <ClInclude Include="srcs\Utils\Engine\EngineUtils.h" />
+    <ClInclude Include="srcs\Utils\Engine\FilesManager.h" />
     <ClInclude Include="srcs\Utils\Inputs\InputsUtils.h" />
     <ClInclude Include="srcs\Utils\Rendering\Line.h" />
   </ItemGroup>
