@@ -3,10 +3,10 @@
 <img src="assets/defaults/logos/Logo_No_Background.png" alt="Alt text" width="200"/>
 
 # Welcome to the Spark Engine !
-<img src="https://img.shields.io/static/v1?label=Build&message=Passing&color=brightgreen" width="130"/>
+<a><img src="https://img.shields.io/static/v1?label=Build&message=Passing&color=brightgreen" width="130"/></a>
 <br>
-<img src="https://img.shields.io/static/v1?label=Status&message=Alpha 0.0.1 In Progress&logo=cplusplus&color=orange&logoColor=f2f2f2" width="275"/>
-<img src="https://img.shields.io/static/v1?label=License&message=GNU GPL V3&logo=gnu&color=blue" href="https://www.gnu.org/licenses/gpl-3.0.html" width="200"/>
+<a href=""><img src="https://img.shields.io/static/v1?label=Status&message=Alpha 0.0.1 In Progress&logo=cplusplus&color=orange&logoColor=f2f2f2" width="275"/></a>
+<a><img src="https://img.shields.io/static/v1?label=License&message=GNU GPL V3&logo=gnu&color=blue" href="https://www.gnu.org/licenses/gpl-3.0.html" width="200"/></a>
 <br>
 <br>
 A 3D Game Engine In C++ created using Open GL
