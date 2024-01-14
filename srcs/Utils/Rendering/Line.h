@@ -7,6 +7,7 @@
 #include<glm/gtc/matrix_transform.hpp>
 #include<glm/gtc/type_ptr.hpp>
 #include <glm/gtx/string_cast.hpp>
+#include "../../Basic Rendering/Camera/Camera.h"
 
 
 class Line {
@@ -95,21 +96,21 @@ public:
         return 0;
     }
 
-    int draw(Camera cam, glm::vec3 location, glm::quat rotation, std::string axis) {
+    int draw(Camera cam, glm::vec3 start, glm::vec3 end) {
 
-        if (axis == "x") {
-            endPoint = location + glm::vec3(1, 0, 0);
-        }
-        else if (axis == "y") {
-            endPoint = location + glm::vec3(0, 1, 0);
-        }
-        else if (axis == "z") {
-            endPoint = location + glm::vec3(0, 0, 1);
-        }
+        //if (axis == "x") {
+        //    endPoint = location + glm::vec3(1, 0, 0);
+        //}
+        //else if (axis == "y") {
+        //    endPoint = location + glm::vec3(0, 1, 0);
+        //}
+        //else if (axis == "z") {
+        //    endPoint = location + glm::vec3(0, 0, 1);
+        //}
 
         vertices = {
-             location.x, location.y, location.z,
-             endPoint.x, endPoint.y, endPoint.z,
+             start.x, start.y, start.z,
+             end.x, end.y, end.z,
 
         };
 
@@ -136,7 +137,7 @@ public:
 
         glBindVertexArray(VAO);
 
-        float distanceToLine = glm::distance(glm::vec3((startPoint.x + endPoint.x) / 2, (startPoint.y + endPoint.y) / 2, (startPoint.z + endPoint.z) / 2), cam.Position);
+        float distanceToLine = glm::distance(glm::vec3((start.x + end.x) / 2, (start.y + end.y) / 2, (start.z + end.z) / 2), cam.Position);
 
         // Adjust the line width based on the distance
         float lineWidth = (distanceToLine < 2.5f) ? defaultLineWidth : defaultLineWidth * (2.5f / distanceToLine);

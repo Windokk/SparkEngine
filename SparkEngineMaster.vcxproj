@@ -113,7 +113,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)\libs\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
@@ -276,6 +276,8 @@
     <ClInclude Include="srcs\Libraries\ImGui_Lib\imstb_textedit.h" />
     <ClInclude Include="srcs\Libraries\ImGui_Lib\imstb_truetype.h" />
     <ClInclude Include="srcs\Libraries\ImGui_Lib\tahoma.h" />
+    <ClInclude Include="srcs\Physics\Collision.h" />
+    <ClInclude Include="srcs\Physics\Dynamics.h" />
     <ClInclude Include="srcs\Utils\Engine\EngineUtils.h" />
     <ClInclude Include="srcs\Utils\Engine\FilesManager.h" />
     <ClInclude Include="srcs\Utils\Inputs\InputsUtils.h" />

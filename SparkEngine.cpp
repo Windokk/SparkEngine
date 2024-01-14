@@ -12,6 +12,7 @@
 
 #include "srcs/Libraries/ImGui_Lib/imgui_internal.h"
  
+
 #include "srcs/Level Management/LevelLoader.h"
 
 #include "srcs/Gui/ImGuiMain.h"
@@ -32,6 +33,7 @@ ImGuiMain gui = ImGuiMain();
 const char* current_level = "./assets/defaults/levels/level_render.sl";
 
 Camera cam = Camera(0, 0, glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
+
 
 void RenderLevel() {
 	glBindFramebuffer(GL_FRAMEBUFFER, loader.FBO);
@@ -135,6 +137,7 @@ int main(){
 
 	loader.LoadNewLevel(current_level);
 
+	
 	while (!glfwWindowShouldClose(window)) {
 		// Updates counter and times
 		crntTime = glfwGetTime();
@@ -155,17 +158,22 @@ int main(){
 			counter = 0;
 		}
 
-		RenderLevel();
-		
+		RenderLevel(); 
+
+		glm::mat4 view = glm::mat4(glm::lookAt(cam.Position, cam.Position + cam.Orientation, cam.Up));
+		glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)width_ / height_, 0.1f, 100.0f);
+
 		//We draw the ImGui interface
 		gui.Draw(window, cam, loader, selectedObjectID, io);
 
+		//We don't refresh content browser every tick, only every 200 ticks
 		file_refresh_timer++;
 		if (file_refresh_timer / 200 == 1) {
 			file_refresh_timer = 0;
 			gui.manager.files = ListFiles((char*)gui.current_dir);
 		}
 
+		//Updates cam width and height if the viewport's size is changed
 		if (gui.viewportSize.x != cam.width || gui.viewportSize.y != cam.height) {
 			cam.updateSize(gui.viewportSize.x, gui.viewportSize.y);
 		}
@@ -185,10 +193,13 @@ int main(){
 		glfwPollEvents();
 	}
 
+	//We shutdown ImGui
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
+
 	loader.Unload();
+	//next line is optional: it will be cleared by the destructor when the array goes out of scope
 	// Delete window before ending the program
 	glfwDestroyWindow(window);
 	// Terminate GLFW before ending the program

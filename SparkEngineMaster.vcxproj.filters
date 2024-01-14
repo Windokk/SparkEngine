@@ -187,12 +187,6 @@
     <Filter Include="Source Files\utils\engine">
       <UniqueIdentifier>{6179aa98-044f-4c19-9fa6-6a7abf4ec0b9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\physics">
-      <UniqueIdentifier>{bf0ed285-627a-4aec-856b-47599c1a4c9f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\physics">
-      <UniqueIdentifier>{8254daf4-4974-4dba-9aa2-17bf5a18f473}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\basic rendering\fbo">
       <UniqueIdentifier>{d13b0569-462f-4b65-8201-75bacd461435}</UniqueIdentifier>
     </Filter>
@@ -222,6 +216,12 @@
     </Filter>
     <Filter Include="Resource Files\assets\defaults\levels">
       <UniqueIdentifier>{4a31ebdf-c735-4669-8afb-dd8499374a77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\physics">
+      <UniqueIdentifier>{9762ad3f-f848-4fac-b212-b5165ed48858}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\physics">
+      <UniqueIdentifier>{9fa529dc-f8da-4c1f-9b0f-1242dbf58b14}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -601,6 +601,12 @@
     </ClInclude>
     <ClInclude Include="srcs\Utils\Engine\FilesManager.h">
       <Filter>Header Files\utils\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\Physics\Dynamics.h">
+      <Filter>Header Files\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="srcs\Physics\Collision.h">
+      <Filter>Header Files\physics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
