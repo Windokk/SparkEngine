@@ -45,7 +45,7 @@ public:
 	void Load1(const char* loaded_file);
 	void Load2();
 	void Unload();
-	void Update(Camera cam);
+	void Update(Camera cam, glm::vec3 RigibodyLocation);
 	void LoadNewLevel(const char* scene);
 	void CreateLights();
 	void SetLightValues(int objectID, int componentID);

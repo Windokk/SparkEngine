@@ -306,6 +306,12 @@
     <ClCompile Include="srcs\Utils\Engine\FilesManager.cpp">
       <Filter>Source Files\utils\engine</Filter>
     </ClCompile>
+    <ClCompile Include="srcs\Physics\Collision.cpp">
+      <Filter>Source Files\physics</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\Physics\Dynamics.cpp">
+      <Filter>Source Files\physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\defaults\models\sword\scene.bin">
@@ -343,9 +349,6 @@
     </None>
     <None Include="assets\defaults\models\cube\scene.gltf">
       <Filter>Resource Files\assets\defaults\models\cube</Filter>
-    </None>
-    <None Include="assets\defaults\scenes\test_simple_light.sl">
-      <Filter>Resource Files\assets\defaults\levels</Filter>
     </None>
     <None Include="srcs\Shaders\Defaults\Engine\default.frag">
       <Filter>Resource Files\shaders\defalults\engine</Filter>
@@ -392,7 +395,10 @@
     <None Include="assets\defaults\models\flying_island\scene.gltf">
       <Filter>Resource Files\assets\defaults\models\flying_island</Filter>
     </None>
-    <None Include="assets\defaults\scenes\level_render.sl">
+    <None Include="assets\defaults\levels\level_render.sl">
+      <Filter>Resource Files\assets\defaults\levels</Filter>
+    </None>
+    <None Include="assets\defaults\levels\test_simple_light.sl">
       <Filter>Resource Files\assets\defaults\levels</Filter>
     </None>
   </ItemGroup>

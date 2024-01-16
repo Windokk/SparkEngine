@@ -64,3 +64,52 @@ public:
 };
 
 #endif
+
+#ifndef ColliderComponent_CLASS_H
+#define ColliderComponent_CLASS_H
+
+class ColliderComponent : public Component {
+public:
+	ColliderComponent();
+};
+
+#endif
+
+#ifndef PlaneColliderComponent_CLASS_H
+#define PlaneColliderComponent_CLASS_H
+
+class PlaneColliderComponent : public ColliderComponent {
+public:
+	PlaneColliderComponent();
+	glm::vec3 normal;
+	float distance;
+
+};
+
+#endif
+
+#ifndef SphereColliderComponent_CLASS_H
+#define SphereColliderComponent_CLASS_H
+
+class SphereColliderComponent : public ColliderComponent {
+public:
+	SphereColliderComponent();
+	glm::vec3 center;
+	float radius;
+};
+
+#endif
+
+
+#ifndef RigidbodyComponent_CLASS_H
+#define RigidbodyComponent_CLASS_H
+
+class RigidbodyComponent : public Component {
+public:
+	RigidbodyComponent();
+	float mass;
+	ColliderComponent collider;
+
+};
+
+#endif

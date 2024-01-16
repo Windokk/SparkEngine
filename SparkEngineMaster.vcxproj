@@ -174,10 +174,14 @@
     <ClCompile Include="srcs\Libraries\ImGui_Lib\imgui_impl_opengl3.cpp" />
     <ClCompile Include="srcs\Libraries\ImGui_Lib\imgui_tables.cpp" />
     <ClCompile Include="srcs\Libraries\ImGui_Lib\imgui_widgets.cpp" />
+    <ClCompile Include="srcs\Physics\Collision.cpp" />
+    <ClCompile Include="srcs\Physics\Dynamics.cpp" />
     <ClCompile Include="srcs\Utils\Engine\EngineUtils.cpp" />
     <ClCompile Include="srcs\Utils\Engine\FilesManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="assets\defaults\levels\level_render.sl" />
+    <None Include="assets\defaults\levels\test_simple_light.sl" />
     <None Include="assets\defaults\models\asteroid\scene.bin" />
     <None Include="assets\defaults\models\asteroid\scene.gltf" />
     <None Include="assets\defaults\models\cube\scene.bin" />
@@ -192,8 +196,6 @@
     <None Include="assets\defaults\models\spitfire\scene.gltf" />
     <None Include="assets\defaults\models\sword\scene.bin" />
     <None Include="assets\defaults\models\sword\scene.gltf" />
-    <None Include="assets\defaults\scenes\level_render.sl" />
-    <None Include="assets\defaults\scenes\test_simple_light.sl" />
     <None Include="srcs\Shaders\Defaults\Engine\default.frag" />
     <None Include="srcs\Shaders\Defaults\Engine\default.vert" />
     <None Include="srcs\Shaders\Defaults\Engine\Framebuffer\framebuffer.frag" />

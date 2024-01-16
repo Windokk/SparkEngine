@@ -49,6 +49,18 @@
             { "shader": "defaultShader" },
             { "instancing": "1" }
           ]
+        },
+        {
+          "rigidbody": [
+            { "mass": "1" },
+            { "collider": "sphere"}
+          ]
+        },
+        {
+          "sphere_collider": [
+            { "radius": "10" },
+            { "center": [ "0.0", "0.0", "0.0" ] }
+          ]
         }
       ]
     },

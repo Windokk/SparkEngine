@@ -11,11 +11,15 @@
 #include<glm/gtx/vector_angle.hpp>
 
 #include "srcs/Libraries/ImGui_Lib/imgui_internal.h"
- 
 
 #include "srcs/Level Management/LevelLoader.h"
 
 #include "srcs/Gui/ImGuiMain.h"
+
+
+#include "srcs/Physics/Dynamics.h"
+
+using namespace physics;
 
 unsigned int width_ = 1280;
 unsigned int height_ = 720;
@@ -35,7 +39,7 @@ const char* current_level = "./assets/defaults/levels/level_render.sl";
 Camera cam = Camera(0, 0, glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
 
 
-void RenderLevel() {
+void RenderLevel(glm::vec3 Location) {
 	glBindFramebuffer(GL_FRAMEBUFFER, loader.FBO);
 
 	// Specify the color of the background
@@ -46,7 +50,7 @@ void RenderLevel() {
 	glEnable(GL_DEPTH_TEST);
 
 	//Update the level from the loader
-	loader.Update(cam);
+	loader.Update(cam, Location);
 
 	glDepthFunc(GL_LEQUAL);
 
@@ -120,7 +124,7 @@ int main(){
 	loader.anti_aliasing_samples = anti_aliasing_samples;
 
 	// Creates camera object
-	cam = Camera(width_, height_, glm::vec3(-2.75603, 4.46763, -2.21178), glm::vec3(0, 0, 1));
+	cam = Camera(width_, height_, glm::vec3(36.855, 16.3166, -46.2548), glm::vec3(-0.581428, -0.200356, 0.788543));
 
 	// Variables to create periodic event for FPS displaying
 	double prevTime = 0.0;
@@ -137,8 +141,26 @@ int main(){
 
 	loader.LoadNewLevel(current_level);
 
-	
+	PhysicsWorld m_world;
+
+	PhysicsObject* m_rigidbody = new PhysicsObject();
+
+	Transform m_rigidbody_transform;
+	m_rigidbody_transform.Location = glm::vec3(0, 0, 0);
+	m_rigidbody_transform.Rotation = glm::quat(1, 0, 0, 0);
+	m_rigidbody_transform.Scale = glm::vec3(1, 1, 1);
+
+	SphereCollider m_collider = SphereCollider(glm::vec3(0,0,0),10);
+
+	m_rigidbody->transform = &m_rigidbody_transform;
+	m_rigidbody->collider = &m_collider;
+	m_rigidbody->mass = 1;
+
+	m_world.AddObject(m_rigidbody);
+
+
 	while (!glfwWindowShouldClose(window)) {
+		
 		// Updates counter and times
 		crntTime = glfwGetTime();
 		timeDiff = crntTime - prevTime;
@@ -158,7 +180,9 @@ int main(){
 			counter = 0;
 		}
 
-		RenderLevel(); 
+		RenderLevel(m_rigidbody->transform->Location); 
+
+		m_world.Step(0.005);
 
 		glm::mat4 view = glm::mat4(glm::lookAt(cam.Position, cam.Position + cam.Orientation, cam.Up));
 		glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)width_ / height_, 0.1f, 100.0f);
@@ -197,8 +221,8 @@ int main(){
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
-
 	loader.Unload();
+	m_world.RemoveObject(m_rigidbody);
 	//next line is optional: it will be cleared by the destructor when the array goes out of scope
 	// Delete window before ending the program
 	glfwDestroyWindow(window);

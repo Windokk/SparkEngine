@@ -85,7 +85,12 @@ LevelParser::LevelParser(const char* file)
 				for (unsigned int i = 0; i < JSON["objects"].size(); i++) {
 					// i = the object id
 					std::string object_name;
-					std::vector<std::variant<TransformComponent,ModelComponent,LightComponent>> components;
+					std::vector<std::variant<TransformComponent,
+						ModelComponent,
+						LightComponent,
+						SphereColliderComponent,
+						PlaneColliderComponent,
+						RigidbodyComponent>> components;
 					/*For every object component 
 						  |         |        |
 						  V         V        V
@@ -289,6 +294,47 @@ LevelParser::LevelParser(const char* file)
 										light.intensity = intensity;
 										light.color = color;
 										components.push_back(light);
+									}
+									if (comp_name.key() == "rigidbody"){
+										RigidbodyComponent rigidbody;
+										float mass;
+										ColliderComponent collider;
+										for (auto& param : comp_properties[0].items()) {
+											mass = std::stof((std::string)param.value());
+										}
+										for (auto& param : comp_properties[1].items()) {
+											std::string type = (std::string)param.value();
+											if (type == "sphere") {
+												for (const auto& variant : components) {
+													collider = *std::get_if<SphereColliderComponent>(&variant);
+												}
+											}
+
+											if (type == "plane") {
+												for (const auto& variant : components) {
+													collider = *std::get_if<PlaneColliderComponent>(&variant);
+												}
+											}
+										}
+										rigidbody.mass = mass;
+										rigidbody.collider = collider;
+										components.push_back(rigidbody);
+									}
+									if (comp_name.key() == "sphere_collider"){
+										SphereColliderComponent sphere_collider;
+										glm::vec3 center;
+										float radius;
+										for (auto& param : comp_properties[0].items()) {
+											radius = std::stof((std::string)param.value());
+										}
+										for (auto& param : comp_properties[1].items()) {
+											center = glm::vec3(std::stof((std::string)param.value()[0]), std::stof((std::string)param.value()[1]), std::stof((std::string)param.value()[2]));
+										}  
+									}
+									if (comp_name.key() == "plane_collider"){
+										glm::vec3 normal;
+										float distance;
+										
 									}
 								}
 							}

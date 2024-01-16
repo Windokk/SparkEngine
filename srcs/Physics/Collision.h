@@ -1,110 +1,213 @@
 #include <glm/ext/vector_float3.hpp>
 #include "../Level Management/LevelLoader.h"
 
-struct CollisionPoints {
-	glm::vec3 A;
-	glm::vec3 B;
-	glm::vec3 Normal;
-	float depth;
-	bool hasCollision;
+namespace physics {
 
-};
+	using vec_3 = glm::vec3;
+	using scalar = float;
 
-struct Collider {
-	virtual CollisionPoints TestCollision(
-		const Transform* transform,
-		const Collider* collider,
-		const Transform* colliderTransform) const = 0;
+	struct CollisionPoints {
+		glm::vec3 A;
+		glm::vec3 B;
+		glm::vec3 Normal;
+		scalar Depth;
+		bool HasCollision;
 
-	virtual CollisionPoints TestCollision(
-		const Transform* transform,
-		const SphereCollider* sphere,
-		const Transform* sphereTransform) const = 0;
+		CollisionPoints()
+			: A(0.0f)
+			, B(0.0f)
+			, Normal(0.0f)
+			, Depth(0.0f)
+			, HasCollision(false)
+		{}
 
-	virtual CollisionPoints TestCollision(
-		const Transform* transform,
-		const PlaneCollider* plane,
-		const Transform* planeTransform) const = 0;
-};
+		CollisionPoints(
+			glm::vec2 a,
+			glm::vec2 b
+		)
+			: A(a, 0.f)
+			, B(b, 0.f)
+			, HasCollision(true)
+		{
+			glm::vec2 ba = a - b;
+			Depth = glm::length(ba);
+			if (Depth > 0.00001f)
+			{
+				Normal = glm::vec3(ba / Depth, 0.f);
+			}
+			else {
+				Normal = glm::vec3(0, 1, 0);
+				Depth = 1;
+			}
+		}
 
-struct Collision {
-	Object* Obj1;
-	Object* ObjB;
-	CollisionPoints Points;
-};
+		CollisionPoints(
+			glm::vec3 a,
+			glm::vec3 b
+		)
+			: A(a)
+			, B(b)
+			, HasCollision(true)
+		{
+			glm::vec3 ba = a - b;
+			Depth = glm::length(ba);
+			if (Depth > 0.00001f)
+			{
+				Normal = ba / Depth;
+			}
+			else {
+				Normal = glm::vec3(0, 1, 0);
+				Depth = 1;
+			}
+		}
 
-struct SphereCollider : Collider {
+		CollisionPoints(
+			glm::vec3 a,
+			glm::vec3 b,
+			glm::vec3 n,
+			float     d
+		)
+			: A(a)
+			, B(b)
+			, Normal(n)
+			, Depth(d)
+			, HasCollision(true)
+		{}
 
-	glm::vec3 center;
-	float radius;
+		CollisionPoints(
+			glm::vec2 a,
+			glm::vec2 b,
+			glm::vec2 n,
+			float     d
+		)
+			: A(a, 0)
+			, B(b, 0)
+			, Normal(n, 0.0f)
+			, Depth(d)
+			, HasCollision(true)
+		{}
 
-	virtual CollisionPoints TestCollision(
-		const Transform* transform,
-		const Collider* collider,
-		const Transform* colliderTransform) const override
-	{
-		return collider->TestCollision(colliderTransform, this, transform);
+		void SwapPoints()
+		{
+			glm::vec3 t = A;
+			A = B;
+			B = t;
+			Normal = -Normal;
+		}
+	};
+	
+	enum class ColliderType {
+		PLANE,
+		SPHERE,
+		CAPSULE,
+		HULL,
+		MESH
+	};
+
+	struct Collider{
+
+	public:
+		ColliderType Type;
+
+		Collider(ColliderType type);
+
+		
+	};
+
+	struct SphereCollider : public Collider {
+
+	public:
+		glm::vec3 center;
+		float radius;
+
+		SphereCollider(glm::vec3 center, float radius);
+
+		
+
+	};
+
+	struct PlaneCollider : public Collider {
+
+	public:
+		glm::vec3 normal;
+		float distance;
+
+		PlaneCollider(glm::vec3 normal, float distance);
+
+		
+	};
+
+	using Sphere = SphereCollider;
+	using Plane = PlaneCollider;
+
+	namespace collision_test {
+		using FindContactFunc = CollisionPoints(*)(const Collider*, const Transform*, const Collider*, const Transform*);
+
+		CollisionPoints FindSphereSphereCollisionPoints(const Collider* a, const Transform* ta, const Collider* b, const Transform* tb);
+		CollisionPoints FindPlaneSphereCollisionPoints(const Collider* a, const Transform* ta, const Collider* b, const Transform* tb);
+
+		inline CollisionPoints TestCollision(const Collider* a, const Transform* at, const Collider* b, const Transform* bt) {
+
+			static const FindContactFunc tests[2][2] =
+			{
+				// Sphere                          Plane
+				{ FindSphereSphereCollisionPoints, nullptr }, // Sphere
+				{ FindPlaneSphereCollisionPoints,  nullptr }  // Plane
+			};
+
+			bool swap = b->Type > a->Type;
+
+			if (swap)
+			{
+				std::swap(a, b);
+				std::swap(at, bt);
+			}
+
+			CollisionPoints points = tests[(int)a->Type][(int)b->Type](a, at, b, bt);
+
+			// if we swapped the order of the colliders, to keep the
+			// results consistent, we need to swap the points
+			if (swap)
+			{
+				std::swap(points.A, points.B);
+				points.Normal = -points.Normal;
+			}
+
+			return points;
+		}
+
 	}
 
-	virtual CollisionPoints TestCollision(
-		const Transform* transform,
-		const SphereCollider* sphere,
-		const Transform* sphereTransform) const override
-	{
-		return algo::FindSphereSphereCollisionPoints(
-			this, transform, sphere, sphereTransform);
+	inline float major(const glm::vec2& v) {
+		float m = v.x;
+		if (v.y > m) m = v.y;
+		return m;
 	}
 
-	virtual CollisionPoints TestCollision(
-		const Transform* transform,
-		const PlaneCollider* plane,
-		const Transform* planeTransform) const override
-	{
-		return algo::FindSpherePlaneCollisionPoints(
-			this, transform, plane, planeTransform);
+	inline float major(const glm::vec3& v) {
+		float m = v.x;
+		if (v.y > m) m = v.y;
+		if (v.z > m) m = v.z;
+		return m;
 	}
 
-};
-
-struct PlaneCollider : Collider {
-
-	glm::vec3 plane;
-	float distance;
-
-	virtual CollisionPoints TestCollision(
-		const Transform* transform,
-		const Collider* collider,
-		const Transform* colliderTransform) const override
+	inline vec_3 rot_vec(const vec_3 v, const Transform* t)
 	{
-		return collider->TestCollision(colliderTransform, this, transform);
+		return v * t->Rotation;
 	}
 
-	virtual CollisionPoints TestCollision(
-		const Transform* transform,
-		const SphereCollider* sphere,
-		const Transform* sphereTransform) const override
-	{
-		return algo::FindPlaneSphereCollisionPoints(
-			this, transform, sphere, sphereTransform);
-	}
+	struct PhysicsObject {
+		Transform* transform;
+		Collider* collider;
+		glm::vec3 velocity;
+		glm::vec3 force;
+		float mass;
+	};
 
-	virtual CollisionPoints TestCollision(
-		const Transform* transform,
-		const PlaneCollider* plane,
-		const Transform* planeTransform) const override
-	{
-		return {};
-	}
-};
+	struct Collision {
+		PhysicsObject* Obj1;
+		PhysicsObject* ObjB;
+		CollisionPoints Points;
+	};
 
-namespace algo {
-	CollisionPoints FindSphereSphereCollisionPoints(
-		const SphereCollider* a, const Transform* ta,
-		const SphereCollider* b, const Transform* tb);
-	CollisionPoints FindSpherePlaneCollisionPoints(
-		const SphereCollider* a, const Transform* ta,
-		const PlaneCollider* b, const Transform* tb);
-	CollisionPoints FindPlaneSphereCollisionPoints(
-		const PlaneCollider* a, const Transform* ta,
-		const SphereCollider* b, const Transform* tb);
 }

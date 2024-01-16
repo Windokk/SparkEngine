@@ -25,7 +25,12 @@ struct ShaderData {
 //Object Data
 struct Object {
 	std::string name;
-	std::vector<std::variant<TransformComponent,ModelComponent,LightComponent>> components;
+	std::vector<std::variant<TransformComponent,
+                                 ModelComponent,
+                                 LightComponent, 
+                        SphereColliderComponent, 
+                         PlaneColliderComponent, 
+                             RigidbodyComponent>> components;
 
     template <typename T>
     bool HasComponent() {
@@ -71,6 +76,36 @@ struct Object {
         }
         throw std::runtime_error("LightComponent not found");
     }
+
+    template <>
+    SphereColliderComponent& GetComponent<SphereColliderComponent>() {
+        for (auto& component : components) {
+            if (auto pComponent = std::get_if<SphereColliderComponent>(&component)) {
+                return *pComponent;
+            }
+        }
+        throw std::runtime_error("SphereColliderComponent not found");
+    }
+
+    template <>
+    PlaneColliderComponent& GetComponent<PlaneColliderComponent>() {
+        for (auto& component : components) {
+            if (auto pComponent = std::get_if<PlaneColliderComponent>(&component)) {
+                return *pComponent;
+            }
+        }
+        throw std::runtime_error("PlaneColliderComponent not found");
+    }
+
+    template <>
+    RigidbodyComponent& GetComponent<RigidbodyComponent>() {
+        for (auto& component : components) {
+            if (auto pComponent = std::get_if<RigidbodyComponent>(&component)) {
+                return *pComponent;
+            }
+        }
+        throw std::runtime_error("RigidbodyComponent not found");
+    }
 };
 
 class LevelParser
@@ -93,7 +128,6 @@ public:
 	} skybox;
 	
 	std::vector<Object> objects;
-	 
 private:
 
 	const char* loaded_file = "";
