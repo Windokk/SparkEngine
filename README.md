@@ -101,39 +101,7 @@ Open the .sln file
 
 ## To Do list (Alpha 0.0.1)
 
-| Task          | Status        |
-| ------------- | ------------- |
-| 2D Shapes with Open GL  | Done     🟢   |
-| 3D Simple Models  | Done 🟢   |
-|Texture importing and binding|Done 🟢 |
-|Camera movement|Done 🟢|
-|Light management|Done 🟢|
-|Specular maps implementation|Done 🟢|
-|Different types of lights management|Done 🟢|
-|Mesh classes|Done 🟢|
-|External model importation|Done 🟢|
-|Transparency and blending|Done 🟢|
-|Skyboxes|Done 🟢|
-|Anti-Aliasing|Done 🟢|
-|Scene file (in json)|Done 🟢|
-|Scene Parser Class|Done 🟢|
-|Multiple Lights support|Done 🟢|
-|Basic GUI implementation|Done 🟢|
-|Main Menu|Done 🟢|
-|Viewport Window|Done 🟢|
-|Details|Done 🟢|
-|Content Browser|Done 🟢|
-|Outliner|Done 🟢|
-|Manipluation guizmos|Done 🟢|
-|Enhanced GUI|Done 🟢|
-|Scene Creation and Saving|Done 🟢|
-|File/Folder Manipulation|Done 🟢|
-|Project Settings|To do 🔴|
-|Editor preferences|To do 🔴|
-|Project creation|To do 🔴|
-|Shadow maps|To do 🔴|
-|Normal maps|To do 🔴|
-|Bloom|To do 🔴|
+Moved to the [Trello](https://trello.com/b/WwJhhFQv/spark-engine)
 
 ## License
 
