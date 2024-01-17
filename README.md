@@ -83,6 +83,9 @@ Open the .sln file
   "Spark Engine.sln"
 ```
 
+## Build and Run Locally (Linux)
+
+*Currently the Spark Engine is not supported on Linux*
 
 ## Engine's API Documentation
 
