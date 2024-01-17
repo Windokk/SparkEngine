@@ -14,7 +14,7 @@ A 3D Game Engine In C++ created using Open GL
 <a href="https://github.com/Windokk/SparkEngine/wiki/">Wiki</a>&nbsp;&nbsp;
 <a href="https://github.com/Windokk/SparkEngine/wiki/Getting-Started">Getting Started</a>&nbsp;&nbsp;
 <a href="https://windokk.github.io/SparkEngineWeb/">Website</a>&nbsp;&nbsp;
-<a href="https://trello.com/b/WwJhhFQv/spark-engine">Trello</a>
+<a href="https://trello.com/invite/b/WwJhhFQv/ATTI3a912bb9870af3640eb3e92a3e4f65c478A1774F/spark-engine-001">Trello</a>
 
 
 
@@ -101,7 +101,7 @@ Open the .sln file
 
 ## To Do list (Alpha 0.0.1)
 
-Moved to the [Trello](https://trello.com/b/WwJhhFQv/spark-engine)
+Moved to the [Trello](https://trello.com/invite/b/WwJhhFQv/ATTI3a912bb9870af3640eb3e92a3e4f65c478A1774F/spark-engine-001)
 
 ## License
 
