@@ -14,7 +14,7 @@ A 3D Game Engine In C++ created using Open GL
 <a href="https://github.com/Windokk/SparkEngine/wiki/">Wiki</a>&nbsp;&nbsp;
 <a href="https://github.com/Windokk/SparkEngine/wiki/Getting-Started">Getting Started</a>&nbsp;&nbsp;
 <a href="https://windokk.github.io/SparkEngineWeb/">Website</a>&nbsp;&nbsp;
-<a href="https://trello.com/b/WwJhhFQv/spark-engine">Trello</a>
+<a href="https://trello.com/invite/b/WwJhhFQv/ATTI3a912bb9870af3640eb3e92a3e4f65c478A1774F/spark-engine-001">Trello</a>
 
 
 
@@ -83,6 +83,9 @@ Open the .sln file
   "Spark Engine.sln"
 ```
 
+## Build and Run Locally (Linux)
+
+*Currently the Spark Engine is not supported on Linux*
 
 ## Engine's API Documentation
 
@@ -94,43 +97,11 @@ Open the .sln file
 
 *In Progress*
 
-*Is in the wiki tab*
+*Is in the [wiki](https://github.com/Windokk/SparkEngine/wiki) tab*
 
 ## To Do list (Alpha 0.0.1)
 
-| Task          | Status        |
-| ------------- | ------------- |
-| 2D Shapes with Open GL  | Done     🟢   |
-| 3D Simple Models  | Done 🟢   |
-|Texture importing and binding|Done 🟢 |
-|Camera movement|Done 🟢|
-|Light management|Done 🟢|
-|Specular maps implementation|Done 🟢|
-|Different types of lights management|Done 🟢|
-|Mesh classes|Done 🟢|
-|External model importation|Done 🟢|
-|Transparency and blending|Done 🟢|
-|Skyboxes|Done 🟢|
-|Anti-Aliasing|Done 🟢|
-|Scene file (in json)|Done 🟢|
-|Scene Parser Class|Done 🟢|
-|Multiple Lights support|Done 🟢|
-|Basic GUI implementation|Done 🟢|
-|Main Menu|Done 🟢|
-|Viewport Window|Done 🟢|
-|Details|Done 🟢|
-|Content Browser|Done 🟢|
-|Outliner|Done 🟢|
-|Manipluation guizmos|Done 🟢|
-|Enhanced GUI|Done 🟢|
-|Scene Creation and Saving|Done 🟢|
-|File/Folder Manipulation|Done 🟢|
-|Project Settings|To do 🔴|
-|Editor preferences|To do 🔴|
-|Project creation|To do 🔴|
-|Shadow maps|To do 🔴|
-|Normal maps|To do 🔴|
-|Bloom|To do 🔴|
+Moved to the [Trello](https://trello.com/invite/b/WwJhhFQv/ATTI3a912bb9870af3640eb3e92a3e4f65c478A1774F/spark-engine-001)
 
 ## License
 
