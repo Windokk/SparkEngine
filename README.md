@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/defaults/logos/Logo_No_Background.png" alt="Alt text" width="200"/>
+<img src="SparkEngine-Core/assets/defaults/logos/Logo_No_Background.png" alt="Alt text" width="200"/>
 
 # Welcome to the Spark Engine !
 <img src="https://img.shields.io/static/v1?label=Build&message=Passing&color=brightgreen" width="130"/>
