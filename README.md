@@ -20,11 +20,11 @@ A 3D Game Engine In C++ created using Open GL
 
 ## Screenshots
 
-<img src="https://github.com/Windokk/SparkEngine/blob/master/screenshot1.png" width="1030"/>
+<img src="https://github.com/Windokk/SparkEngine/blob/master/github/screenshot1.png" width="1030"/>
 <br>
-<img src="https://github.com/Windokk/SparkEngine/blob/master/texture.png" width="1030"/>
+<img src="https://github.com/Windokk/SparkEngine/blob/master/github/texture.png" width="1030"/>
 <br>
-<img src="https://github.com/Windokk/SparkEngine/blob/master/texture2.png" width="1030"/>
+<img src="https://github.com/Windokk/SparkEngine/blob/master/github/texture2.png" width="1030"/>
 <br>
 
 </div>
@@ -43,15 +43,48 @@ With a powerfull C++ framework and a visual scripting feature, the Spark Engine 
 - Designed to be highly accessible for game developers of all levels of expertise.
 - Actively maintained and community-driven for continuous improvement and support.
 
-#### Future Direction:
-The Spark Engine is determined to embrace the latest advancements in the industry and aims to evolve into a modern ray tracing engine. With this vision, we strive to elevate our standing within the gaming industry, aspiring to reach the level of other renowned game engines like Unreal Engine and Godot.
-
 #### Join us in our mission to revolutionize game development. Let's ignite the spark of creativity together !
 
 > [!WARNING]
 > The engine is in its alpha state of developpement so there might be a lot of bugs and incomplete features.
 
-## Engine's code Documentation
+
+## Build and Run Locally (Windows)
+
+Clone the project
+
+```bash
+  git clone https://github.com/Windokk/SparkEngine
+```
+
+Go to the project's scripts directory
+
+```bash
+  cd SparkEngine/Scripts
+```
+
+Run the setup file
+
+```bash
+  Setup-Windows.bat
+```
+
+You can now open the .sln file in "Spark Engine" folder
+
+If you want to do it from the command line : go back to Spark Engine folder
+
+```bash
+  cd ../
+```
+
+Open the .sln file
+
+```bash
+  "Spark Engine.sln"
+```
+
+
+## Engine's API Documentation
 
 *In Progress*
 
@@ -120,4 +153,4 @@ The Spark Engine is determined to embrace the latest advancements in the industr
 
 ## Feedback
 
-If you have any feedback, please reach out to us at windokk.valorshonn@gmail.com
+If you have any feedback, please reach out to me at windokk.valorshonn@gmail.com
