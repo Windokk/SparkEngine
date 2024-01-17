@@ -97,7 +97,7 @@ Open the .sln file
 
 *In Progress*
 
-*Is in the wiki tab*
+*Is in the [wiki](https://github.com/Windokk/SparkEngine/wiki) tab*
 
 ## To Do list (Alpha 0.0.1)
 
