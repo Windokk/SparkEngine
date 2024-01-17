@@ -574,8 +574,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 			ImGui::InputText("##ObjectName", buffer, 600);
 			style.FrameRounding = 0.0f;
 			ImGui::Separator();
-			for (int a = 0; a < loader.parser.objects[selectedObjectID].components.size(); a++) {
-				if (std::holds_alternative<TransformComponent>(loader.parser.objects[selectedObjectID].components[a])) {
+			if (loader.parser.objects[selectedObjectID].HasComponent<TransformComponent>()) {
 					Transform transform = loader.objects_Transforms[selectedObjectID];
 					if (ImGui::CollapsingHeader("Transform")) {
 
@@ -620,10 +619,10 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 					// Reapply the new transform to the selected Object transform
 					loader.objects_Transforms[selectedObjectID] = transform;
 					ImGui::Spacing();
-				}
-				else if (std::holds_alternative<ModelComponent>(loader.parser.objects[selectedObjectID].components[a])) {
+			}
+			if (loader.parser.objects[selectedObjectID].HasComponent<ModelComponent>()) {
 					if (ImGui::CollapsingHeader("Model")) {
-						ModelComponent model = std::get<ModelComponent>(loader.parser.objects[selectedObjectID].components[a]);
+						ModelComponent model = loader.parser.objects[selectedObjectID].GetComponent<ModelComponent>();
 						char ModelPathbuffer[255]{};
 						ImGui::Text("Model Path : ");
 						ImGui::SameLine();
@@ -634,250 +633,292 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 						ImGui::InputTextWithHint("##Shader", model.shader.c_str(), Shaderbuffer, sizeof(Shaderbuffer));
 					}
 				}
-				else if (std::holds_alternative<LightComponent>(loader.parser.objects[selectedObjectID].components[a])) {
-					if (ImGui::CollapsingHeader("Light")) {
-						ImGui::Separator();
-						LightComponent light = std::get<LightComponent>(loader.parser.objects[selectedObjectID].components[a]);
-						switch (light.type) {
-						case LT_DIRECTIONNAL:
-							ImGui::Text("Light Type :   Directionnal");
-							//Direction
-							ImGui::Text("Direction :   ");
-							ImGui::SameLine();
-							static float Direction[3];
-							Direction[0] = light.direction.x;
-							Direction[1] = light.direction.y;
-							Direction[2] = light.direction.z;
-							ImGui::InputFloat3("##direction", Direction);
-							light.direction.x = Direction[0];
-							light.direction.y = Direction[1];
-							light.direction.z = Direction[2];
-							//Ambient
-							ImGui::Text("Ambient :     ");
-							ImGui::SameLine();
-							static float Ambient[3];
-							Ambient[0] = light.ambient.x;
-							Ambient[1] = light.ambient.y;
-							Ambient[2] = light.ambient.z;
-							ImGui::InputFloat3("##ambient", Ambient);
-							light.ambient.x = Ambient[0];
-							light.ambient.y = Ambient[1];
-							light.ambient.z = Ambient[2];
-							//Diffuse
-							ImGui::Text("Diffuse :       ");
-							ImGui::SameLine();
-							static float Diffuse[3];
-							Diffuse[0] = light.diffuse.x;
-							Diffuse[1] = light.diffuse.y;
-							Diffuse[2] = light.diffuse.z;
-							ImGui::InputFloat3("##diffuse", Diffuse);
-							light.diffuse.x = Diffuse[0];
-							light.diffuse.y = Diffuse[1];
-							light.diffuse.z = Diffuse[2];
-							//Specular
-							ImGui::Text("Specular :     ");
-							ImGui::SameLine();
-							static float Specular[3];
-							Specular[0] = light.specular.x;
-							Specular[1] = light.specular.y;
-							Specular[2] = light.specular.z;
-							ImGui::InputFloat3("##specular", Specular);
-							light.specular.x = Specular[0];
-							light.specular.y = Specular[1];
-							light.specular.z = Specular[2];
-							break;
-						case LT_POINT:
-							ImGui::Text("Light Type :   Point");
-							//Ambient
-							ImGui::Text("Ambient :     ");
-							ImGui::SameLine();
-							Ambient[3];
-							Ambient[0] = light.ambient.x;
-							Ambient[1] = light.ambient.y;
-							Ambient[2] = light.ambient.z;
-							ImGui::InputFloat3("##ambient", Ambient);
-							light.ambient.x = Ambient[0];
-							light.ambient.y = Ambient[1];
-							light.ambient.z = Ambient[2];
-							//Diffuse
-							ImGui::Text("Diffuse :       ");
-							ImGui::SameLine();
-							Diffuse[3];
-							Diffuse[0] = light.diffuse.x;
-							Diffuse[1] = light.diffuse.y;
-							Diffuse[2] = light.diffuse.z;
-							ImGui::InputFloat3("##diffuse", Diffuse);
-							light.diffuse.x = Diffuse[0];
-							light.diffuse.y = Diffuse[1];
-							light.diffuse.z = Diffuse[2];
-							//Specular
-							ImGui::Text("Specular :     ");
-							ImGui::SameLine();
-							Specular[3];
-							Specular[0] = light.specular.x;
-							Specular[1] = light.specular.y;
-							Specular[2] = light.specular.z;
-							ImGui::InputFloat3("##specular", Specular);
-							light.specular.x = Specular[0];
-							light.specular.y = Specular[1];
-							light.specular.z = Specular[2];
-							//Constant
-							ImGui::Text(" Constant :    ");
-							ImGui::SameLine();
-							static float constant;
-							constant = light.constant;
-							ImGui::SameLine();
-							ImGui::InputFloat("##constant", &constant);
-							light.constant = constant;
-							//Linear
-							ImGui::Text(" Linear :      ");
-							ImGui::SameLine();
-							static float linear;
-							linear = light.linear;
-							ImGui::SameLine();
-							ImGui::InputFloat("##linear", &linear);
-							light.linear = linear;
-							//Quadratic
-							ImGui::Text(" Quadratic :   ");
-							ImGui::SameLine();
-							static float quadratic;
-							quadratic = light.quadratic;
-							ImGui::SameLine();
-							ImGui::InputFloat("##quadratic", &quadratic);
-							light.quadratic = quadratic;
-							break;
-						case LT_SPOT:
-							ImGui::Text("Light Type :   Spot");
-							//Direction
-							ImGui::Text("Direction :   ");
-							ImGui::SameLine();
-							Direction[3];
-							Direction[0] = light.direction.x;
-							Direction[1] = light.direction.y;
-							Direction[2] = light.direction.z;
-							ImGui::InputFloat3("##direction", Direction);
-							light.direction.x = Direction[0];
-							light.direction.y = Direction[1];
-							light.direction.z = Direction[2];
-							//Ambient
-							ImGui::Text("Ambient :     ");
-							ImGui::SameLine();
-							Ambient[3];
-							Ambient[0] = light.ambient.x;
-							Ambient[1] = light.ambient.y;
-							Ambient[2] = light.ambient.z;
-							ImGui::InputFloat3("##ambient", Ambient);
-							light.ambient.x = Ambient[0];
-							light.ambient.y = Ambient[1];
-							light.ambient.z = Ambient[2];
-							//Diffuse
-							ImGui::Text("Diffuse :       ");
-							ImGui::SameLine();
-							Diffuse[3];
-							Diffuse[0] = light.diffuse.x;
-							Diffuse[1] = light.diffuse.y;
-							Diffuse[2] = light.diffuse.z;
-							ImGui::InputFloat3("##diffuse", Diffuse);
-							light.diffuse.x = Diffuse[0];
-							light.diffuse.y = Diffuse[1];
-							light.diffuse.z = Diffuse[2];
-							//Specular
-							ImGui::Text("Specular :     ");
-							ImGui::SameLine();
-							Specular[3];
-							Specular[0] = light.specular.x;
-							Specular[1] = light.specular.y;
-							Specular[2] = light.specular.z;
-							ImGui::InputFloat3("##specular", Specular);
-							light.specular.x = Specular[0];
-							light.specular.y = Specular[1];
-							light.specular.z = Specular[2];
-							//Constant
-							ImGui::Text(" Constant :    ");
-							ImGui::SameLine();
-							constant;
-							constant = light.constant;
-							ImGui::SameLine();
-							ImGui::InputFloat("##constant", &constant);
-							light.constant = constant;
-							//Linear
-							ImGui::Text(" Linear :      ");
-							ImGui::SameLine();
-							linear;
-							linear = light.linear;
-							ImGui::SameLine();
-							ImGui::InputFloat("##linear", &linear);
-							light.linear = linear;
-							//Quadratic
-							ImGui::Text(" Quadratic :   ");
-							ImGui::SameLine();
-							quadratic;
-							quadratic = light.quadratic;
-							ImGui::SameLine();
-							ImGui::InputFloat("##quadratic", &quadratic);
-							light.quadratic = quadratic;
-							//CutOff
-							ImGui::Text(" CutOff :    ");
-							ImGui::SameLine();
-							static float cutoff;
-							cutoff = light.cutOff;
-							ImGui::SameLine();
-							ImGui::InputFloat("##cutoff", &cutoff);
-							light.cutOff = cutoff;
-							//OuterCutOff
-							ImGui::Text(" OuterCutOff :    ");
-							ImGui::SameLine();
-							static float outercutoff;
-							outercutoff = light.outerCutOff;
-							ImGui::SameLine();
-							ImGui::InputFloat("##outercutoff", &outercutoff);
-							light.outerCutOff = outercutoff;
-							break;
-						}
-						//Intensity
-						static float intensity;
-						intensity = light.intensity;
-						ImGui::Text("Intensity :     ");
+			if (loader.parser.objects[selectedObjectID].HasComponent<LightComponent>()) {
+				if (ImGui::CollapsingHeader("Light")) {
+					ImGui::Separator();
+					LightComponent light = loader.parser.objects[selectedObjectID].GetComponent<LightComponent>();
+					switch (light.type) {
+					case LT_DIRECTIONNAL:
+						ImGui::Text("Light Type :   Directionnal");
+						//Direction
+						ImGui::Text("Direction :   ");
 						ImGui::SameLine();
-						ImGui::InputFloat("##Intensity", &intensity);
-						light.intensity = intensity;
-						//Color
-						ImGui::Text("Light Color : ");
+						static float Direction[3];
+						Direction[0] = light.direction.x;
+						Direction[1] = light.direction.y;
+						Direction[2] = light.direction.z;
+						ImGui::InputFloat3("##direction", Direction);
+						light.direction.x = Direction[0];
+						light.direction.y = Direction[1];
+						light.direction.z = Direction[2];
+						//Ambient
+						ImGui::Text("Ambient :     ");
 						ImGui::SameLine();
-						float light_color[3];
-						light_color[0] = light.color.x;
-						light_color[1] = light.color.y;
-						light_color[2] = light.color.z;
-						ImGui::ColorEdit3("##LightColor", light_color, ImGuiColorEditFlags_DisplayRGB);
-						light.color = glm::vec3(light_color[0], light_color[1], light_color[2]);
+						static float Ambient[3];
+						Ambient[0] = light.ambient.x;
+						Ambient[1] = light.ambient.y;
+						Ambient[2] = light.ambient.z;
+						ImGui::InputFloat3("##ambient", Ambient);
+						light.ambient.x = Ambient[0];
+						light.ambient.y = Ambient[1];
+						light.ambient.z = Ambient[2];
+						//Diffuse
+						ImGui::Text("Diffuse :       ");
+						ImGui::SameLine();
+						static float Diffuse[3];
+						Diffuse[0] = light.diffuse.x;
+						Diffuse[1] = light.diffuse.y;
+						Diffuse[2] = light.diffuse.z;
+						ImGui::InputFloat3("##diffuse", Diffuse);
+						light.diffuse.x = Diffuse[0];
+						light.diffuse.y = Diffuse[1];
+						light.diffuse.z = Diffuse[2];
+						//Specular
+						ImGui::Text("Specular :     ");
+						ImGui::SameLine();
+						static float Specular[3];
+						Specular[0] = light.specular.x;
+						Specular[1] = light.specular.y;
+						Specular[2] = light.specular.z;
+						ImGui::InputFloat3("##specular", Specular);
+						light.specular.x = Specular[0];
+						light.specular.y = Specular[1];
+						light.specular.z = Specular[2];
+						break;
+					case LT_POINT:
+						ImGui::Text("Light Type :   Point");
+						//Ambient
+						ImGui::Text("Ambient :     ");
+						ImGui::SameLine();
+						Ambient[3];
+						Ambient[0] = light.ambient.x;
+						Ambient[1] = light.ambient.y;
+						Ambient[2] = light.ambient.z;
+						ImGui::InputFloat3("##ambient", Ambient);
+						light.ambient.x = Ambient[0];
+						light.ambient.y = Ambient[1];
+						light.ambient.z = Ambient[2];
+						//Diffuse
+						ImGui::Text("Diffuse :       ");
+						ImGui::SameLine();
+						Diffuse[3];
+						Diffuse[0] = light.diffuse.x;
+						Diffuse[1] = light.diffuse.y;
+						Diffuse[2] = light.diffuse.z;
+						ImGui::InputFloat3("##diffuse", Diffuse);
+						light.diffuse.x = Diffuse[0];
+						light.diffuse.y = Diffuse[1];
+						light.diffuse.z = Diffuse[2];
+						//Specular
+						ImGui::Text("Specular :     ");
+						ImGui::SameLine();
+						Specular[3];
+						Specular[0] = light.specular.x;
+						Specular[1] = light.specular.y;
+						Specular[2] = light.specular.z;
+						ImGui::InputFloat3("##specular", Specular);
+						light.specular.x = Specular[0];
+						light.specular.y = Specular[1];
+						light.specular.z = Specular[2];
+						//Constant
+						ImGui::Text(" Constant :    ");
+						ImGui::SameLine();
+						static float constant;
+						constant = light.constant;
+						ImGui::SameLine();
+						ImGui::InputFloat("##constant", &constant);
+						light.constant = constant;
+						//Linear
+						ImGui::Text(" Linear :      ");
+						ImGui::SameLine();
+						static float linear;
+						linear = light.linear;
+						ImGui::SameLine();
+						ImGui::InputFloat("##linear", &linear);
+						light.linear = linear;
+						//Quadratic
+						ImGui::Text(" Quadratic :   ");
+						ImGui::SameLine();
+						static float quadratic;
+						quadratic = light.quadratic;
+						ImGui::SameLine();
+						ImGui::InputFloat("##quadratic", &quadratic);
+						light.quadratic = quadratic;
+						break;
+					case LT_SPOT:
+						ImGui::Text("Light Type :   Spot");
+						//Direction
+						ImGui::Text("Direction :   ");
+						ImGui::SameLine();
+						Direction[3];
+						Direction[0] = light.direction.x;
+						Direction[1] = light.direction.y;
+						Direction[2] = light.direction.z;
+						ImGui::InputFloat3("##direction", Direction);
+						light.direction.x = Direction[0];
+						light.direction.y = Direction[1];
+						light.direction.z = Direction[2];
+						//Ambient
+						ImGui::Text("Ambient :     ");
+						ImGui::SameLine();
+						Ambient[3];
+						Ambient[0] = light.ambient.x;
+						Ambient[1] = light.ambient.y;
+						Ambient[2] = light.ambient.z;
+						ImGui::InputFloat3("##ambient", Ambient);
+						light.ambient.x = Ambient[0];
+						light.ambient.y = Ambient[1];
+						light.ambient.z = Ambient[2];
+						//Diffuse
+						ImGui::Text("Diffuse :       ");
+						ImGui::SameLine();
+						Diffuse[3];
+						Diffuse[0] = light.diffuse.x;
+						Diffuse[1] = light.diffuse.y;
+						Diffuse[2] = light.diffuse.z;
+						ImGui::InputFloat3("##diffuse", Diffuse);
+						light.diffuse.x = Diffuse[0];
+						light.diffuse.y = Diffuse[1];
+						light.diffuse.z = Diffuse[2];
+						//Specular
+						ImGui::Text("Specular :     ");
+						ImGui::SameLine();
+						Specular[3];
+						Specular[0] = light.specular.x;
+						Specular[1] = light.specular.y;
+						Specular[2] = light.specular.z;
+						ImGui::InputFloat3("##specular", Specular);
+						light.specular.x = Specular[0];
+						light.specular.y = Specular[1];
+						light.specular.z = Specular[2];
+						//Constant
+						ImGui::Text(" Constant :    ");
+						ImGui::SameLine();
+						constant;
+						constant = light.constant;
+						ImGui::SameLine();
+						ImGui::InputFloat("##constant", &constant);
+						light.constant = constant;
+						//Linear
+						ImGui::Text(" Linear :      ");
+						ImGui::SameLine();
+						linear;
+						linear = light.linear;
+						ImGui::SameLine();
+						ImGui::InputFloat("##linear", &linear);
+						light.linear = linear;
+						//Quadratic
+						ImGui::Text(" Quadratic :   ");
+						ImGui::SameLine();
+						quadratic;
+						quadratic = light.quadratic;
+						ImGui::SameLine();
+						ImGui::InputFloat("##quadratic", &quadratic);
+						light.quadratic = quadratic;
+						//CutOff
+						ImGui::Text(" CutOff :    ");
+						ImGui::SameLine();
+						static float cutoff;
+						cutoff = light.cutOff;
+						ImGui::SameLine();
+						ImGui::InputFloat("##cutoff", &cutoff);
+						light.cutOff = cutoff;
+						//OuterCutOff
+						ImGui::Text(" OuterCutOff :    ");
+						ImGui::SameLine();
+						static float outercutoff;
+						outercutoff = light.outerCutOff;
+						ImGui::SameLine();
+						ImGui::InputFloat("##outercutoff", &outercutoff);
+						light.outerCutOff = outercutoff;
+						break;
+					}
+					//Intensity
+					static float intensity;
+					intensity = light.intensity;
+					ImGui::Text("Intensity :     ");
+					ImGui::SameLine();
+					ImGui::InputFloat("##Intensity", &intensity);
+					light.intensity = intensity;
+					//Color
+					ImGui::Text("Light Color : ");
+					ImGui::SameLine();
+					float light_color[3];
+					light_color[0] = light.color.x;
+					light_color[1] = light.color.y;
+					light_color[2] = light.color.z;
+					ImGui::ColorEdit3("##LightColor", light_color, ImGuiColorEditFlags_DisplayRGB);
+					light.color = glm::vec3(light_color[0], light_color[1], light_color[2]);
 
-						Light_Object_Infos infos;
-						infos.type = light.type;
-						infos.objectID = selectedObjectID;
-						infos.lightPos = loader.objects_Transforms[selectedObjectID].Location;
-						infos.lightDirection = light.direction;
-						infos.ambient = light.ambient;
-						infos.diffuse = light.diffuse;
-						infos.specular = light.specular;
-						infos.constant = light.constant;
-						infos.linear = light.linear;
-						infos.quadratic = light.quadratic;
-						infos.cutOff = light.cutOff;
-						infos.outerCutOff = light.outerCutOff;
-						infos.lightIntensity = light.intensity;
-						infos.lightColor = light.color;
-						infos.lightModel = glm::translate(glm::mat4(1.0f), infos.lightPos);
-						for (int x = 0; x < loader.light_object_infos.size(); x++) {
-							if (loader.light_object_infos[x].objectID == selectedObjectID) {
-								loader.light_object_infos[x] = infos;
-							}
-						}
-						for (int x = 0; x < loader.parser.objects[selectedObjectID].components.size(); x++) {
-							if (std::holds_alternative<LightComponent>(loader.parser.objects[selectedObjectID].components[x])) {
-								loader.parser.objects[selectedObjectID].components[x] = light;
-							}
+					Light_Object_Infos infos;
+					infos.type = light.type;
+					infos.objectID = selectedObjectID;
+					infos.lightPos = loader.objects_Transforms[selectedObjectID].Location;
+					infos.lightDirection = light.direction;
+					infos.ambient = light.ambient;
+					infos.diffuse = light.diffuse;
+					infos.specular = light.specular;
+					infos.constant = light.constant;
+					infos.linear = light.linear;
+					infos.quadratic = light.quadratic;
+					infos.cutOff = light.cutOff;
+					infos.outerCutOff = light.outerCutOff;
+					infos.lightIntensity = light.intensity;
+			   		infos.lightColor = light.color;
+					infos.lightModel = glm::translate(glm::mat4(1.0f), infos.lightPos);
+					for (int x = 0; x < loader.light_object_infos.size(); x++) {
+						if (loader.light_object_infos[x].objectID == selectedObjectID) {
+							loader.light_object_infos[x] = infos;
 						}
 					}
+					for (int x = 0; x < loader.parser.objects[selectedObjectID].components.size(); x++) {
+						if (std::holds_alternative<LightComponent>(loader.parser.objects[selectedObjectID].components[x])) {
+							loader.parser.objects[selectedObjectID].components[x] = light;
+						}
+					}
+				}
+			}
+			if (loader.parser.objects[selectedObjectID].HasComponent<RigidbodyComponent>()) {
+				if (ImGui::CollapsingHeader("Rigidbody")) {
+					RigidbodyComponent rigidbody = loader.parser.objects[selectedObjectID].GetComponent<RigidbodyComponent>();
+					static float mass;
+					mass = rigidbody.mass;
+					ImGui::Text("Mass :     ");
+					ImGui::SameLine();
+					ImGui::InputFloat("##Mass", &mass);
+					rigidbody.mass = mass;
+
+
+					char ModelPathbuffer[255]{};
+					ImGui::Text("Collider :     ");
+					ImGui::SameLine();
+					ImGui::InputTextWithHint("##Collider", "TODO : Implement rigidbody/collider relation", ModelPathbuffer, sizeof(ModelPathbuffer));
+				}
+			}
+			if (loader.parser.objects[selectedObjectID].HasComponent<SphereColliderComponent>()) {
+				if (ImGui::CollapsingHeader("Sphere Collider")) {
+					SphereColliderComponent sphere = loader.parser.objects[selectedObjectID].GetComponent<SphereColliderComponent>();
+					DrawVec3Control("Center : ", sphere.center);
+					ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX(), ImGui::GetCursorPosY() + 3.0f));
+					static float radius;
+					radius = sphere.radius;
+					ImGui::Text("Radius : ");
+					ImGui::SameLine();
+					ImGui::InputFloat("##Radius", &radius);
+					sphere.radius = radius;
+				}
+			}
+			if (loader.parser.objects[selectedObjectID].HasComponent<PlaneColliderComponent>()) {
+				if (ImGui::CollapsingHeader("Plane Collider")) {
+					PlaneColliderComponent plane = loader.parser.objects[selectedObjectID].GetComponent<PlaneColliderComponent>();
+					DrawVec3Control("Center : ", plane.normal);
+					ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX(), ImGui::GetCursorPosY() + 3.0f));
+					static float distance;
+					distance = plane.distance;
+					ImGui::Text("Distance : ");
+					ImGui::SameLine();
+					ImGui::InputFloat("##Distance", &distance);
+					plane.distance = distance;
 				}
 			}
 		}

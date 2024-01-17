@@ -1,36 +1,36 @@
 {
 	"shaders": [
-		{
-			"defaultShader": [
-				{ "vert": "./srcs/Shaders/Defaults/Engine/default.vert" },
-				{ "frag": "./srcs/Shaders/Defaults/Engine/default.frag" },
-				{ "geom": "" }
-			]
-		},
-		{
-			"skyboxShader": [
-				{ "vert": "./srcs/Shaders/Defaults/Engine/Skyboxes/skybox.vert" },
-				{ "frag": "./srcs/Shaders/Defaults/Engine/Skyboxes/skybox.frag" },
-				{ "geom": "" }
-			]
-		},
-		{
-			"framebufferShader": [
-				{ "vert": "./srcs/Shaders/Defaults/Engine/Framebuffer/framebuffer.vert" },
-				{ "frag": "./srcs/Shaders/Defaults/Engine/Framebuffer/framebuffer.frag" },
-				{ "geom": "" }
-			]
-		}
+    {
+      "defaultShader": [
+        { "vert": "../SparkEngine-Core/assets/defaults/shaders/default.vert" },
+        { "frag": "../SparkEngine-Core/assets/defaults/shaders/default.frag" },
+        { "geom": "" }
+      ]
+    },
+    {
+      "skyboxShader": [
+        { "vert": "../SparkEngine-Core/assets/defaults/shaders/Skyboxes/skybox.vert" },
+        { "frag": "../SparkEngine-Core/assets/defaults/shaders/Skyboxes/skybox.frag" },
+        { "geom": "" }
+      ]
+    },
+    {
+      "framebufferShader": [
+        { "vert": "../SparkEngine-Core/assets/defaults/shaders/Framebuffer/framebuffer.vert" },
+        { "frag": "../SparkEngine-Core/assets/defaults/shaders/Framebuffer/framebuffer.frag" },
+        { "geom": "" }
+      ]
+    }
 
-	],
+  ],
 	"skybox": [
 		{ "shader": "skyboxShader" },
-		{ "right": "./assets/defaults/textures/skyboxes/bluesky/right.jpg" },
-		{ "left": "./assets/defaults/textures/skyboxes/bluesky/left.jpg" },
-		{ "top": "./assets/defaults/textures/skyboxes/bluesky/top.jpg" },
-		{ "bottom": "./assets/defaults/textures/skyboxes/bluesky/bottom.jpg" },
-		{ "front": "./assets/defaults/textures/skyboxes/bluesky/front.jpg" },
-		{ "back": "./assets/defaults/textures/skyboxes/bluesky/back.jpg" }
+		{ "right": "../SparkEngine-Core/assets/defaults/textures/skyboxes/bluesky/right.jpg" },
+		{ "left": "../SparkEngine-Core/assets/defaults/textures/skyboxes/bluesky/left.jpg" },
+		{ "top": "../SparkEngine-Core/assets/defaults/textures/skyboxes/bluesky/top.jpg" },
+		{ "bottom": "../SparkEngine-Core/assets/defaults/textures/skyboxes/bluesky/bottom.jpg" },
+		{ "front": "../SparkEngine-Core/assets/defaults/textures/skyboxes/bluesky/front.jpg" },
+		{ "back": "../SparkEngine-Core/assets/defaults/textures/skyboxes/bluesky/back.jpg" }
 	],
 	"objects": [
 		{
@@ -45,9 +45,52 @@
 				{
 					"model": [
 						{ "name": "floor" },
-						{ "path": "./assets/defaults/models/plane/scene.gltf" },
+						{ "path": "../SparkEngine-Core/assets/defaults/models/plane/scene.gltf" },
 						{ "shader": "defaultShader" },
 						{ "instancing": "1" }
+					]
+				},
+				{
+					"rigidbody": [
+					  { "mass": "0" },
+					  { "collider": "plane"}
+					]
+				},
+				{
+					"plane_collider": [
+					  { "distance": "10" },
+					  { "normal": [ "0.0", "1.0", "0.0" ] }
+					]
+				}
+			]
+		},
+		{
+			"ball": [
+				{
+					"transform": [
+						{ "location": [ "0.0", "10.0", "0.0" ] },
+						{ "rotation": [ "1.0", "0.0", "0.0", "0.0" ] },
+						{ "scale": [ "5.0", "5.0", "5.0" ] }
+					]
+				},
+				{
+					"model": [
+						{ "name": "ball" },
+						{ "path": "../SparkEngine-Core/assets/defaults/models/ball/scene.gltf" },
+						{ "shader": "defaultShader" },
+						{ "instancing": "1" }
+					]
+				},
+				{
+					"rigidbody": [
+					  { "mass": "1" },
+					  { "collider": "sphere"}
+					]
+				},
+				{
+					"sphere_collider": [
+					  { "radius": "10" },
+					  { "center": [ "0.0", "0.0", "0.0" ] }
 					]
 				}
 			]
@@ -70,59 +113,6 @@
 						{ "specular": [ "0.5", "0.5", "0.5" ] },
 						{ "intensity": "1.0" },
 						{ "color": [ "1.0", "1.0", "1.0" ] }
-					]
-				}
-			]
-		},
-		{
-			"light2": [
-				{
-					"transform": [
-						{ "location": [ "10.0", "10.0", "0.0" ] },
-						{ "rotation": [ "1.0", "0.0", "0.0", "0.0" ] },
-						{ "scale": [ "1.0", "1.0", "1.0" ] }
-					]
-				},
-				{
-					"light": [
-						{ "type": "point" },
-						{ "ambient": [ "0.05", "0.05", "0.05" ] },
-						{ "diffuse": [ "0.8", "0.8", "0.8" ] },
-						{ "specular": [ "1.0", "1.0", "1.0" ] },
-						{ "constant": "1.0" },
-						{ "linear": "0.09" },
-						{ "quadratic": "0.032" },
-						{ "intensity": "10" },
-						{ "color": [ "1.0", "0.0", "0.0" ] }
-					]
-				}
-			]
-		},
-		{
-			"light3": [
-				{
-					"transform": [
-						{
-							"location": [ "-10.0", "10.0", "20.0" ]
-						},
-						{ "rotation": [ "1.0", "0.0", "0.0", "0.0" ] },
-						{ "scale": [ "1.0", "1.0", "1.0" ] }
-					]
-				},
-				{
-					"light": [
-						{ "type": "spot" },
-						{ "direction": [ "0", "-1.0", "0" ] },
-						{ "ambient": [ "0.05", "0.05", "0.05" ] },
-						{ "diffuse": [ "0.8", "0.8", "0.8" ] },
-						{ "specular": [ "1.0", "1.0", "1.0" ] },
-						{ "constant": "1.0" },
-						{ "linear": "0.09" },
-						{ "quadratic": "0.032" },
-						{ "cutOff": "12.5" },
-						{ "outerCutOff": "15.0" },
-						{ "intensity": "10" },
-						{ "color": [ "0.0", "0.0", "10.0" ] }
 					]
 				}
 			]

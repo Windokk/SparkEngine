@@ -330,11 +330,23 @@ LevelParser::LevelParser(const char* file)
 										for (auto& param : comp_properties[1].items()) {
 											center = glm::vec3(std::stof((std::string)param.value()[0]), std::stof((std::string)param.value()[1]), std::stof((std::string)param.value()[2]));
 										}  
+										sphere_collider.center = center;
+										sphere_collider.radius = radius;
+										components.push_back(sphere_collider);
 									}
 									if (comp_name.key() == "plane_collider"){
+										PlaneColliderComponent plane_collider;
 										glm::vec3 normal;
 										float distance;
-										
+										for (auto& param : comp_properties[0].items()) {
+											distance = std::stof((std::string)param.value());
+										}
+										for (auto& param : comp_properties[1].items()) {
+											normal = glm::vec3(std::stof((std::string)param.value()[0]), std::stof((std::string)param.value()[1]), std::stof((std::string)param.value()[2]));
+										}
+										plane_collider.distance = distance;
+										plane_collider.normal = normal;
+										components.push_back(plane_collider);
 									}
 								}
 							}

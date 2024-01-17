@@ -14,6 +14,10 @@ void PhysicsWorld::RemoveObject(PhysicsObject* object) {
 	m_objects.erase(itr);
 }
 
+void PhysicsWorld::RemoveAllObjects() {
+	m_objects.clear();
+}
+
 void PhysicsWorld::Step(float dt) {
 
 	ResolveCollisions(dt);

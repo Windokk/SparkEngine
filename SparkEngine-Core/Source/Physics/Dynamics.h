@@ -15,6 +15,8 @@ public:
 
 	void RemoveObject(PhysicsObject* object);
 
+	void RemoveAllObjects();
+
 	void Step(float dt);
 
 	void ResolveCollisions(float dt);

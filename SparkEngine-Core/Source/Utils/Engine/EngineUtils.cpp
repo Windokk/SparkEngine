@@ -230,6 +230,7 @@ std::string get_solution_path() {
 	GetModuleFileNameA(nullptr, buffer, MAX_PATH);
 	std::string path(buffer);
 	path = replaceCharacters(path, '\\', '/');
+	path = substr(path, "Binaries/windows-x86_64/Debug/SparkEngine-Editor");
 	return path;
 }
 

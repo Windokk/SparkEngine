@@ -216,7 +216,7 @@ void LevelLoader::Unload() {
 	}
 }
 
-void LevelLoader::Update(Camera cam, glm::vec3 RigibodyLocation)
+void LevelLoader::Update(Camera cam)
 {
 	for (int i = 0; i < parser.objects.size(); i++) {
 		for (int a = 0; a < parser.objects[i].components.size(); a++) {
@@ -250,7 +250,7 @@ void LevelLoader::Update(Camera cam, glm::vec3 RigibodyLocation)
 							lights.push_back(light); 
 						}
 						//models[x].Draw(shaders[shader_id].shader, cam, objects_Transforms[i].Location, objects_Transforms[i].Rotation, objects_Transforms[i].Scale, lights);
-						models[x].Draw(shaders[shader_id].shader, cam, RigibodyLocation, objects_Transforms[i].Rotation, objects_Transforms[i].Scale, lights);
+						models[x].Draw(shaders[shader_id].shader, cam, objects_Transforms[i].Location, objects_Transforms[i].Rotation, objects_Transforms[i].Scale, lights);
 					}
 				}
 			}

@@ -71,7 +71,7 @@ void Mesh::Draw(Shader& shader, Camera& camera, glm::mat4 matrix, glm::vec3 tran
 	// Take care of the camera Matrix
 	shader.setVec3("camPos", camera.Position);
 	camera.Matrix(shader, "camMatrix");
-	shader.setFloat("material.shininess", 32.0f);
+	shader.setFloat("material.shininess", 100.0f);
 	int numDirLights = 0;
 	int numPointLights = 0;
 	int numSpotLights = 0;

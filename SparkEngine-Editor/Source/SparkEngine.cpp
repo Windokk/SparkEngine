@@ -16,9 +16,8 @@
 
 #include "Gui/ImGuiMain.h"
 
-#include "Physics/Dynamics.h"
+#include "Runtime/EditorPlay.h"
 
-using namespace physics;
 
 
 unsigned int width_ = 1280;
@@ -34,12 +33,14 @@ int file_refresh_timer = 0;
 
 ImGuiMain* gui = new ImGuiMain();
 
-const char* current_level = "../SparkEngine-Core/assets/defaults/levels/level_render.sl";
+const char* current_level = "../SparkEngine-Core/assets/defaults/levels/test_simple_light.sl";
 
 Camera cam = Camera(0, 0, glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
 
 
-void RenderLevel(glm::vec3 Location) {
+
+
+void RenderLevel() {
 	glBindFramebuffer(GL_FRAMEBUFFER, loader.FBO);
 
 	// Specify the color of the background
@@ -50,7 +51,7 @@ void RenderLevel(glm::vec3 Location) {
 	glEnable(GL_DEPTH_TEST);
 
 	//Update the level from the loader
-	loader.Update(cam, Location);
+	loader.Update(cam);
 
 	glDepthFunc(GL_LEQUAL);
 
@@ -141,23 +142,6 @@ int main() {
 
 	loader.LoadNewLevel(current_level);
 
-	PhysicsWorld m_world;
-
-	PhysicsObject* m_rigidbody = new PhysicsObject();
-
-	Transform m_rigidbody_transform;
-	m_rigidbody_transform.Location = glm::vec3(0, 0, 0);
-	m_rigidbody_transform.Rotation = glm::quat(1, 0, 0, 0);
-	m_rigidbody_transform.Scale = glm::vec3(1, 1, 1);
-
-	SphereCollider m_collider = SphereCollider(glm::vec3(0, 0, 0), 10);
-
-	m_rigidbody->transform = &m_rigidbody_transform;
-	m_rigidbody->collider = &m_collider;
-	m_rigidbody->mass = 1;
-
-	m_world.AddObject(m_rigidbody);
-
 
 	while (!glfwWindowShouldClose(window)) {
 
@@ -180,9 +164,7 @@ int main() {
 			counter = 0;
 		}
 
-		RenderLevel(m_rigidbody->transform->Location);
-
-		//m_world.Step(0.005);
+		RenderLevel();
 
 		glm::mat4 view = glm::mat4(glm::lookAt(cam.Position, cam.Position + cam.Orientation, cam.Up));
 		glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)width_ / height_, 0.1f, 100.0f);
@@ -222,7 +204,6 @@ int main() {
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
 	loader.Unload();
-	m_world.RemoveObject(m_rigidbody);
 	//next line is optional: it will be cleared by the destructor when the array goes out of scope
 	// Delete window before ending the program
 	glfwDestroyWindow(window);
