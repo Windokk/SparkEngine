@@ -69,6 +69,14 @@ ScaffoldingReadMe.txt
 # StyleCop
 StyleCopReport.xml
 
+# User built files
+
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.ini
+
 # Files built by Visual Studio
 *_i.c
 *_p.c
