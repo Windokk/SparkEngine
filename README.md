@@ -91,7 +91,11 @@ setx QT_QPA_PLATFORM_PLUGIN_PATH "C:\Users\test_user\Documents\GitHub\SparkEngin
 
 Search for "Edit the system environment variables" Windows searchbar
 
+<img src="https://github.com/Windokk/SparkEngine/blob/master/github/env_search.png" width="500"/>
+
 Click on "Environment Variables..."
+
+<img src="https://github.com/Windokk/SparkEngine/blob/master/github/system_properties.png" width="500"/>
 
 Click on "New" under "User variables"
 
