@@ -1,11 +1,3 @@
-/********************************************************************************
-** Form generated from reading UI file 'QtWidgetsApplication1.ui'
-**
-** Created by: Qt User Interface Compiler version 6.6.1
-**
-** WARNING! All changes made in this file will be lost when recompiling UI file!
-********************************************************************************/
-
 #ifndef UI_QTWIDGETSAPPLICATION1_H
 #define UI_QTWIDGETSAPPLICATION1_H
 
@@ -22,12 +14,12 @@ QT_BEGIN_NAMESPACE
 class Ui_QtWidgetsApplication1Class
 {
 public:
-    QMenuBar *menuBar;
-    QToolBar *mainToolBar;
-    QWidget *centralWidget;
-    QStatusBar *statusBar;
+    QMenuBar* menuBar;
+    QToolBar* mainToolBar;
+    QWidget* centralWidget;
+    QStatusBar* statusBar;
 
-    void setupUi(QMainWindow *QtWidgetsApplication1Class)
+    void setupUi(QMainWindow* QtWidgetsApplication1Class)
     {
         if (QtWidgetsApplication1Class->objectName().isEmpty())
             QtWidgetsApplication1Class->setObjectName("QtWidgetsApplication1Class");
@@ -50,7 +42,7 @@ public:
         QMetaObject::connectSlotsByName(QtWidgetsApplication1Class);
     } // setupUi
 
-    void retranslateUi(QMainWindow *QtWidgetsApplication1Class)
+    void retranslateUi(QMainWindow* QtWidgetsApplication1Class)
     {
         QtWidgetsApplication1Class->setWindowTitle(QCoreApplication::translate("QtWidgetsApplication1Class", "QtWidgetsApplication1", nullptr));
     } // retranslateUi
@@ -58,7 +50,7 @@ public:
 };
 
 namespace Ui {
-    class QtWidgetsApplication1Class: public Ui_QtWidgetsApplication1Class {};
+    class QtWidgetsApplication1Class : public Ui_QtWidgetsApplication1Class {};
 } // namespace Ui
 
 QT_END_NAMESPACE
