@@ -4,7 +4,7 @@
 int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
-    QtWidgetsApplication1 w;
+    QtApp w;
     w.show();
     return a.exec();
 }
