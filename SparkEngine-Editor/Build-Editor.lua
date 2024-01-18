@@ -6,6 +6,16 @@ project "SparkEngine-Editor"
    staticruntime "off"
 
    files { "Source/**.h", "Source/**.cpp" , "Source/**.c"}
+   
+   qt.enable()
+
+   qtuseexternalinclude (true)
+
+   qtpath "C:/Qt/6.6.1/msvc2019_64"
+
+   qtmodules { "core", "gui", "widgets", "opengl" }
+   
+   qtprefix "Qt6"
 
    includedirs
    {
@@ -33,6 +43,7 @@ project "SparkEngine-Editor"
 
    filter "configurations:Debug"
        defines { "DEBUG" }
+       qtsuffix "d"
        runtime "Debug"
        symbols "On"
 
