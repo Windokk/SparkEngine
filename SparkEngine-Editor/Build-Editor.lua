@@ -11,7 +11,7 @@ project "SparkEngine-Editor"
 
    qtuseexternalinclude (true)
 
-   qtpath "C:/Qt/6.6.1/msvc2019_64"
+   qtpath "../SparkEngine-Core/Source/Third-Party"
 
    qtmodules { "core", "gui", "widgets", "opengl" }
    

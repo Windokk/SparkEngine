@@ -83,8 +83,8 @@ void RenderLevel() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 
-//int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow) 
-int main() {
+
+int SparkEngine_Main() {
 	// Initialize GLFW
 	glfwInit();
 
