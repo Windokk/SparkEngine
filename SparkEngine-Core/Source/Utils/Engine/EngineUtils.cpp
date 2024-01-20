@@ -322,3 +322,5 @@ char* extractPath(const char* path) {
 	// Return a copy of the original path if '/' is not found
 	return _strdup(path);
 }
+
+

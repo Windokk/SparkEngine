@@ -7,15 +7,6 @@ project "SparkEngine-Editor"
 
    files { "Source/**.h", "Source/**.cpp" , "Source/**.c"}
    
-   qt.enable()
-
-   qtuseexternalinclude (true)
-
-   qtpath "../SparkEngine-Core/Source/Third-Party"
-
-   qtmodules { "core", "gui", "widgets", "opengl" }
-   
-   qtprefix "Qt6"
 
    includedirs
    {
@@ -43,7 +34,6 @@ project "SparkEngine-Editor"
 
    filter "configurations:Debug"
        defines { "DEBUG" }
-       qtsuffix "d"
        runtime "Debug"
        symbols "On"
 

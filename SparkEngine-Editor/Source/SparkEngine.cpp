@@ -18,6 +18,12 @@
 
 #include "Runtime/EditorPlay.h"
 
+#define GLFW_EXPOSE_NATIVE_WIN32
+#define GLFW_EXPOSE_NATIVE_WGL
+#define GLFW_NATIVE_INCLUDE_NONE
+
+#include <GLFW/glfw3native.h>
+
 
 
 unsigned int width_ = 1280;
@@ -84,7 +90,108 @@ void RenderLevel() {
 }
 
 
-int SparkEngine_Main() {
+
+////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
+/////													   /////
+/////		Here's the code to make the window			   /////
+/////              without a title bar					   /////
+/////													   /////
+/////		V               V                V		       /////
+/////													   /////
+////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
+
+WNDPROC original_proc;
+
+LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	switch (uMsg)
+	{
+	case WM_NCCALCSIZE:
+	{
+		// Remove the window's standard sizing border
+		if (wParam == TRUE && lParam != NULL)
+		{
+			NCCALCSIZE_PARAMS* pParams = reinterpret_cast<NCCALCSIZE_PARAMS*>(lParam);
+			pParams->rgrc[0].top += 1;
+			pParams->rgrc[0].right -= 2;
+			pParams->rgrc[0].bottom -= 2;
+			pParams->rgrc[0].left += 2;
+		}
+		return 0;
+	}
+	case WM_NCPAINT:
+	{
+		// Prevent the non-client area from being painted
+		return 0;
+	}
+	case WM_NCHITTEST:
+	{
+		// Expand the hit test area for resizing
+		const int borderWidth = 8; // Adjust this value to control the hit test area size
+
+		POINTS mousePos = MAKEPOINTS(lParam);
+		POINT clientMousePos = { mousePos.x, mousePos.y };
+		ScreenToClient(hWnd, &clientMousePos);
+
+		RECT windowRect;
+		GetClientRect(hWnd, &windowRect);
+
+		if (clientMousePos.y >= windowRect.bottom - borderWidth)
+		{
+			if (clientMousePos.x <= borderWidth)
+				return HTBOTTOMLEFT;
+			else if (clientMousePos.x >= windowRect.right - borderWidth)
+				return HTBOTTOMRIGHT;
+			else
+				return HTBOTTOM;
+		}
+		else if (clientMousePos.y <= borderWidth)
+		{
+			if (clientMousePos.x <= borderWidth)
+				return HTTOPLEFT;
+			else if (clientMousePos.x >= windowRect.right - borderWidth)
+				return HTTOPRIGHT;
+			else
+				return HTTOP;
+		}
+		else if (clientMousePos.x <= borderWidth)
+		{
+			return HTLEFT;
+		}
+		else if (clientMousePos.x >= windowRect.right - borderWidth)
+		{
+			return HTRIGHT;
+		}
+
+		break;
+	}
+	}
+
+	return CallWindowProc(original_proc, hWnd, uMsg, wParam, lParam);
+}
+
+void disableTitlebar(GLFWwindow* window)
+{
+	HWND hWnd = glfwGetWin32Window(window);
+
+	LONG_PTR lStyle = GetWindowLongPtr(hWnd, GWL_STYLE);
+	lStyle |= WS_THICKFRAME;
+	lStyle &= ~WS_CAPTION;
+	SetWindowLongPtr(hWnd, GWL_STYLE, lStyle);
+
+	RECT windowRect;
+	GetWindowRect(hWnd, &windowRect);
+	int width = windowRect.right - windowRect.left;
+	int height = windowRect.bottom - windowRect.top;
+
+	original_proc = (WNDPROC)GetWindowLongPtr(hWnd, GWLP_WNDPROC);
+	(WNDPROC)SetWindowLongPtr(hWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(WindowProc));
+	SetWindowPos(hWnd, NULL, 0, 0, width, height, SWP_FRAMECHANGED | SWP_NOMOVE);
+}
+
+int main() {
 	// Initialize GLFW
 	glfwInit();
 
@@ -96,16 +203,17 @@ int SparkEngine_Main() {
 	// So that means we only have the modern functions
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	// Create a GLFWwindow object of 800 by 800 pixels, naming it "Crab Engine"
+	// Create a GLFWwindow object of 800 by 800 pixels, naming it "Spark Engine"
 	GLFWwindow* window = glfwCreateWindow(width_, height_, "Spark Engine", NULL, NULL);
-
-	// Sets the window's icons
+	
 	GLFWimage images[2];
 	images[0].pixels = stbi_load("../SparkEngine-Core/assets/defaults/logos/icon.png", &images[0].width, &images[0].height, 0, 4);
 	images[1].pixels = stbi_load("../SparkEngine-Core/assets/defaults/logos/icon.png", &images[1].width, &images[1].height, 0, 4);
 	glfwSetWindowIcon(window, 1, images);
 	stbi_image_free(images[0].pixels);
 	stbi_image_free(images[1].pixels);
+
+	disableTitlebar(window);
 
 	if (window == NULL)
 	{
@@ -145,25 +253,6 @@ int SparkEngine_Main() {
 
 	while (!glfwWindowShouldClose(window)) {
 
-		// Updates counter and times
-		crntTime = glfwGetTime();
-		timeDiff = crntTime - prevTime;
-		counter++;
-		if (timeDiff >= 1.0 / 30.0)
-		{
-			// Creates new title
-			std::string NEW_FPS = std::to_string((1.0 / timeDiff) * counter);
-			if (stof(NEW_FPS) >= stof(FPS)) {
-				FPS = NEW_FPS;
-			}
-			std::string ms = std::to_string((timeDiff / counter) * 1000);
-			std::string newTitle = "Spark Engine - " + FPS + "FPS / " + ms + "ms";
-			glfwSetWindowTitle(window, newTitle.c_str());
-			// Resets times and counter
-			prevTime = crntTime;
-			counter = 0;
-		}
-
 		RenderLevel();
 
 		glm::mat4 view = glm::mat4(glm::lookAt(cam.Position, cam.Position + cam.Orientation, cam.Up));
@@ -180,7 +269,7 @@ int SparkEngine_Main() {
 		}
 
 		//Updates cam width and height if the viewport's size is changed
-		if (gui->viewportSize.x != cam.width || gui->viewportSize.y != cam.height) {
+		if (gui->viewportSize.x != cam.width or gui->viewportSize.y != cam.height) {
 			cam.updateSize(gui->viewportSize.x, gui->viewportSize.y);
 		}
 
@@ -188,6 +277,7 @@ int SparkEngine_Main() {
 		if (io.KeysDown[GLFW_KEY_F9]) {
 			SaveTextureToFile(loader.framebufferTexture, width_, height_, "assets/generated/screenshots/texture.png", *gui);
 		}
+
 
 		// Updates and exports the camera matrix to the Vertex Shader
 		cam.updateMatrix(45.0f, 0.1f, 100.0f);

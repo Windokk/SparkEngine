@@ -13,6 +13,7 @@ void Camera::updateSize(int new_width, int new_height)
 {
 	Camera::width = new_width;
 	Camera::height = new_height;
+
 }
 
 void Camera::updateMatrix(float FOVdeg, float nearPlane, float farPlane)

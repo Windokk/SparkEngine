@@ -87,8 +87,8 @@ public:
 		style.Colors[ImGuiCol_SliderGrab] = ImVec4(0.4980392158031464f, 0.5137255191802979f, 1.0f, 1.0f);
 		style.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.5372549295425415f, 0.5529412031173706f, 1.0f, 1.0f);
 		style.Colors[ImGuiCol_Button] = ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 0.8f);
-		style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.196078434586525f, 0.1764705926179886f, 0.5450980663299561f, 1.0f);
-		style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.2352941185235977f, 0.2156862765550613f, 0.5960784554481506f, 1.0f);
+		style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.26078434586525f, 0.26078434586525f, 0.26078434586525f, 1.0f);
+		style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.26078434586525f, 0.26078434586525f, 0.26078434586525f, 1.0f);
 		style.Colors[ImGuiCol_Header] = ImVec4(0.0470588244497776f, 0.05490196123719215f, 0.07058823853731155f, 1.0f);
 		style.Colors[ImGuiCol_HeaderHovered] = ImVec4(0.196078434586525f, 0.1764705926179886f, 0.5450980663299561f, 1.0f);
 		style.Colors[ImGuiCol_HeaderActive] = ImVec4(0.2352941185235977f, 0.2156862765550613f, 0.5960784554481506f, 1.0f);
@@ -141,6 +141,8 @@ public:
 	char scene_File_Name[500] = "";
 	char scene_File_Path[500] = "";
 
+	unsigned int logo_textureID;
+
 	ImGuizmo::MODE currentGizmoMode;
 	ImGuizmo::OPERATION currentGizmoOperation;
 	ImVec2 viewportSize;
@@ -150,8 +152,10 @@ public:
 	bool showCloseButton;
 	ImFont* solid;
 	ImFont* opensans;
+	ImFont* opensans_regular;
 	ImFont* solidBig;
 	ImFont* opensansBig;
+	ImFont* regular;
 	bool showContentBrowser = true;
 	bool showDetails = true;
 	bool showViewport = true;

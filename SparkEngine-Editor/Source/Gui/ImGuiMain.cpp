@@ -99,21 +99,21 @@ void ImGuiMain::Load(GLFWwindow* window, ImGuiIO& io)
 	opensansBig = io.FontDefault = io.Fonts->AddFontFromFileTTF("../SparkEngine-Core/assets/defaults/gui/engine/fonts/OpenSans-Medium.ttf", 15.0f);
 	solidBig = io.Fonts->AddFontFromFileTTF("../SparkEngine-Core/assets/defaults/gui/engine/fonts/fa-solid-900.ttf", 34.0f, &icons_config, icons_ranges);
 
+	opensans_regular = io.FontDefault = io.Fonts->AddFontFromFileTTF("../SparkEngine-Core/assets/defaults/gui/engine/fonts/OpenSans-Medium.ttf", 13);
+	regular = io.Fonts->AddFontFromFileTTF("../SparkEngine-Core/assets/defaults/gui/engine/fonts/fa-regular-400.ttf", 13.0f, &icons_config, icons_ranges);
+
 	opensans = io.FontDefault = io.Fonts->AddFontFromFileTTF("../SparkEngine-Core/assets/defaults/gui/engine/fonts/OpenSans-Medium.ttf", 13);
 	solid = io.Fonts->AddFontFromFileTTF("../SparkEngine-Core/assets/defaults/gui/engine/fonts/fa-solid-900.ttf", 13.0f, &icons_config, icons_ranges);
+
 
 	ImFontConfig font_cfg;
 	font_cfg.FontDataOwnedByAtlas = false;
 	//io.Fonts->AddFontFromMemoryTTF((void*)tahoma, sizeof(tahoma), 17.f, &font_cfg);
 
-	LoadTextureFromFile("assets/defaults/gui/engine/icons/file-regular.png", &FileIconID, &width, &height);
-	LoadTextureFromFile("assets/defaults/gui/engine/icons/folder-regular.png", &FolderIconID, &width, &height);
-	LoadTextureFromFile("assets/defaults/gui/engine/icons/folder-arrow-up-regular.png", &FolderUpIconID, &width, &height);
-
 	currentGizmoMode = ImGuizmo::WORLD;
 	currentGizmoOperation = ImGuizmo::TRANSLATE;
 
-
+	logo_textureID = LoadTexture("../SparkEngine-Core/assets/defaults/logos/icon.png");
 }
 
 void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& selectedObjectID, ImGuiIO& io)
@@ -124,6 +124,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 	ImGuizmo::BeginFrame();
 
 
+
 	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
 
 	static bool useSnap = false;
@@ -132,7 +133,6 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 	static float boundsSnap[] = { 0.1f, 0.1f, 0.1f };
 	static bool boundSizing = false;
 	static bool boundSizingSnap = false;
-
 	float viewManipulateRight = io.DisplaySize.x;
 	float viewManipulateTop = 0;
 
@@ -147,6 +147,12 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 
 	//Main Menu Bar
 	if (ImGui::BeginMainMenuBar()) {
+
+		
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 10);
+		ImGui::Image((void*)(intptr_t)logo_textureID, ImVec2(25, 25));
+
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 10);
 		if (ImGui::BeginMenu("File")) {
 			if (ImGui::MenuItem(ICON_FA_FILE_PLUS "  New", "Ctrl+N")) {
 				showNewDialog = true;
@@ -246,6 +252,26 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 			}
 			ImGui::EndMenu();
 		}
+
+		ImGui::SetCursorPosX(ImGui::GetWindowWidth() - 98);
+		if (ImGui::Button(ICON_FA_MINUS"##minus_window_btn", ImVec2(25, 25))) {
+			glfwIconifyWindow(window);
+		}
+
+		ImGui::PushFont(regular);
+		if (ImGui::Button(ICON_FA_SQUARE"##max_window_btn", ImVec2(25, 25))) {
+			glfwMaximizeWindow(window);
+		}
+		ImGui::PopFont();
+
+		style.Colors[ImGuiCol_ButtonActive] = ImVec4(1.0f, 0.1f, 0.1f, 1.0f);
+		style.Colors[ImGuiCol_ButtonHovered] = ImVec4(1.0f, 0.1f, 0.1f, 1.0f);
+		if (ImGui::Button(ICON_FA_TIMES"##close_window_btn", ImVec2(25, 25))) {
+			glfwSetWindowShouldClose(window, GLFW_TRUE);
+		}
+		style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.26078434586525f, 0.26078434586525f, 0.26078434586525f, 1.0f);
+		style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.26078434586525f, 0.26078434586525f, 0.26078434586525f, 1.0f);
+
 		ImGui::EndMainMenuBar();
 	}
 
@@ -1075,9 +1101,6 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 
 		ImGui::End();
 	}
-
-
-
 
 	ImGui::EndFrame();
 

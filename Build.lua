@@ -1,7 +1,3 @@
-
-require( "premake-qt/qt" )
-qt = premake.extensions.qt
-
 -- premake5.lua
 workspace "Spark Engine"
    architecture "x64"

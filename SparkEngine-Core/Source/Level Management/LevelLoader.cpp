@@ -76,7 +76,7 @@ void LevelLoader::Load1(const char* loaded_file) {
 		
 		for (int a = 0; a < parser.objects[i].components.size(); a++) {
 			if (std::holds_alternative<TransformComponent>(parser.objects[i].components[a])) {
-				Transform transform;
+				Transform transform = Transform(glm::vec3(0,0,0), glm::quat(1,0,0,0), glm::vec3(1,1,1));
 				transform.Location = std::get<TransformComponent>(parser.objects[i].components[a]).Location;
 				transform.Rotation = std::get<TransformComponent>(parser.objects[i].components[a]).Rotation;
 				transform.Scale = std::get<TransformComponent>(parser.objects[i].components[a]).Scale;
@@ -204,13 +204,37 @@ void LevelLoader::Load2() {
 			}
 		}
 	}
-	/*
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-	glFrontFace(GL_CW);*/
+	
+
+	///////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////
+	////											   ////
+	////   ENABLE THIS TO STOP RENDERING BOTH FACES	   ////
+	////			|         |         |			   ////
+	////			V         V         V			   ////
+	////											   ////
+	///////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////
+	// 
+	//glEnable(GL_CULL_FACE);
+	//glCullFace(GL_BACK);
+	//glFrontFace(GL_CW);
+
+
+	// We create the rigidbodies
+	for (auto& obj : parser.objects) {
+		if (obj.HasComponent<RigidbodyComponent>()) {
+			rigidbodies[obj.name].mass = obj.GetComponent<RigidbodyComponent>().mass;
+			rigidbodies[obj.name].transform = &obj.GetComponent<TransformComponent>();
+
+		}
+	}
+
+
 }
 
 void LevelLoader::Unload() {
+	
 	for (int i = 0; i < shaders.size(); i++) {
 		shaders[i].shader.Delete();
 	}
@@ -260,6 +284,7 @@ void LevelLoader::Update(Camera cam)
 
 void LevelLoader::LoadNewLevel(const char* scene) {
 
+	rigidbodies.clear();
 	objects_Transforms.clear();
 	models.clear();
 	light_object_infos.clear();

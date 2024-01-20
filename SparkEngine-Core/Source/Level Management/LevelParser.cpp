@@ -103,7 +103,7 @@ LevelParser::LevelParser(const char* file)
 								for (auto& comp_name : obj_properties.value()[comp_id].items()) {
 									//We check if the component is of any of these types
 									if (comp_name.key() == "transform") {
-										TransformComponent transform;
+										TransformComponent transform = TransformComponent();
 										glm::vec3 Location;
 										glm::quat Rotation;
 										glm::vec3 Scale;
@@ -296,7 +296,7 @@ LevelParser::LevelParser(const char* file)
 										components.push_back(light);
 									}
 									if (comp_name.key() == "rigidbody"){
-										RigidbodyComponent rigidbody;
+										RigidbodyComponent rigidbody = RigidbodyComponent();
 										float mass;
 										ColliderComponent collider;
 										for (auto& param : comp_properties[0].items()) {
@@ -321,7 +321,7 @@ LevelParser::LevelParser(const char* file)
 										components.push_back(rigidbody);
 									}
 									if (comp_name.key() == "sphere_collider"){
-										SphereColliderComponent sphere_collider;
+										SphereColliderComponent sphere_collider = SphereColliderComponent();
 										glm::vec3 center;
 										float radius;
 										for (auto& param : comp_properties[0].items()) {
@@ -335,7 +335,7 @@ LevelParser::LevelParser(const char* file)
 										components.push_back(sphere_collider);
 									}
 									if (comp_name.key() == "plane_collider"){
-										PlaneColliderComponent plane_collider;
+										PlaneColliderComponent plane_collider = PlaneColliderComponent();
 										glm::vec3 normal;
 										float distance;
 										for (auto& param : comp_properties[0].items()) {

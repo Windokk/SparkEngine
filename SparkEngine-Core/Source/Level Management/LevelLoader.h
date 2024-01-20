@@ -1,6 +1,3 @@
-#ifndef SceneLoader_CLASS_H
-#define SceneLoader_CLASS_H
-
 #include "../Basic Rendering/Model/Model.h"
 #include "LevelParser.h"
 #include "../Utils/Engine/EngineUtils.h"
@@ -9,15 +6,13 @@
 #include <json/json.h>
 #include "Components.h"
 #include <typeinfo>
+#include <Physics/Collision.h>
 
 
 using json = nlohmann::json;
 
-struct Transform {
-	glm::vec3 Location;
-	glm::quat Rotation;
-	glm::vec3 Scale;
-};
+#ifndef LIGHT_OBJECT_INFOS_H
+#define LIGHT_OBJECT_INFOS_H
 
 struct Light_Object_Infos {
 	int objectID;
@@ -38,6 +33,10 @@ struct Light_Object_Infos {
 
 };
 
+#endif
+
+#ifndef SceneLoader_CLASS_H
+#define SceneLoader_CLASS_H
 class LevelLoader 
 {
 public:
@@ -82,6 +81,12 @@ public:
 	unsigned int RBO;
 	Shader skyboxShader;
 	Shader framebufferProgram;
+
+
+	//Physics
+
+	std::map<std::string,physics::PhysicsObject> rigidbodies;
+
 
 private:
 	const char* file ="";

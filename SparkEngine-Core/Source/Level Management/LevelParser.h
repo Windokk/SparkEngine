@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef SceneParser_CLASS_H
 #define SceneParser_CLASS_H
 
