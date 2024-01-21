@@ -14,7 +14,6 @@
 #include <Libraries/ImGui_Lib/ImGuizmo.h>
 
 
-
 #include "Utils/Engine/EngineUtils.h"
 #include "Basic Rendering/Camera/Camera.h"
 #include "Level Management/LevelLoader.h"
@@ -22,13 +21,14 @@
 #include "Level Management/LevelWriter.h"
 #include "Utils/Engine/FilesManager.h"
 
+#include "../Runtime/EditorPlay.h"
 
 
 class ImGuiMain {
 public:
 	ImGuiMain();
 	void Load(GLFWwindow* window, ImGuiIO& io);
-	void Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& selectedObjectID, ImGuiIO& io);
+	void Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& selectedObjectID, ImGuiIO& io, EditorPlayer& player);
 	void SetupImGuiStyle()
 	{
 		// Future Dark style by rewrking from ImThemes
@@ -122,6 +122,8 @@ public:
 	}
 
 	
+
+	bool play = false;
 
 	int current_file = -1;
 	

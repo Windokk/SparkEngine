@@ -4,8 +4,6 @@ Transform::Transform(glm::vec3 location, glm::quat rotation, glm::vec3 scale)
 	: Location(location), Rotation(rotation), Scale(scale) {
 }
 
-
-
 Component::Component()
 {
 }
@@ -46,22 +44,29 @@ ColliderComponent::ColliderComponent()
 }
 
 PlaneColliderComponent::PlaneColliderComponent(glm::vec3 _normal, float _distance)
-	: normal(_normal), distance(_distance) {
+	: normal(_normal), distance(_distance), ColliderComponent() {
+	Type = physics::PLANE;
 }
 
-PlaneColliderComponent::PlaneColliderComponent() {
+PlaneColliderComponent::PlaneColliderComponent() : ColliderComponent() {
+	Type = physics::PLANE;
 }
 
 SphereColliderComponent::SphereColliderComponent(glm::vec3 _center, float _radius)
-	: center(_center), radius(_radius) {
+	: center(_center), radius(_radius), ColliderComponent() {
+	Type = physics::SPHERE;
 }
 
-SphereColliderComponent::SphereColliderComponent() {
+SphereColliderComponent::SphereColliderComponent() : ColliderComponent() {
+	Type = physics::SPHERE;
 }
+
 
 RigidbodyComponent::RigidbodyComponent(float _mass, ColliderComponent _collider)
 	: mass(_mass), collider(_collider) {
 }
 
-RigidbodyComponent::RigidbodyComponent() {
+RigidbodyComponent::RigidbodyComponent()
+{
 }
+

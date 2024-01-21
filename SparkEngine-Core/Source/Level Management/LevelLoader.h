@@ -7,7 +7,7 @@
 #include "Components.h"
 #include <typeinfo>
 #include <Physics/Collision.h>
-
+#include <typeinfo>
 
 using json = nlohmann::json;
 
@@ -44,7 +44,7 @@ public:
 	void Load1(const char* loaded_file);
 	void Load2();
 	void Unload();
-	void Update(Camera cam);
+	void Update(Camera cam, bool* isPlaying);
 	void LoadNewLevel(const char* scene);
 	void CreateLights();
 	void SetLightValues(int objectID, int componentID);

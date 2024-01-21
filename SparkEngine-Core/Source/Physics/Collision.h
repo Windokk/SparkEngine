@@ -31,7 +31,7 @@ namespace physics {
 		}
 	};
 
-	enum class ColliderType {
+	enum ColliderType {
 		PLANE,
 		SPHERE,
 		CAPSULE,
@@ -42,7 +42,7 @@ namespace physics {
 	struct  Collider {
 	public:
 		ColliderType Type;
-
+		Collider();
 		Collider(ColliderType type);
 	};
 
@@ -85,7 +85,7 @@ namespace physics {
 				std::swap(a, b);
 				std::swap(at, bt);
 			}
-
+			std::cout << "a->type :  "<< a->Type<<"    b->Type :   "<<b->Type<<"\n\n";
 			CollisionPoints points = tests[(int)a->Type][(int)b->Type](a, at, b, bt);
 
 			// if we swapped the order of the colliders, to keep the

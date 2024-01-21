@@ -298,7 +298,7 @@ LevelParser::LevelParser(const char* file)
 									if (comp_name.key() == "rigidbody"){
 										RigidbodyComponent rigidbody = RigidbodyComponent();
 										float mass;
-										ColliderComponent collider;
+										ColliderComponent collider = ColliderComponent();
 										for (auto& param : comp_properties[0].items()) {
 											mass = std::stof((std::string)param.value());
 										}
@@ -306,13 +306,18 @@ LevelParser::LevelParser(const char* file)
 											std::string type = (std::string)param.value();
 											if (type == "sphere") {
 												for (const auto& variant : components) {
-													collider = *std::get_if<SphereColliderComponent>(&variant);
+													if (auto pComponent = std::get_if<SphereColliderComponent>(&variant)) {
+														collider = *pComponent;
+													}
 												}
 											}
 
 											if (type == "plane") {
 												for (const auto& variant : components) {
-													collider = *std::get_if<PlaneColliderComponent>(&variant);
+													if (auto pComponent = std::get_if<PlaneColliderComponent>(&variant)) {
+														collider = *pComponent;
+													}
+													
 												}
 											}
 										}

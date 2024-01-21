@@ -1,6 +1,12 @@
 #include<glm/gtc/type_ptr.hpp>
 #include <string>
 #include <../Utils/Engine/EngineUtils.h>
+#include <Physics/Collision.h>
+
+namespace physics {
+
+	enum ColliderType;
+}
 
 #ifndef TRANSFORM_H
 #define TRANSFORM_H
@@ -75,6 +81,7 @@ public:
 class ColliderComponent : public Component {
 public:
 	ColliderComponent();
+	physics::ColliderType Type;
 };
 
 #endif

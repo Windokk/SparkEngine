@@ -17,13 +17,15 @@ void physics::PhysicsWorld::RemoveAllObjects() {
 }
 
 void physics::PhysicsWorld::Step(float dt) {
-	ResolveCollisions(dt);
+	//ResolveCollisions(dt);
 
 	for (physics::PhysicsObject* obj : m_objects) {
-		obj->force += obj->mass * m_gravity;
-		obj->velocity += obj->force / obj->mass * dt;
-		obj->transform->Location += obj->velocity * dt;
-		obj->force = glm::vec3(0, 0, 0);
+		if (!obj->mass == 0) {
+			obj->force += obj->mass * m_gravity;
+			obj->velocity += obj->force / obj->mass * dt;
+			obj->transform->Location += obj->velocity * dt;
+			obj->force = glm::vec3(0, 0, 0);
+		}
 	}
 }
 

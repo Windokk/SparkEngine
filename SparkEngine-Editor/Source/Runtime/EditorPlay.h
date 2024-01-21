@@ -1,16 +1,24 @@
 #include "Physics/Dynamics.h"
-
+#include <Level Management/LevelLoader.h>
+#include <chrono>
+#include <thread>
 
 using namespace physics;
 
+class EditorPlayer {
+public:
+	EditorPlayer();
 
-extern PhysicsWorld m_world;
+	PhysicsWorld m_world;
 
-extern bool isCompiled;
+	bool isCompiled;
 
+	bool isPlaying;
 
-void Play();
-void Stop();
-void CompileScripts();
-void RunScripts();
-void StopScripts();
+	void Play();
+	void Stop(LevelLoader* loader);
+	void Prepare(LevelLoader* loader);
+	void CompileScripts();
+	void RunScripts();
+	void StopScripts();
+};

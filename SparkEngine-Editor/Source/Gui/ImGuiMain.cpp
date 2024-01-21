@@ -116,7 +116,7 @@ void ImGuiMain::Load(GLFWwindow* window, ImGuiIO& io)
 	logo_textureID = LoadTexture("../SparkEngine-Core/assets/defaults/logos/icon.png");
 }
 
-void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& selectedObjectID, ImGuiIO& io)
+void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& selectedObjectID, ImGuiIO& io, EditorPlayer& player)
 {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
@@ -138,10 +138,12 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 
 	ImGuiStyle& style = ImGui::GetStyle();
 
-	//Teleports to selectedObject when pressing F
-	if (io.KeysDown[GLFW_KEY_F]) {
-		if (selectedObjectID != -1) {
-			cam.Position = loader.objects_Transforms[selectedObjectID].Location;
+	if (!player.isPlaying) {
+		//Teleports to selectedObject when pressing F
+		if (io.KeysDown[GLFW_KEY_F]) {
+			if (selectedObjectID != -1) {
+				cam.Position = loader.objects_Transforms[selectedObjectID].Location;
+			}
 		}
 	}
 
@@ -496,9 +498,10 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 		viewportTextureSize = ImGui::GetContentRegionAvail();
 		ImGui::Image((void*)(intptr_t)loader.framebufferTexture, ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
 		isHoverViewport = (ImGui::IsItemHovered());
-
-		if (isHoverViewport && ImGui::IsWindowDocked() && !ImGuizmo::IsUsingAny()) {
-			cam.Inputs(window, 0.01F, 100.0f, ImVec2(ImGui::GetWindowPos().x + ImGui::GetWindowSize().x / 2, ImGui::GetWindowPos().y + ImGui::GetWindowSize().y / 2), ImGui::GetWindowSize());
+		if (!player.isPlaying) {
+			if (isHoverViewport && ImGui::IsWindowDocked() && !ImGuizmo::IsUsingAny()) {
+				cam.Inputs(window, 0.01F, 100.0f, ImVec2(ImGui::GetWindowPos().x + ImGui::GetWindowSize().x / 2, ImGui::GetWindowPos().y + ImGui::GetWindowSize().y / 2), ImGui::GetWindowSize());
+			}
 		}
 		if (!isHoverViewport) {
 			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
@@ -532,7 +535,12 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 		ImGui::Button(ICON_FA_CUBE "  Perspective"); //TODO : Change "perspective" to the camera perspective value
 		ImGui::SameLine();
 		ImGui::SetCursorPosX(viewportSize.x / 2);
-		ImGui::Button(ICON_FA_PLAY);
+		ImGui::Button(player.isPlaying ? ICON_FA_SQUARE : ICON_FA_PLAY);
+		if (ImGui::IsItemClicked() && play == false) {
+			play = true;
+
+		}
+		
 		ImGui::SameLine();
 		ImGui::SetCursorPosX(viewportSize.x - 110);
 		ImGui::Button(ICON_FA_ARROWS);
@@ -591,7 +599,7 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 	if (showDetails) {
 		ImGui::Begin(ICON_FA_LIST"  Details", &showDetails);
 		ImGui::Text("Name : ");
-		ImGui::SameLine();
+		ImGui::SameLine(); 
 		if (selectedObjectID != -1) {
 			static char buffer[256];
 			strcpy_s(buffer, loader.parser.objects[selectedObjectID].name.c_str());
@@ -906,15 +914,14 @@ void ImGuiMain::Draw(GLFWwindow* window, Camera& cam, LevelLoader& loader, int& 
 			}
 			if (loader.parser.objects[selectedObjectID].HasComponent<RigidbodyComponent>()) {
 				if (ImGui::CollapsingHeader("Rigidbody")) {
-					RigidbodyComponent rigidbody = loader.parser.objects[selectedObjectID].GetComponent<RigidbodyComponent>();
+					RigidbodyComponent& rigidbody = loader.parser.objects[selectedObjectID].GetComponent<RigidbodyComponent>();
 					static float mass;
 					mass = rigidbody.mass;
 					ImGui::Text("Mass :     ");
 					ImGui::SameLine();
 					ImGui::InputFloat("##Mass", &mass);
 					rigidbody.mass = mass;
-
-
+					loader.rigidbodies[loader.parser.objects[selectedObjectID].name].mass = mass;
 					char ModelPathbuffer[255]{};
 					ImGui::Text("Collider :     ");
 					ImGui::SameLine();

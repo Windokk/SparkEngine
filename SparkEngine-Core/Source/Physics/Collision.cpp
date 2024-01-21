@@ -111,6 +111,10 @@ physics::CollisionPoints physics::collision_test::FindPlaneSphereCollisionPoints
 	return physics::CollisionPoints(aDeep, bDeep, normal, distance);
 }
 
+physics::Collider::Collider()
+{
+}
+
 physics::Collider::Collider(ColliderType type) : Type(type)
 {
 }

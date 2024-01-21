@@ -56,7 +56,7 @@ void LevelLoader::Load1(const char* loaded_file) {
 
 	Shader_Infos infos;
 	//Shaders loading
-	for (int i = 0; i < parser.shaders.size();i++) {
+	for (int i = 0; i < parser.shaders.size(); i++) {
 		if ((parser.shaders[i].geom).c_str() != (std::string)"") {
 			infos.name = parser.shaders[i].name;
 			infos.shader = (Shader((parser.shaders[i].vert).c_str(), (parser.shaders[i].frag).c_str(), (parser.shaders[i].geom).c_str()));
@@ -68,15 +68,13 @@ void LevelLoader::Load1(const char* loaded_file) {
 			infos.shader = Shader((parser.shaders[i].vert).c_str(), (parser.shaders[i].frag).c_str(), "");
 			shaders.push_back(infos);
 		}
-
 	}
 
 	//Models And Transforms Loading
 	for (int i = 0; i < parser.objects.size(); i++) {
-		
 		for (int a = 0; a < parser.objects[i].components.size(); a++) {
 			if (std::holds_alternative<TransformComponent>(parser.objects[i].components[a])) {
-				Transform transform = Transform(glm::vec3(0,0,0), glm::quat(1,0,0,0), glm::vec3(1,1,1));
+				Transform transform = Transform(glm::vec3(0, 0, 0), glm::quat(1, 0, 0, 0), glm::vec3(1, 1, 1));
 				transform.Location = std::get<TransformComponent>(parser.objects[i].components[a]).Location;
 				transform.Rotation = std::get<TransformComponent>(parser.objects[i].components[a]).Rotation;
 				transform.Scale = std::get<TransformComponent>(parser.objects[i].components[a]).Scale;
@@ -87,7 +85,6 @@ void LevelLoader::Load1(const char* loaded_file) {
 				if (model.instancing == 1) {
 					models.push_back(Model(model.model_path.c_str(), i));
 				}
-				
 			}
 		}
 	}
@@ -132,11 +129,9 @@ void LevelLoader::Load1(const char* loaded_file) {
 	SetShadersValues();
 	//We create the lights
 	CreateLights();
-	
 }
 
 void LevelLoader::Load2() {
-
 	//We load the skybox
 	glGenVertexArrays(1, &skyboxVAO);
 	glGenBuffers(1, &skyboxVBO);
@@ -204,7 +199,6 @@ void LevelLoader::Load2() {
 			}
 		}
 	}
-	
 
 	///////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////
@@ -215,32 +209,45 @@ void LevelLoader::Load2() {
 	////											   ////
 	///////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////
-	// 
+	//
 	//glEnable(GL_CULL_FACE);
 	//glCullFace(GL_BACK);
 	//glFrontFace(GL_CW);
 
+	////////////////////////////////////
+	////////////////////////////////////
+	////						    ////
+	////         PHYSICS :		    ////
+	////							////
+	////////////////////////////////////
+	////////////////////////////////////
 
 	// We create the rigidbodies
 	for (auto& obj : parser.objects) {
 		if (obj.HasComponent<RigidbodyComponent>()) {
 			rigidbodies[obj.name].mass = obj.GetComponent<RigidbodyComponent>().mass;
 			rigidbodies[obj.name].transform = &obj.GetComponent<TransformComponent>();
-
+			physics::Collider col = physics::Collider();
+			if (obj.HasComponent<SphereColliderComponent>()) {
+				col = physics::SphereCollider(obj.GetComponent<SphereColliderComponent>().center, obj.GetComponent<SphereColliderComponent>().radius);
+				col.Type = physics::SPHERE;
+			}
+			else if(obj.HasComponent<PlaneColliderComponent>()) {
+				col = physics::PlaneCollider(obj.GetComponent<PlaneColliderComponent>().normal, obj.GetComponent<PlaneColliderComponent>().distance);
+				col.Type = physics::PLANE;
+			}
+			rigidbodies[obj.name].collider = &col;
 		}
 	}
-
-
 }
 
 void LevelLoader::Unload() {
-	
 	for (int i = 0; i < shaders.size(); i++) {
 		shaders[i].shader.Delete();
 	}
 }
 
-void LevelLoader::Update(Camera cam)
+void LevelLoader::Update(Camera cam, bool* isPlaying)
 {
 	for (int i = 0; i < parser.objects.size(); i++) {
 		for (int a = 0; a < parser.objects[i].components.size(); a++) {
@@ -256,7 +263,7 @@ void LevelLoader::Update(Camera cam)
 				for (int x = 0; x < models.size(); x++) {
 					if (models[x].model_id == i) {
 						std::vector<light_Infos> lights;
-						for (int b = 0; b < light_object_infos.size();b++) {
+						for (int b = 0; b < light_object_infos.size(); b++) {
 							light_Infos light;
 							light.type = light_object_infos[b].type;
 							light.position = objects_Transforms[light_object_infos[b].objectID].Location;
@@ -271,10 +278,15 @@ void LevelLoader::Update(Camera cam)
 							light.outerCutOff = light_object_infos[b].outerCutOff;
 							light.intensity = light_object_infos[b].lightIntensity;
 							light.color = light_object_infos[b].lightColor;
-							lights.push_back(light); 
+							lights.push_back(light);
 						}
 						//models[x].Draw(shaders[shader_id].shader, cam, objects_Transforms[i].Location, objects_Transforms[i].Rotation, objects_Transforms[i].Scale, lights);
-						models[x].Draw(shaders[shader_id].shader, cam, objects_Transforms[i].Location, objects_Transforms[i].Rotation, objects_Transforms[i].Scale, lights);
+						if(parser.objects[i].HasComponent<RigidbodyComponent>() && isPlaying){
+							models[x].Draw(shaders[shader_id].shader, cam, rigidbodies[parser.objects[i].name].transform->Location, rigidbodies[parser.objects[i].name].transform->Rotation, rigidbodies[parser.objects[i].name].transform->Scale, lights);
+						}
+						else {
+							models[x].Draw(shaders[shader_id].shader, cam, objects_Transforms[i].Location, objects_Transforms[i].Rotation, objects_Transforms[i].Scale, lights);
+						}
 					}
 				}
 			}
@@ -283,7 +295,6 @@ void LevelLoader::Update(Camera cam)
 }
 
 void LevelLoader::LoadNewLevel(const char* scene) {
-
 	rigidbodies.clear();
 	objects_Transforms.clear();
 	models.clear();
@@ -293,7 +304,6 @@ void LevelLoader::LoadNewLevel(const char* scene) {
 	parser.shaders.clear();
 	parser.skybox = LevelParser::SkyboxData();
 	Unload();
-
 
 	LevelLoader::Load1(scene);
 
@@ -309,7 +319,7 @@ void LevelLoader::LoadNewLevel(const char* scene) {
 }
 
 void LevelLoader::CreateLights() {
-	for (int i = 0; i < parser.objects.size();i++) {
+	for (int i = 0; i < parser.objects.size(); i++) {
 		for (int a = 0; a < parser.objects[i].components.size(); a++) {
 			if (std::holds_alternative<LightComponent>(parser.objects[i].components[a])) {
 				LightComponent light = std::get<LightComponent>(parser.objects[i].components[a]);
@@ -330,14 +340,12 @@ void LevelLoader::CreateLights() {
 				infos.lightModel = glm::translate(infos.lightModel, infos.lightPos);
 				infos.objectID = i;
 				light_object_infos.push_back(infos);
-
 			}
 		}
 	}
-
 }
 
-void LevelLoader::SetLightValues(int objectID, int componentID){
+void LevelLoader::SetLightValues(int objectID, int componentID) {
 	LightComponent lightComponent = std::get<LightComponent>(parser.objects[objectID].components[componentID]);
 	Light_Object_Infos infos;
 	infos.lightColor = lightComponent.color;
@@ -354,12 +362,10 @@ void LevelLoader::SetLightValues(int objectID, int componentID){
 }
 
 void LevelLoader::SetShadersValues() {
-	
 	glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 
 	for (int i = 0; i < parser.shaders.size(); i++)
 	{
-		
 		if (shaders[i].name == "skyboxShader")
 		{
 			skyboxShader = shaders[i].shader;

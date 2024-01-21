@@ -16,7 +16,6 @@
 
 #include "Gui/ImGuiMain.h"
 
-#include "Runtime/EditorPlay.h"
 
 #define GLFW_EXPOSE_NATIVE_WIN32
 #define GLFW_EXPOSE_NATIVE_WGL
@@ -24,7 +23,7 @@
 
 #include <GLFW/glfw3native.h>
 
-
+bool can_test_for_stop = false;
 
 unsigned int width_ = 1280;
 unsigned int height_ = 720;
@@ -43,7 +42,7 @@ const char* current_level = "../SparkEngine-Core/assets/defaults/levels/test_sim
 
 Camera cam = Camera(0, 0, glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
 
-
+EditorPlayer player = EditorPlayer();
 
 
 void RenderLevel() {
@@ -57,7 +56,7 @@ void RenderLevel() {
 	glEnable(GL_DEPTH_TEST);
 
 	//Update the level from the loader
-	loader.Update(cam);
+	loader.Update(cam, &player.isPlaying);
 
 	glDepthFunc(GL_LEQUAL);
 
@@ -213,7 +212,6 @@ int main() {
 	stbi_image_free(images[0].pixels);
 	stbi_image_free(images[1].pixels);
 
-	disableTitlebar(window);
 
 	if (window == NULL)
 	{
@@ -259,7 +257,7 @@ int main() {
 		glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)width_ / height_, 0.1f, 100.0f);
 
 		//We draw the ImGui interface
-		gui->Draw(window, cam, loader, selectedObjectID, io);
+		gui->Draw(window, cam, loader, selectedObjectID, io, player);
 
 		//We don't refresh content browser every tick, only every 200 ticks
 		file_refresh_timer++;
@@ -279,8 +277,42 @@ int main() {
 		}
 
 
+		/////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////
+		////											 ////
+		////		Here we run the editor play		     ////
+		////											 ////
+		////										     ////
+		/////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////
+
+		if (gui->play && not player.isPlaying) {
+			player.Prepare(&loader);
+			selectedObjectID = -1;
+		}
+
+		
+
+		if (gui->play && player.isPlaying && can_test_for_stop) {
+			player.Stop(&loader);
+			can_test_for_stop = false;
+			gui->play = false;
+		}
+
+
+
+		if (player.isPlaying) {
+			player.Play();
+			can_test_for_stop = true;
+			gui->play = false;
+		}
+
+		
+
 		// Updates and exports the camera matrix to the Vertex Shader
-		cam.updateMatrix(45.0f, 0.1f, 100.0f);
+		cam.updateMatrix(45.0f, 0.1f, 1000.0f);
 
 		glfwSwapInterval(0);
 		// Swap the back buffer with the front buffer

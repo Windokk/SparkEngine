@@ -1,6 +1,22 @@
 #include "EditorPlay.h"
 
-void Play(){
+EditorPlayer::EditorPlayer() {
+
+}
+
+void EditorPlayer::Prepare(LevelLoader* loader)
+{
+	for (auto& obj : loader->parser.objects) {
+		if (obj.HasComponent<RigidbodyComponent>()) {
+			m_world.AddObject(&loader->rigidbodies[obj.name]);
+		}
+	}
+	isPlaying = true;
+	EditorPlayer::CompileScripts();
+}
+
+void EditorPlayer::Play(){
+
 	
 	//////////////////////////////
 	//////////////////////////////
@@ -12,9 +28,9 @@ void Play(){
 	
 	/// Physics
 
-	//m_world.Step(0.005);
+	m_world.Step(0.005);
 
-
+	
 
 	//////////////////////////////
 	//////////////////////////////
@@ -24,11 +40,12 @@ void Play(){
 	//////////////////////////////
 	//////////////////////////////
 
-	RunScripts();
+
+	
 
 }
 
-void Stop() {
+void EditorPlayer::Stop(LevelLoader* loader) {
 
 	//////////////////////////////
 	//////////////////////////////
@@ -38,13 +55,15 @@ void Stop() {
 	//////////////////////////////
 	//////////////////////////////
 
+	for (int i = 0; i < loader->parser.objects.size(); i++) {
+		if (loader->parser.objects[i].HasComponent<RigidbodyComponent>()) {
+			loader->parser.objects[i].GetComponent<TransformComponent>() = loader->objects_Transforms[i].toTransformComponent();
+		}
+	}
+
 	/// Physics
 
-	// m_world.RemoveAllObjects();
-
-
-
-
+	m_world.RemoveAllObjects();
 
 
 	//////////////////////////////
@@ -55,18 +74,19 @@ void Stop() {
 	//////////////////////////////
 	//////////////////////////////
 
-	StopScripts();
+
+	isPlaying = false;
 
 }
 
-void StopScripts(){
+void EditorPlayer::StopScripts(){
 
 }
 
-void CompileScripts(){
+void EditorPlayer::CompileScripts(){
 
 }
 
-void RunScripts(){
+void EditorPlayer::RunScripts(){
 
 }
