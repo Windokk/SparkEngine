@@ -14,13 +14,13 @@
         { "geom": "" }
       ]
     },
-    {
-      "framebufferShader": [
-        { "vert": "../SparkEngine-Core/assets/defaults/shaders/Framebuffer/framebuffer.vert" },
-        { "frag": "../SparkEngine-Core/assets/defaults/shaders/Framebuffer/framebuffer.frag" },
-        { "geom": "" }
-      ]
-    }
+		{
+			"framebufferShader": [
+				{ "vert": "../SparkEngine-Core/assets/defaults/shaders/Framebuffer/framebuffer.vert" },
+				{ "frag": "../SparkEngine-Core/assets/defaults/shaders/Framebuffer/framebuffer.frag" },
+				{ "geom": "" }
+			]
+		}
 
   ],
 	"skybox": [

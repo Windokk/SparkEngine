@@ -72,48 +72,50 @@ void Mesh::Draw(Shader& shader, Camera& camera, glm::mat4 matrix, glm::vec3 tran
 	shader.setVec3("camPos", camera.Position);
 	camera.Matrix(shader, "camMatrix");
 	shader.setFloat("material.shininess", 100.0f);
+
+	//Take care of the lights
 	int numDirLights = 0;
 	int numPointLights = 0;
 	int numSpotLights = 0;
 	for (int i = 0; i < lights.size(); i++) {
 		switch (lights[i].type) {
-			case LT_DIRECTIONNAL:
-				numDirLights += 1;
-				shader.setVec3("dirLights[" + std::to_string(numDirLights - 1) + "].direction", lights[i].direction);
-				shader.setVec3("dirLights[" + std::to_string(numDirLights - 1) + "].ambient", lights[i].ambient);
-				shader.setVec3("dirLights[" + std::to_string(numDirLights - 1) + "].diffuse", lights[i].diffuse);
-				shader.setVec3("dirLights[" + std::to_string(numDirLights - 1) + "].specular", lights[i].specular);
-				shader.setFloat("dirLights[" + std::to_string(numDirLights - 1) + "].intensity", lights[i].intensity);
-				shader.setVec3("dirLights[" + std::to_string(numDirLights - 1) + "].color", lights[i].color);
+		case LT_DIRECTIONNAL:
+			numDirLights += 1;
+			shader.setVec3("dirLights[" + std::to_string(numDirLights - 1) + "].direction", lights[i].direction);
+			shader.setVec3("dirLights[" + std::to_string(numDirLights - 1) + "].ambient", lights[i].ambient);
+			shader.setVec3("dirLights[" + std::to_string(numDirLights - 1) + "].diffuse", lights[i].diffuse);
+			shader.setVec3("dirLights[" + std::to_string(numDirLights - 1) + "].specular", lights[i].specular);
+			shader.setFloat("dirLights[" + std::to_string(numDirLights - 1) + "].intensity", lights[i].intensity);
+			shader.setVec3("dirLights[" + std::to_string(numDirLights - 1) + "].color", lights[i].color);
 
-				break;
-			case LT_POINT:
-				numPointLights += 1;
-				shader.setVec3("pointLights[" + std::to_string(numPointLights - 1) + "].position", lights[i].position);
-				shader.setVec3("pointLights[" + std::to_string(numPointLights - 1) + "].ambient", lights[i].ambient);
-				shader.setVec3("pointLights[" + std::to_string(numPointLights - 1) + "].diffuse", lights[i].diffuse);
-				shader.setVec3("pointLights[" + std::to_string(numPointLights - 1) + "].specular", lights[i].specular);
-				shader.setFloat("pointLights[" + std::to_string(numPointLights - 1) + "].constant", lights[i].constant);
-				shader.setFloat("pointLights[" + std::to_string(numPointLights - 1) + "].linear", lights[i].linear);
-				shader.setFloat("pointLights[" + std::to_string(numPointLights - 1) + "].quadratic", lights[i].quadratic);
-				shader.setFloat("pointLights[" + std::to_string(numPointLights - 1) + "].intensity", lights[i].intensity);
-				shader.setVec3("pointLights[" + std::to_string(numPointLights - 1) + "].color", lights[i].color);
-				break;
-			case LT_SPOT:
-				numSpotLights += 1;
-				shader.setVec3("spotLights[" + std::to_string(numSpotLights - 1) + "].position", lights[i].position);
-				shader.setVec3("spotLights[" + std::to_string(numSpotLights - 1) + "].direction", lights[i].direction);
-				shader.setVec3("spotLights[" + std::to_string(numSpotLights - 1) + "].ambient", lights[i].ambient);
-				shader.setVec3("spotLights[" + std::to_string(numSpotLights - 1) + "].diffuse", lights[i].diffuse);
-				shader.setVec3("spotLights[" + std::to_string(numSpotLights - 1) + "].specular", lights[i].specular);
-				shader.setFloat("spotLights[" + std::to_string(numSpotLights - 1) + "].constant", lights[i].constant);
-				shader.setFloat("spotLights[" + std::to_string(numSpotLights - 1) + "].linear", lights[i].linear);
-				shader.setFloat("spotLights[" + std::to_string(numSpotLights - 1) + "].quadratic", lights[i].quadratic);
-				shader.setFloat("spotLights[" + std::to_string(numSpotLights - 1) + "].cutOff", lights[i].cutOff);
-				shader.setFloat("spotLights[" + std::to_string(numSpotLights - 1) + "].outerCutOff", lights[i].outerCutOff);
-				shader.setFloat("spotLights[" + std::to_string(numSpotLights - 1) + "].intensity", lights[i].intensity);
-				shader.setVec3("spotLights[" + std::to_string(numSpotLights - 1) + "].color", lights[i].color);
-				break;
+			break;
+		case LT_POINT:
+			numPointLights += 1;
+			shader.setVec3("pointLights[" + std::to_string(numPointLights - 1) + "].position", lights[i].position);
+			shader.setVec3("pointLights[" + std::to_string(numPointLights - 1) + "].ambient", lights[i].ambient);
+			shader.setVec3("pointLights[" + std::to_string(numPointLights - 1) + "].diffuse", lights[i].diffuse);
+			shader.setVec3("pointLights[" + std::to_string(numPointLights - 1) + "].specular", lights[i].specular);
+			shader.setFloat("pointLights[" + std::to_string(numPointLights - 1) + "].constant", lights[i].constant);
+			shader.setFloat("pointLights[" + std::to_string(numPointLights - 1) + "].linear", lights[i].linear);
+			shader.setFloat("pointLights[" + std::to_string(numPointLights - 1) + "].quadratic", lights[i].quadratic);
+			shader.setFloat("pointLights[" + std::to_string(numPointLights - 1) + "].intensity", lights[i].intensity);
+			shader.setVec3("pointLights[" + std::to_string(numPointLights - 1) + "].color", lights[i].color);
+			break;
+		case LT_SPOT:
+			numSpotLights += 1;
+			shader.setVec3("spotLights[" + std::to_string(numSpotLights - 1) + "].position", lights[i].position);
+			shader.setVec3("spotLights[" + std::to_string(numSpotLights - 1) + "].direction", lights[i].direction);
+			shader.setVec3("spotLights[" + std::to_string(numSpotLights - 1) + "].ambient", lights[i].ambient);
+			shader.setVec3("spotLights[" + std::to_string(numSpotLights - 1) + "].diffuse", lights[i].diffuse);
+			shader.setVec3("spotLights[" + std::to_string(numSpotLights - 1) + "].specular", lights[i].specular);
+			shader.setFloat("spotLights[" + std::to_string(numSpotLights - 1) + "].constant", lights[i].constant);
+			shader.setFloat("spotLights[" + std::to_string(numSpotLights - 1) + "].linear", lights[i].linear);
+			shader.setFloat("spotLights[" + std::to_string(numSpotLights - 1) + "].quadratic", lights[i].quadratic);
+			shader.setFloat("spotLights[" + std::to_string(numSpotLights - 1) + "].cutOff", lights[i].cutOff);
+			shader.setFloat("spotLights[" + std::to_string(numSpotLights - 1) + "].outerCutOff", lights[i].outerCutOff);
+			shader.setFloat("spotLights[" + std::to_string(numSpotLights - 1) + "].intensity", lights[i].intensity);
+			shader.setVec3("spotLights[" + std::to_string(numSpotLights - 1) + "].color", lights[i].color);
+			break;
 		}
 	}
 
@@ -138,6 +140,92 @@ void Mesh::Draw(Shader& shader, Camera& camera, glm::mat4 matrix, glm::vec3 tran
 		glUniformMatrix4fv(glGetUniformLocation(shader.ID, "rotation"), 1, GL_FALSE, glm::value_ptr(rot));
 		glUniformMatrix4fv(glGetUniformLocation(shader.ID, "scale"), 1, GL_FALSE, glm::value_ptr(sca));
 		glUniformMatrix4fv(glGetUniformLocation(shader.ID, "model"), 1, GL_FALSE, glm::value_ptr(matrix));
+
+		// Draw the actual mesh
+		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+	}
+	else
+	{
+		glDrawElementsInstanced(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0, instancing);
+	}
+}
+
+void Mesh::DrawPathTraced(Shader& shader, Camera& camera, glm::mat4 matrix, glm::vec3 translation, glm::quat rotation, glm::vec3 scale, std::vector<light_Infos> lights, PathTracingInfos infos)
+{
+	// Bind shader to be able to access uniforms
+
+	shader.Activate();
+	VAO.Bind();
+
+	// Keep track of how many of each type of textures we have
+	unsigned int numDiffuse = 0;
+	unsigned int numSpecular = 0;
+
+	for (unsigned int i = 0; i < textures.size(); i++)
+	{
+		std::string num;
+		std::string type = textures[i].type;
+		if (type == "diffuse")
+		{
+			num = std::to_string(numDiffuse++);
+		}
+		else if (type == "specular")
+		{
+			num = std::to_string(numSpecular++);
+		}
+		textures[i].texUnit(shader, (type + num).c_str(), i);
+		textures[i].Bind();
+	}
+
+	shader.setInt("topBVHIndex",infos.topBVHIndex);
+	shader.setVec2("resolution", infos.resolution);
+	shader.setVec2("invNumTiles", infos.invNumTiles);
+	shader.setInt("numOfLights", infos.numOfLights);
+	shader.setInt("accumTexture", infos.accumTexture);
+	shader.setInt("BVH", infos.BVH);
+	shader.setInt("vertexIndicesTex", infos.vertexIndicesTex);
+	shader.setInt("verticesTex", infos.verticesTex);
+	shader.setInt("normalsTex", infos.normalsTex);
+	shader.setInt("materialsTex", infos.materialsTex);
+	shader.setInt("transformsTex", infos.transformsTex);
+	shader.setInt("lightsTex", infos.lightsTex);
+	shader.setInt("textureMapsArrayTex", infos.textureMapsArrayTex);
+	shader.setInt("envMapTex", infos.envMapTex);
+	shader.setInt("envMapCDFTex", infos.envMapCDFTex);
+
+	shader.setVec3("camera.position", infos.camera_position);
+	shader.setVec3("camera.right", infos.camera_right);
+	shader.setVec3("camera.up", infos.camera_up);
+	shader.setVec3("camera.forward", infos.camera_forward);
+	shader.setFloat("camera.fov", infos.camera_fov);
+	shader.setFloat("camera.focalDist", infos.camera_focalDist);
+	shader.setFloat("camera.aperture", infos.camera_aperture);
+	shader.setFloat("envMapIntensity", infos.envMapIntensity);
+	shader.setFloat("envMapRot", infos.envMapRot);
+	shader.setInt("maxDepth", infos.maxDepth);
+	shader.setVec2("tileOffset", infos.tileOffset);
+	shader.setVec3("uniformLightCol", infos.uniformLightCol);
+	shader.setFloat("roughnessMollificationAmt", infos.roughnessMollificationAmt);
+	shader.setInt("frameNum", infos.frameNum);
+
+
+	if (instancing == 1)
+	{
+		// Initialize matrices
+		glm::mat4 trans = glm::mat4(1.0f);
+		glm::mat4 rot = glm::mat4(1.0f);
+		glm::mat4 sca = glm::mat4(1.0f);
+
+		// Transform the matrices to their correct form
+		trans = glm::translate(trans, translation);
+		rot = glm::mat4_cast(rotation);
+		sca = glm::scale(sca, scale);
+
+
+		shader.setMat4("translation", trans);
+		shader.setMat4("rotation", rot);
+		shader.setMat4("scale", sca);
+		shader.setMat4("model", matrix);
 
 		// Draw the actual mesh
 		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);

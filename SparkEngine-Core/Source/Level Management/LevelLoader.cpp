@@ -125,6 +125,118 @@ void LevelLoader::Load1(const char* loaded_file) {
 	if (fboStatus != GL_FRAMEBUFFER_COMPLETE)
 		std::cout << "Framebuffer error: " << fboStatus << std::endl;
 
+
+
+
+
+	// Create buffer and texture for BVH
+	glGenBuffers(1, &BVHBuffer);
+	glBindBuffer(GL_TEXTURE_BUFFER, BVHBuffer);
+	glBufferData(GL_TEXTURE_BUFFER, sizeof(RadeonRays::BvhTranslator::Node) * scene->bvhTranslator.nodes.size(), &scene->bvhTranslator.nodes[0], GL_STATIC_DRAW);
+	glGenTextures(1, &BVHTex);
+	glBindTexture(GL_TEXTURE_BUFFER, BVHTex);
+	glTexBuffer(GL_TEXTURE_BUFFER, GL_RGB32F, BVHBuffer);
+
+	// Create buffer and texture for vertex indices
+	glGenBuffers(1, &vertexIndicesBuffer);
+	glBindBuffer(GL_TEXTURE_BUFFER, vertexIndicesBuffer);
+	glBufferData(GL_TEXTURE_BUFFER, sizeof(Indices) * scene->vertIndices.size(), &scene->vertIndices[0], GL_STATIC_DRAW);
+	glGenTextures(1, &vertexIndicesTex);
+	glBindTexture(GL_TEXTURE_BUFFER, vertexIndicesTex);
+	glTexBuffer(GL_TEXTURE_BUFFER, GL_RGB32I, vertexIndicesBuffer);
+
+	// Create buffer and texture for vertices
+	glGenBuffers(1, &verticesBuffer);
+	glBindBuffer(GL_TEXTURE_BUFFER, verticesBuffer);
+	glBufferData(GL_TEXTURE_BUFFER, sizeof(glm::vec4) * scene->verticesUVX.size(), &scene->verticesUVX[0], GL_STATIC_DRAW);
+	glGenTextures(1, &verticesTex);
+	glBindTexture(GL_TEXTURE_BUFFER, verticesTex);
+	glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, verticesBuffer);
+
+	// Create buffer and texture for normals
+	glGenBuffers(1, &normalsBuffer);
+	glBindBuffer(GL_TEXTURE_BUFFER, normalsBuffer);
+	glBufferData(GL_TEXTURE_BUFFER, sizeof(glm::vec4) * scene->normalsUVY.size(), &scene->normalsUVY[0], GL_STATIC_DRAW);
+	glGenTextures(1, &normalsTex);
+	glBindTexture(GL_TEXTURE_BUFFER, normalsTex);
+	glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, normalsBuffer);
+
+	// Create texture for materials
+	glGenTextures(1, &materialsTex);
+	glBindTexture(GL_TEXTURE_2D, materialsTex);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, (sizeof(Material) / sizeof(glm::vec4)) * scene->materials.size(), 1, 0, GL_RGBA, GL_FLOAT, &scene->materials[0]);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	// Create texture for transforms
+	glGenTextures(1, &transformsTex);
+	glBindTexture(GL_TEXTURE_2D, transformsTex);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, (sizeof(glm::mat4) / sizeof(glm::vec4)) * scene->transforms.size(), 1, 0, GL_RGBA, GL_FLOAT, &scene->transforms[0]);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	
+	//Create texture for lights
+	glGenTextures(1, &lightsTex);
+	glBindTexture(GL_TEXTURE_2D, lightsTex);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, (sizeof(Light) / sizeof(glm::vec3)) * scene->lights.size(), 1, 0, GL_RGB, GL_FLOAT, &scene->lights[0]);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	// Create texture for scene textures
+	glGenTextures(1, &textureMapsArrayTex);
+	glBindTexture(GL_TEXTURE_2D_ARRAY, textureMapsArrayTex);
+	glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGBA8, scene->renderOptions.texArrayWidth, scene->renderOptions.texArrayHeight, scene->textures.size(), 0, GL_RGBA, GL_UNSIGNED_BYTE, &scene->textureMapsArray[0]);
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
+
+	
+	glGenTextures(1, &envMapTex);
+	glBindTexture(GL_TEXTURE_2D, envMapTex);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, scene->envMap->width, scene->envMap->height, 0, GL_RGB, GL_FLOAT, scene->envMap->img);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	glGenTextures(1, &envMapCDFTex);
+	glBindTexture(GL_TEXTURE_2D, envMapCDFTex);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, scene->envMap->width, scene->envMap->height, 0, GL_RED, GL_FLOAT, scene->envMap->cdf);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	
+
+	// Bind textures to texture slots as they will not change slots during the lifespan of the renderer
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_BUFFER, BVHTex);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_BUFFER, vertexIndicesTex);
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_BUFFER, verticesTex);
+	glActiveTexture(GL_TEXTURE4);
+	glBindTexture(GL_TEXTURE_BUFFER, normalsTex);
+	glActiveTexture(GL_TEXTURE5);
+	glBindTexture(GL_TEXTURE_2D, materialsTex);
+	glActiveTexture(GL_TEXTURE6);
+	glBindTexture(GL_TEXTURE_2D, transformsTex);
+	glActiveTexture(GL_TEXTURE7);
+	glBindTexture(GL_TEXTURE_2D, lightsTex);
+	glActiveTexture(GL_TEXTURE8);
+	glBindTexture(GL_TEXTURE_2D_ARRAY, textureMapsArrayTex);
+	glActiveTexture(GL_TEXTURE9);
+	glBindTexture(GL_TEXTURE_2D, envMapTex);
+	glActiveTexture(GL_TEXTURE10);
+	glBindTexture(GL_TEXTURE_2D, envMapCDFTex);
+
+
+
+
+
+
 	//We set the shaders's values
 	SetShadersValues();
 	//We create the lights
@@ -247,7 +359,7 @@ void LevelLoader::Unload() {
 	}
 }
 
-void LevelLoader::Update(Camera cam, bool* isPlaying)
+void LevelLoader::Update(Camera cam, bool* isPlaying, PathTracingInfos infos)
 {
 	for (int i = 0; i < parser.objects.size(); i++) {
 		for (int a = 0; a < parser.objects[i].components.size(); a++) {
@@ -284,9 +396,16 @@ void LevelLoader::Update(Camera cam, bool* isPlaying)
 						if(parser.objects[i].HasComponent<RigidbodyComponent>() && isPlaying){
 							models[x].Draw(shaders[shader_id].shader, cam, rigidbodies[parser.objects[i].name].transform->Location, rigidbodies[parser.objects[i].name].transform->Rotation, rigidbodies[parser.objects[i].name].transform->Scale, lights);
 						}
-						else {
-							models[x].Draw(shaders[shader_id].shader, cam, objects_Transforms[i].Location, objects_Transforms[i].Rotation, objects_Transforms[i].Scale, lights);
+						else{
+							if (shaders[shader_id].name == "defaultShader") {
+								models[x].DrawPathTraced(shaders[shader_id].shader, cam, objects_Transforms[i].Location, objects_Transforms[i].Rotation, objects_Transforms[i].Scale, lights, infos);
+							}
+							else {
+								models[x].Draw(shaders[shader_id].shader, cam, objects_Transforms[i].Location, objects_Transforms[i].Rotation, objects_Transforms[i].Scale, lights);
+							}
+							
 						}
+						
 					}
 				}
 			}
@@ -372,12 +491,16 @@ void LevelLoader::SetShadersValues() {
 			shaders[i].shader.Activate();
 			glUniform1i(glGetUniformLocation(shaders[i].shader.ID, "skybox"), 0);
 		}
+		else if (shaders[i].name == "defaultShader") {
+			shaders[i].shader.Activate();
+			
+		}
 		else if (shaders[i].name == "lightShader")
 		{
 			if (light_object_infos.size() > 0) {
 				shaders[i].shader.Activate();
 				glUniformMatrix4fv(glGetUniformLocation(shaders[i].shader.ID, "model"), 1, GL_FALSE, glm::value_ptr(light_object_infos[0].lightModel));
-				glUniform3f(glGetUniformLocation(shaders[i].shader.ID, "lightColor"), light_object_infos[0].lightColor.x, light_object_infos[0].lightColor.y, light_object_infos[0].lightColor.z);
+				shaders[i].shader.setVec3("lightColor", light_object_infos[0].lightColor.x, light_object_infos[0].lightColor.y, light_object_infos[0].lightColor.z);
 			}
 		}
 		else if (shaders[i].name == "framebufferShader") {
@@ -392,5 +515,6 @@ void LevelLoader::SetShadersValues() {
 				shaders[i].shader.setVec3("lightPos", light_object_infos[0].lightPos);
 			}
 		}
+		
 	}
 }

@@ -104,3 +104,48 @@ struct Folder {
 
 std::vector<std::variant<File, Folder>> ListFiles(char* directory);
 char* extractPath(const char* path);
+
+#ifndef PATH_TRACING_INFOS
+#define	PATH_TRACING_INFOS
+
+struct PathTracingInfos {
+	bool isCameraMoving;
+	glm::vec3 randomVector;
+	glm::vec2 resolution;
+	glm::vec2 tileOffset;
+	glm::vec2 invNumTiles;
+
+	glm::vec3 camera_up;
+	glm::vec3 camera_right;
+	glm::vec3 camera_forward;
+	glm::vec3 camera_position;
+	float camera_fov;
+	float camera_focalDist;
+	float camera_aperture;
+
+	int accumTexture;
+	int BVH;
+	int vertexIndicesTex;
+	int verticesTex;
+	int normalsTex;
+	int materialsTex;
+	int transformsTex;
+	int lightsTex;
+	int textureMapsArrayTex;
+
+	int envMapTex;
+	int envMapCDFTex;
+
+	glm::vec2 envMapRes;
+	float envMapTotalSum;
+	float envMapIntensity;
+	float envMapRot;
+	glm::vec3 uniformLightCol;
+	int numOfLights;
+	int maxDepth;
+	int topBVHIndex = 0;
+	int frameNum;
+	float roughnessMollificationAmt;
+};
+
+#endif // !PATH_TRACING_INFOS
