@@ -1,15 +1,12 @@
 #include "../Basic Rendering/Model/Model.h"
 #include "LevelParser.h"
 #include "../Utils/Engine/EngineUtils.h"
-#include "Basic Rendering/Material/Material.h"
 
 #include <variant>
 #include <json/json.h>
 #include "Components.h"
 #include <typeinfo>
 #include <Physics/Collision.h>
-#include <RadeonRays/bvh.h>
-#include <RadeonRays/bvh_translator.h>
 #include <typeinfo>
 
 using json = nlohmann::json;
@@ -38,22 +35,6 @@ struct Light_Object_Infos {
 
 #endif
 
-struct Indices
-{
-	int x, y, z;
-};
-
-struct Light
-{
-	glm::vec3 position;
-	glm::vec3 emission;
-	glm::vec3 u;
-	glm::vec3 v;
-	float radius;
-	float area;
-	float type;
-};
-
 #ifndef SceneLoader_CLASS_H
 #define SceneLoader_CLASS_H
 class LevelLoader 
@@ -63,7 +44,7 @@ public:
 	void Load1(const char* loaded_file);
 	void Load2();
 	void Unload();
-	void Update(Camera cam, bool* isPlaying, PathTracingInfos infos);
+	void Update(Camera cam, bool* isPlaying);
 	void LoadNewLevel(const char* scene);
 	void CreateLights();
 	void SetLightValues(int objectID, int componentID);
@@ -98,23 +79,6 @@ public:
 	unsigned int framebufferTexture;
 	unsigned int object_id_FBO;
 	unsigned int RBO;
-
-	GLuint BVHBuffer;
-	GLuint BVHTex;
-	GLuint vertexIndicesBuffer;
-	GLuint vertexIndicesTex;
-	GLuint verticesBuffer;
-	GLuint verticesTex;
-	GLuint normalsBuffer;
-	GLuint normalsTex;
-	GLuint materialsTex;
-	GLuint transformsTex;
-	GLuint lightsTex;
-	GLuint textureMapsArrayTex;
-	GLuint envMapTex;
-	GLuint envMapCDFTex;
-
-
 	Shader skyboxShader;
 	Shader framebufferProgram;
 

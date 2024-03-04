@@ -44,7 +44,6 @@ Camera cam = Camera(0, 0, glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
 
 EditorPlayer player = EditorPlayer();
 
-PathTracingInfos path_tracing_infos;
 
 void RenderLevel() {
 	glBindFramebuffer(GL_FRAMEBUFFER, loader.FBO);
@@ -57,7 +56,7 @@ void RenderLevel() {
 	glEnable(GL_DEPTH_TEST);
 
 	//Update the level from the loader
-	loader.Update(cam, &player.isPlaying, path_tracing_infos);
+	loader.Update(cam, &player.isPlaying);
 
 	glDepthFunc(GL_LEQUAL);
 
@@ -88,6 +87,8 @@ void RenderLevel() {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
+
+
 
 ////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////
@@ -247,28 +248,8 @@ int main() {
 
 	loader.LoadNewLevel(current_level);
 
-	int frameCounter = 0;
-
-
-	path_tracing_infos.resolution = glm::vec2(gui->viewportSize.x, gui->viewportSize.y);
-	path_tracing_infos.invNumTiles = glm::vec2((float)1280 / 100, (float)720 / 100);
-	path_tracing_infos.numOfLights = loader.light_object_infos.size();
-	path_tracing_infos.accumTexture = 0;
-	path_tracing_infos.BVH = 1;
-	path_tracing_infos.vertexIndicesTex = 2;
-	path_tracing_infos.verticesTex = 3;
-	path_tracing_infos.normalsTex = 4;
-	path_tracing_infos.materialsTex = 5;
-	path_tracing_infos.transformsTex = 6;
-	path_tracing_infos.lightsTex = 7;
-	path_tracing_infos.textureMapsArrayTex = 8;
-	path_tracing_infos.envMapTex = 9;
-	path_tracing_infos.envMapCDFTex = 10;
-
 
 	while (!glfwWindowShouldClose(window)) {
-
-		frameCounter++;
 
 		RenderLevel();
 
@@ -312,11 +293,15 @@ int main() {
 			selectedObjectID = -1;
 		}
 
+		
+
 		if (gui->play && player.isPlaying && can_test_for_stop) {
 			player.Stop(&loader);
 			can_test_for_stop = false;
 			gui->play = false;
 		}
+
+
 
 		if (player.isPlaying) {
 			player.Play();
@@ -325,22 +310,6 @@ int main() {
 		}
 
 		
-		path_tracing_infos.camera_position = cam.Position;
-		path_tracing_infos.camera_right = glm::vec3(1.0f, 0.0f, 0.0f);
-		path_tracing_infos.camera_up = cam.Up;
-		path_tracing_infos.camera_forward = glm::vec3(0.0f, 0.0f, 1.0f);
-		path_tracing_infos.camera_fov = cam.FOVdeg;
-		path_tracing_infos.camera_focalDist = 0.1f;
-		path_tracing_infos.camera_aperture = 0.0f;
-		path_tracing_infos.envMapIntensity = 0;
-		path_tracing_infos.envMapRot = 0;
-		path_tracing_infos.maxDepth = 2;
-		path_tracing_infos.tileOffset = glm::vec2((float)-1 * 100 / 1280, (float)-1 * 100 / 720);
-		path_tracing_infos.uniformLightCol = glm::vec3(255,255,255);
-		path_tracing_infos.roughnessMollificationAmt = 0.0f;
-		path_tracing_infos.frameNum = frameCounter;
-		
-
 
 		// Updates and exports the camera matrix to the Vertex Shader
 		cam.updateMatrix(45.0f, 0.1f, 1000.0f);

@@ -29,15 +29,6 @@ void Model::Draw(Shader& shader, Camera& camera, glm::vec3 translation, glm::qua
 	}
 }
 
-void Model::DrawPathTraced(Shader& shader, Camera& camera, glm::vec3 translation, glm::quat rotation, glm::vec3 scale, std::vector<light_Infos> lights, PathTracingInfos infos)
-{
-	// Go over all meshes and draw each one
-	for (unsigned int i = 0; i < meshes.size(); i++)
-	{
-		meshes[i].Mesh::DrawPathTraced(shader, camera, matricesMeshes[i], translation, rotation, scale, lights, infos);
-	}
-}
-
 void Model::loadMesh(unsigned int indMesh)
 {
 	// Get all accessor indices

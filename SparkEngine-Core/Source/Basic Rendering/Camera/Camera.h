@@ -41,10 +41,7 @@ public:
 	void updateSize(int new_width, int new_height);
 
 	// Updates the camera matrix to the Vertex Shader
-	void updateMatrix(float _FOVdeg, float nearPlane, float farPlane);
-
-	float FOVdeg;
-
+	void updateMatrix(float FOVdeg, float nearPlane, float farPlane);
 	// Exports the camera matrix to a shader
 	void Matrix(Shader& shader, const char* uniform);
 	// Handles camera inputs

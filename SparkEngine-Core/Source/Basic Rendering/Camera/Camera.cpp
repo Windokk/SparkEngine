@@ -16,9 +16,8 @@ void Camera::updateSize(int new_width, int new_height)
 
 }
 
-void Camera::updateMatrix(float _FOVdeg, float nearPlane, float farPlane)
+void Camera::updateMatrix(float FOVdeg, float nearPlane, float farPlane)
 {
-	FOVdeg = _FOVdeg;
 	// Initializes matrices since otherwise they will be the null matrix
 	view = glm::mat4(1.0f);
 	projection = glm::mat4(1.0f);
