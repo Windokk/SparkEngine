@@ -31,7 +31,7 @@ A 3D Game Engine In C++ created using Open GL
 
 ## Description
 
-Welcome to the Spark Engine project, which is a powerful, C++ and OpenGL-based 3D and 2D game engine designed to provide game developers with complete control over their engine and game development process. With a commitment to empowering creativity, the Spark Engine is dedicated to fostering growth within the game industry. It enables developers to create immersive environments of various styles, including realistic, low-poly, and cell-shaded graphics, ensuring versatility and flexibility in game design.
+Welcome to the Spark Engine project, a C++ and OpenGL-based 3D and 2D game engine designed to provide game developers with complete control over their engine and game development process. With a commitment to empowering creativity, the Spark Engine is dedicated to fostering growth within the game industry. It enables developers to create immersive environments of various styles, including realistic, low-poly, and cell-shaded graphics, ensuring versatility and flexibility in game design.
 With a powerfull C++ framework and a visual scripting feature, the Spark Engine allows developpers to create games with ease for any platform. Developpers can also create plugins and modify the Engine's source code to enhance it as they want, with a part of the engine's documentation fully dedicated to plugins creation. The Spark Engine uses the power of the Bullet Physics Engine to provide realsitic collisions and simulations inside the editor and in realtime.
 
 #### Key Features:
